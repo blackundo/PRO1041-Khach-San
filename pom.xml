@@ -37,5 +37,22 @@
             <artifactId>poi-ooxml</artifactId>
             <version>5.2.3</version>
         </dependency>
+        <dependency>
+            <groupId>net.java.dev.timingframework</groupId>
+            <artifactId>timingframework</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.miglayout</groupId>
+            <artifactId>miglayout</artifactId>
+            <version>3.7.4</version>
+        </dependency>
+        <dependency>
+            <groupId>gradient-icon</groupId>
+            <artifactId>gradient-icon</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/gradient-icon-font.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
