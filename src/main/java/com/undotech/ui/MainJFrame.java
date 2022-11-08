@@ -8,6 +8,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Component;
 import javaswingdev.form.Form_Dashboard;
 import javaswingdev.form.Form_Empty;
+import javaswingdev.form.Form_QuanLyNhanVien;
 import javaswingdev.menu.EventMenuSelected;
 
 /**
@@ -32,6 +33,8 @@ public class MainJFrame extends javax.swing.JFrame {
             public void menuSelected(int index, int indexSubMenu) {
                 if (index == 0 && indexSubMenu == 0) {
                     showForm(new Form_Dashboard());
+                } else if (index == 1 && indexSubMenu == 1){
+                    showForm(new Form_QuanLyNhanVien());
                 } else {
                     showForm(new Form_Empty(index + " " + indexSubMenu));
                 }

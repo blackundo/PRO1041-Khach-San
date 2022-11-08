@@ -33,9 +33,9 @@ public class Menu extends JPanel {
         scroll.setViewportBorder(null);
         add(scroll);
         addTitle("CHÍNH");
-        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.DASHBOARD, "Dashboard"));
-        addTitle("WEB APPS");
-        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.MAIL_OUTLINE, "Email", "Inbox", "Read", "Compose"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.DASHBOARD, "Thống kê"));
+        addTitle("Nhân sự");
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.MAIL_OUTLINE, "Nhân viên", "Thông tin", "Read", "Compose"));
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.MESSAGE, "Chat"));
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.PERM_CONTACT_CALENDAR, "Calendar"));
         addTitle("COMPONENT");
