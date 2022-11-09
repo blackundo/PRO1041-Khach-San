@@ -35,9 +35,9 @@ public class Menu extends JPanel {
         addTitle("CHÍNH");
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.DASHBOARD, "Thống kê"));
         addTitle("Nhân sự");
-        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.MAIL_OUTLINE, "Nhân viên", "Thông tin", "Read", "Compose"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.MAIL_OUTLINE, "Nhân viên", "Thông tin", "Sửa", "Thêm"));
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.MESSAGE, "Quản lý phòng"));
-        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.PERM_CONTACT_CALENDAR, "Calendar"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.PERM_CONTACT_CALENDAR, "Quản lý dịch vụ"));
 //        addTitle("COMPONENT");
 //        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.WHATSHOT, "UI Kit", "Accordion", "Alerts", "Badges", "Breadcrumbs", "Buttons", "Button group"));
 //        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.DIRECTIONS_BIKE, "Advanced UI", "Cropper", "Owl Carousel", "Sweet Alert"));
