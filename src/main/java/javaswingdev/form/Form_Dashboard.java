@@ -11,24 +11,28 @@ public class Form_Dashboard extends javax.swing.JPanel {
 
     private void init() {
         table.fixTable(jScrollPane1);
-        table.addRow(new Object[]{"1", "Mike Bhand", "mikebhand@gmail.com", "Admin", "25 Apr,2018"});
-        table.addRow(new Object[]{"2", "Andrew Strauss", "andrewstrauss@gmail.com", "Editor", "25 Apr,2018"});
-        table.addRow(new Object[]{"3", "Ross Kopelman", "rosskopelman@gmail.com", "Subscriber", "25 Apr,2018"});
-        table.addRow(new Object[]{"4", "Mike Hussy", "mikehussy@gmail.com", "Admin", "25 Apr,2018"});
-        table.addRow(new Object[]{"5", "Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018"});
-        table.addRow(new Object[]{"6", "Andrew Strauss", "andrewstrauss@gmail.com", "Editor", "25 Apr,2018"});
-        table.addRow(new Object[]{"7", "Ross Kopelman", "rosskopelman@gmail.com", "Subscriber", "25 Apr,2018"});
-        table.addRow(new Object[]{"8", "Mike Hussy", "mikehussy@gmail.com", "Admin", "25 Apr,2018"});
-        table.addRow(new Object[]{"9", "Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018"});
-        table.addRow(new Object[]{"10", "Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018"});
-        table.addRow(new Object[]{"11", "Andrew Strauss", "andrewstrauss@gmail.com", "Editor", "25 Apr,2018"});
-        table.addRow(new Object[]{"12", "Ross Kopelman", "rosskopelman@gmail.com", "Subscriber", "25 Apr,2018"});
-        table.addRow(new Object[]{"13", "Mike Hussy", "mikehussy@gmail.com", "Admin", "25 Apr,2018"});
-        table.addRow(new Object[]{"14", "Kevin Pietersen", "kevinpietersen@gmail.com", "Admin", "25 Apr,2018"});
+        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
+        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
+        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
+        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
+        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
+        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
+        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
+        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
+        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
+        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
+        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
+        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
+        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
+        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
+        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
+        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
+        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
+        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
 
         //  init card data
         card1.setData(new ModelCard(null, null, null, "23/100", "Số phòng trống"));
-        card2.setData(new ModelCard(null, null, null, "50tr", "Doanh thu/tháng"));
+        card2.setData(new ModelCard(null, null, null, "52.320.000đ", "Doanh thu/tháng"));
         card3.setData(new ModelCard(null, null, null, "8/20", "Nhân viên"));
     }
 
@@ -42,6 +46,7 @@ public class Form_Dashboard extends javax.swing.JPanel {
         roundPanel1 = new javaswingdev.swing.RoundPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javaswingdev.swing.table.Table();
+        jLabel1 = new javax.swing.JLabel();
 
         setOpaque(false);
 
@@ -62,7 +67,7 @@ public class Form_Dashboard extends javax.swing.JPanel {
 
             },
             new String [] {
-                "#", "Name", "Email", "Position", "Date Join"
+                "#", "Tên khách hàng", "SĐT", "CMND", "Số phòng"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -92,6 +97,8 @@ public class Form_Dashboard extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel1.setText("Danh sách khách đặt phòng");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,6 +114,10 @@ public class Form_Dashboard extends javax.swing.JPanel {
                         .addGap(30, 30, 30)
                         .addComponent(card3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(30, 30, 30))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,7 +127,9 @@ public class Form_Dashboard extends javax.swing.JPanel {
                     .addComponent(card3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(card2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addGap(1, 1, 1)
                 .addComponent(roundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(30, 30, 30))
         );
@@ -126,6 +139,7 @@ public class Form_Dashboard extends javax.swing.JPanel {
     private javaswingdev.card.Card card1;
     private javaswingdev.card.Card card2;
     private javaswingdev.card.Card card3;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javaswingdev.swing.RoundPanel roundPanel1;
     private javaswingdev.swing.table.Table table;
