@@ -4,6 +4,9 @@
  */
 package com.undotech.ui;
 
+import com.undotech.dao.NhanVienDAO;
+import com.undotech.entity.NhanVien;
+import com.undotech.utils.Auth;
 import com.undotech.utils.MsgBox;
 import java.awt.event.KeyEvent;
 
@@ -13,9 +16,8 @@ import java.awt.event.KeyEvent;
  */
 public class LoginJDialog extends javax.swing.JDialog {
 
-    /**
-     * Creates new form LoginJDialog
-     */
+    NhanVienDAO dao = new NhanVienDAO();
+    
     public LoginJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -23,24 +25,23 @@ public class LoginJDialog extends javax.swing.JDialog {
     }
     
     void exit() {
-        if (MsgBox.confirm(this, "Do you want to exit the app?")) {
+        if (MsgBox.confirm(this, "Bạn muốn thoát không ?")) {
             System.exit(0);
         }
     }
 
     void login() {
-        String mamv = txtUser.getText();
+        String username = txtUser.getText();
         String password = new String(txtPass.getPassword());
-//        NhanVien nhanVien = dao.selectById(mamv);
-//        if (nhanVien == null) {
-//            MsgBox.alert(this, "Wrong username!");
-//        } else if (!password.equals(nhanVien.getMatKhau())) {
-//            MsgBox.alert(this, "Wrong password!");
-//        } else {
-//            Auth.user = nhanVien;
+        NhanVien nv = dao.selectById(username);
+        if (nv == null) {
+            MsgBox.alert(this, "Sai tài khoản!");
+        } else if (password.equals(nv.getMatKhau())) {
+            MsgBox.alert(this, "Sai mật khẩu!");
+        } else {
+            Auth.user = nv;
             this.dispose();
-//            new WelcomeJFrame().setVisible(true);
-//        }
+        }
     }
 
     /**
