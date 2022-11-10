@@ -60,8 +60,8 @@ public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
                 entity.setSoDT(rs.getString("SoDT"));
                 entity.setEmail(rs.getString("Email"));
                 entity.setDiaChi(rs.getString("DiaChi"));
-                entity.setDiaChi(rs.getString("TaiKhoan"));
-                entity.setDiaChi(rs.getString("MatKhau"));
+                entity.setTaiKhoan(rs.getString("TaiKhoan"));
+                entity.setMatKhau(rs.getString("MatKhau"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();
