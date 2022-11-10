@@ -47,12 +47,12 @@
             <artifactId>miglayout</artifactId>
             <version>3.7.4</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>gradient-icon</groupId>
             <artifactId>gradient-icon</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/gradient-icon-font.jar</systemPath>
-        </dependency>
+        </dependency>-->
     </dependencies>
 </project>
