@@ -1,4 +1,5 @@
-package javaswingdev.form;
+package com.undotech.ui;
+
 
 import javaswingdev.card.ModelCard;
 

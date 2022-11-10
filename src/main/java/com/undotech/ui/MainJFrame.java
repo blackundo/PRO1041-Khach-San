@@ -6,7 +6,7 @@ package com.undotech.ui;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Component;
-import javaswingdev.form.*;
+import com.undotech.ui.*;
 import javaswingdev.menu.EventMenuSelected;
 
 /**

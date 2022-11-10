@@ -1,4 +1,6 @@
-package javaswingdev.form;
+package com.undotech.ui;
+
+
 
 public class Form_Empty extends javax.swing.JPanel {
 
