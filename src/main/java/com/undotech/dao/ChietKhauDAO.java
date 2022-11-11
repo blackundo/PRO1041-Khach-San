@@ -11,7 +11,13 @@ import java.util.List;
  *
  * @author blackundo
  */
-public class ChiecKhauDAO extends QLyKhachSanDAO<ChietKhau, Integer>{
+public class ChietKhauDAO extends QLyKhachSanDAO<ChietKhau, Integer>{
+    
+    String INSERT_SQL = "INSERT INTO ChietKhau(PhanTramChietKhau, NgayBatDau, NgayKetThuc, MaPhong) VALUES(?,?,?,?)";
+    String UPDATE_SQL = "UPDATE ChietKhau SET PhanTramChietKhau=?, NgayBatDau=?, NgayKetThuc=? WHERE MaChietKhau=?";
+    String DELETE_SQL = "DELETE FROM ChietKhau WHERE MaChietKhau=?";
+    String SELECT_ALL_SQL = "SELECT * FROM ChietKhau";
+    String SELECT_BY_ID_SQL = "SELECT * FROM ChietKhau WHERE MaChietKhau=?";
 
     @Override
     public void insert(ChietKhau entity) {
