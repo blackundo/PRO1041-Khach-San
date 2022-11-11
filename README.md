@@ -12,7 +12,7 @@
 
 
 
-`SHOP BÁN GIÀY IFOOTBALL` là một dự án thực tế nhưng do thời gian có hạn và trình độ hiểu biết chưa sâu nên nhóm chúng em không thể tránh khỏi những sai sót. <br/>
+`Quan Ly Khach San` là một dự án thực tế nhưng do thời gian có hạn và trình độ hiểu biết chưa sâu nên nhóm chúng em không thể tránh khỏi những sai sót. <br/>
 Chúng em mong nhận được sự góp ý, đánh giá của thầy(cô) và toàn thể các bạn để nhóm tụi em hoàn thiện hơn nữa.
 
 ## 👋 NHÓM Undo Tech
