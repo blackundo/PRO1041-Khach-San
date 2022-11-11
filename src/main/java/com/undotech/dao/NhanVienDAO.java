@@ -16,26 +16,49 @@ import java.util.List;
  * @author blackundo
  */
 public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
+    
+    String INSERT_SQL = "INSERT INTO NhanVien(MaNhanVien, TenNhanVien, ChucVu, SoDT, Email, DiaChi, TaiKhoan, MatKhau) VALUES(?,?,?,?,?,?,?,?)";
+    String UPDATE_SQL = "UPDATE NhanVien SET TenNhanVien=?, ChucVu=?, SoDT=?, Email=?, DiaChi=?, TaiKhoan=?, MatKhau=? WHERE MaNhanVien=?";
+    String DELETE_SQL = "DELETE FROM NhanVien WHERE MaNhanVien=?";
     String SELECT_BY_ID_SQL = "SELECT * FROM NhanVien WHERE TaiKhoan=?";
+    String SELECT_ALL_SQL = "SELECT * FROM NHANVIEN";
 
     @Override
     public void insert(NhanVien entity) {
-        
+        XJdbc.executeUpdate(INSERT_SQL,
+                entity.getMaNV(),
+                entity.getTenNV(),
+                entity.getChucVu(),
+                entity.getSoDT(),
+                entity.getEmail(),
+                entity.getDiaChi(),
+                entity.getTaiKhoan(),
+                entity.getMatKhau()
+        );
     }
 
     @Override
     public void update(NhanVien entity) {
-    
+        XJdbc.executeUpdate(UPDATE_SQL, 
+                entity.getTenNV(),
+                entity.getChucVu(),
+                entity.getSoDT(),
+                entity.getEmail(),
+                entity.getDiaChi(),
+                entity.getTaiKhoan(),
+                entity.getMatKhau(),
+                entity.getMaNV()
+                );
     }
 
     @Override
     public void delete(String key) {
-    
+        XJdbc.executeUpdate(DELETE_SQL, key);
     }
 
     @Override
     public List<NhanVien> selectAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.selectBySql(SELECT_ALL_SQL);
     }
 
     @Override
