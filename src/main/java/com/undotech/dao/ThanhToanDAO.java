@@ -4,7 +4,12 @@
  */
 package com.undotech.dao;
 
+import com.undotech.entity.Phong;
 import com.undotech.entity.ThanhToan;
+import com.undotech.utils.XJdbc;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,35 +17,70 @@ import java.util.List;
  * @author blackundo
  */
 public class ThanhToanDAO extends QLyKhachSanDAO<ThanhToan, Integer>{
+    
+    String INSERT_SQL = "INSERT INTO ThanhToan(MaThanhToan, LoaiThanhToan, TongTienThanhToan, MaDanhGia) VALUES(?,?,?,?)";
+    String UPDATE_SQL = "UPDATE ThanhToan SET LoaiThanhToan=?, TongTienThanhToan=?, MaDanhGia=? WHERE MaThanhToan=?";
+    String DELETE_SQL = "DELETE FROM ThanhToan WHERE MaThanhToan=?";
+    String SELECT_ALL_SQL = "SELECT * FROM ThanhToan";
+    String SELECT_BY_ID_SQL = "SELECT * FROM ThanhToan WHERE MaThanhToan=?";
 
     @Override
     public void insert(ThanhToan entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        XJdbc.executeUpdate(INSERT_SQL, 
+                    entity.getMaThanhToan(),
+                    entity.getLoaiThanhToan(),
+                    entity.getTongTienThanhToan(),
+                    entity.getMaDanhGia()
+                );
     }
 
     @Override
     public void update(ThanhToan entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        XJdbc.executeUpdate(UPDATE_SQL, 
+                    entity.getLoaiThanhToan(),
+                    entity.getTongTienThanhToan(),
+                    entity.getMaDanhGia(),
+                    entity.getMaThanhToan()
+                );
     }
 
     @Override
     public void delete(Integer key) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        XJdbc.executeUpdate(DELETE_SQL, key);
     }
 
     @Override
     public List<ThanhToan> selectAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.selectBySql(SELECT_ALL_SQL);
     }
 
     @Override
     public ThanhToan selectById(Integer key) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<ThanhToan> list = this.selectBySql(SELECT_BY_ID_SQL, key);
+        if(list.isEmpty()){
+            return null;
+        }
+        return list.get(0);
     }
 
     @Override
     protected List<ThanhToan> selectBySql(String sql, Object... args) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<ThanhToan> list = new ArrayList<>();
+        try {
+            ResultSet rs = XJdbc.executeQuery(sql, args);
+            while (rs.next()) {
+                ThanhToan entity = new ThanhToan();
+                entity.setMaThanhToan(rs.getInt("MaThanhToan"));
+                entity.setLoaiThanhToan(rs.getString("LoaiThanhToan"));
+                entity.setTongTienThanhToan(rs.getDouble("TongTienThanhToan"));
+                entity.setMaDanhGia(rs.getInt("MaDanhGia"));
+                list.add(entity);
+            }
+            rs.getStatement().getConnection().close();
+            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     
 }
