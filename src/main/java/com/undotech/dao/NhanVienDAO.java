@@ -17,6 +17,7 @@ public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
     String UPDATE_SQL = "UPDATE staff SET full_name=?, role=?, phone=?, email=?, address=?, username=?, pass=?, img=? WHERE id=?";
     String DELETE_SQL = "DELETE FROM staff WHERE id=?";
     String SELECT_BY_ID_SQL = "SELECT * FROM staff WHERE id=?";
+    String SELECT_BY_USERNAME_SQL = "SELECT * FROM staff WHERE username=?";
     String SELECT_ALL_SQL = "SELECT * FROM staff";
 
     @Override
@@ -65,6 +66,15 @@ public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
         if (list.isEmpty()) {
             return null;
         }
+        return list.get(0);
+    }
+    
+    //tai khoan
+    public NhanVien selectByUsername(String key){
+        List<NhanVien> list = this.selectBySql(SELECT_BY_USERNAME_SQL, key);
+            if (list.isEmpty()) {
+                return null;
+            }
         return list.get(0);
     }
 

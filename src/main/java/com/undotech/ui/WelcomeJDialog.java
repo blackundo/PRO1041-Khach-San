@@ -4,6 +4,8 @@
  */
 package com.undotech.ui;
 
+import com.undotech.utils.Auth;
+
 /**
  *
  * @author blackundo
@@ -27,15 +29,15 @@ public class WelcomeJDialog extends javax.swing.JDialog {
         public void run() {
 //            txtRole.setText("Welcome 1123");
             //String userID = Auth.user.getMaNV();
-            //String role = Auth.user.isVaiTro() ? "Manager" : "Employee";
-    
+            String ten = Auth.user.getTenNV();
+            String role = Auth.user.getVaiTro();
             
             try {
                     
                 for (int i = 0; i <= 100; i++) {
-//                    if (i == 1) {
-//                        txtRole.setText("UserID: " + userID + " |  Role: " + role);
-//                    }
+                    if (i == 1) {
+                        txtName.setText(ten + " - " + role);
+                    }
                     Thread.sleep(20);
                     if (i == 20) {
                         txtLoading.setText("Đang kết nối csdl...");
@@ -80,6 +82,7 @@ public class WelcomeJDialog extends javax.swing.JDialog {
         txtLoading = new javax.swing.JLabel();
         txtLoadingValue = new javax.swing.JLabel();
         wellcome = new javax.swing.JLabel();
+        txtName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -108,6 +111,12 @@ public class WelcomeJDialog extends javax.swing.JDialog {
         wellcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         wellcome.setText("Wellcome Back");
         jPanel1.add(wellcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 550, 50));
+
+        txtName.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        txtName.setForeground(new java.awt.Color(255, 0, 0));
+        txtName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtName.setText("Trần Phước Khánh Huy - Quản Lý");
+        jPanel1.add(txtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 420, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -171,6 +180,7 @@ public class WelcomeJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel txtImage;
     private javax.swing.JLabel txtLoading;
     private javax.swing.JLabel txtLoadingValue;
+    private javax.swing.JLabel txtName;
     private javax.swing.JLabel wellcome;
     // End of variables declaration//GEN-END:variables
 }

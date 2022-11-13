@@ -33,7 +33,7 @@ public class LoginJDialog extends javax.swing.JDialog {
     void login() {
         String username = txtUser.getText();
         String password = new String(txtPass.getPassword());
-        NhanVien nv = dao.selectById(username);
+        NhanVien nv = dao.selectByUsername(username);
         if (nv == null) {
             MsgBox.alert(this, "Sai tài khoản!");
         } else if (!password.equals(nv.getMatKhau())) {
