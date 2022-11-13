@@ -7,25 +7,27 @@ package com.undotech.entity;
 public class NhanVien {
     private String maNV;
     private String tenNV;
-    private String chucVu;
+    private String vaiTro;
     private String soDT;
     private String email;
     private String diaChi;
     private String taiKhoan;
     private String matKhau;
+    private String hinhAnh;
 
     public NhanVien() {
     }
 
-    public NhanVien(String maNV, String tenNV, String chucVu, String soDT, String email, String diaChi, String taiKhoan, String matKhau) {
+    public NhanVien(String maNV, String tenNV, String vaiTro, String soDT, String email, String diaChi, String taiKhoan, String matKhau, String hinhAnh) {
         this.maNV = maNV;
         this.tenNV = tenNV;
-        this.chucVu = chucVu;
+        this.vaiTro = vaiTro;
         this.soDT = soDT;
         this.email = email;
         this.diaChi = diaChi;
         this.taiKhoan = taiKhoan;
         this.matKhau = matKhau;
+        this.hinhAnh = hinhAnh;
     }
 
     public String getMaNV() {
@@ -44,12 +46,12 @@ public class NhanVien {
         this.tenNV = tenNV;
     }
 
-    public String getChucVu() {
-        return chucVu;
+    public String getVaiTro() {
+        return vaiTro;
     }
 
-    public void setChucVu(String chucVu) {
-        this.chucVu = chucVu;
+    public void setVaiTro(String vaiTro) {
+        this.vaiTro = vaiTro;
     }
 
     public String getSoDT() {
@@ -91,5 +93,14 @@ public class NhanVien {
     public void setMatKhau(String matKhau) {
         this.matKhau = matKhau;
     }
+
+    public String getHinhAnh() {
+        return hinhAnh;
+    }
+
+    public void setHinhAnh(String hinhAnh) {
+        this.hinhAnh = hinhAnh;
+    }
+    
     
 }

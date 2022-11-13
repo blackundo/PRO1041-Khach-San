@@ -13,23 +13,21 @@ public class DatPhong {
     private Date checkIn;
     private Date checkOut;
     private int tongSoPhongDat;
-    private int maTT;
-    private int maDV;
     private int maKH;
     private String maNV;
+    private String maPhong;
 
     public DatPhong() {
     }
 
-    public DatPhong(int maDatPhong, Date checkIn, Date checkOut, int tongSoPhongDat, int maTT, int maDV, int maKH, String maNV) {
+    public DatPhong(int maDatPhong, Date checkIn, Date checkOut, int tongSoPhongDat, int maKH, String maNV, String maPhong) {
         this.maDatPhong = maDatPhong;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.tongSoPhongDat = tongSoPhongDat;
-        this.maTT = maTT;
-        this.maDV = maDV;
         this.maKH = maKH;
         this.maNV = maNV;
+        this.maPhong = maPhong;
     }
 
     public int getMaDatPhong() {
@@ -72,22 +70,6 @@ public class DatPhong {
         this.tongSoPhongDat = tongSoPhongDat;
     }
 
-    public int getMaTT() {
-        return maTT;
-    }
-
-    public void setMaTT(int maTT) {
-        this.maTT = maTT;
-    }
-
-    public int getMaDV() {
-        return maDV;
-    }
-
-    public void setMaDV(int maDV) {
-        this.maDV = maDV;
-    }
-
     public int getMaKH() {
         return maKH;
     }
@@ -103,6 +85,14 @@ public class DatPhong {
     public void setMaNV(String maNV) {
         this.maNV = maNV;
     }
-    
+
+    public String getMaPhong() {
+        return maPhong;
+    }
+
+    public void setMaPhong(String maPhong) {
+        this.maPhong = maPhong;
+    }
+
     
 }

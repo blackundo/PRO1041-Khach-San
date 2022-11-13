@@ -10,15 +10,17 @@ public class ThanhToan {
     private String loaiThanhToan;
     private double tongTienThanhToan;
     private int maDanhGia;
+    private int maDatPhong;
 
     public ThanhToan() {
     }
 
-    public ThanhToan(int maThanhToan, String loaiThanhToan, double tongTienThanhToan, int maDanhGia) {
+    public ThanhToan(int maThanhToan, String loaiThanhToan, double tongTienThanhToan, int maDanhGia, int maDatPhong) {
         this.maThanhToan = maThanhToan;
         this.loaiThanhToan = loaiThanhToan;
         this.tongTienThanhToan = tongTienThanhToan;
         this.maDanhGia = maDanhGia;
+        this.maDatPhong = maDatPhong;
     }
 
     public int getMaThanhToan() {
@@ -52,6 +54,14 @@ public class ThanhToan {
     public void setMaDanhGia(int maDanhGia) {
         this.maDanhGia = maDanhGia;
     }
-    
+
+    public int getMaDatPhong() {
+        return maDatPhong;
+    }
+
+    public void setMaDatPhong(int maDatPhong) {
+        this.maDatPhong = maDatPhong;
+    }
+
     
 }
