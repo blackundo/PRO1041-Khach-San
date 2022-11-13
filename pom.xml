@@ -47,6 +47,13 @@
             <artifactId>miglayout</artifactId>
             <version>3.7.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-extras</artifactId>
+            <version>2.6</version>
+            <type>jar</type>
+        </dependency>
+
 <!--        <dependency>
             <groupId>gradient-icon</groupId>
             <artifactId>gradient-icon</artifactId>

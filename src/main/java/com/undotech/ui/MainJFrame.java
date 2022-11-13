@@ -4,9 +4,11 @@
  */
 package com.undotech.ui;
 
+
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Component;
 import com.undotech.ui.*;
+import java.awt.EventQueue;
 import javaswingdev.menu.EventMenuSelected;
 
 /**
@@ -81,7 +83,6 @@ public class MainJFrame extends javax.swing.JFrame {
         panelMenuLayout.setHorizontalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMenuLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
                 .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(panelMenuLayout.createSequentialGroup()
@@ -93,7 +94,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMenuLayout.createSequentialGroup()
                 .addComponent(titleBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE))
+                .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE))
         );
 
         body.setOpaque(false);
@@ -129,7 +130,7 @@ public class MainJFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 693, Short.MAX_VALUE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 

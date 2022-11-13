@@ -108,7 +108,7 @@ public class LoginJDialog extends javax.swing.JDialog {
         txtUser.setBackground(new java.awt.Color(186, 79, 84));
         txtUser.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
         txtUser.setForeground(new java.awt.Color(255, 255, 255));
-        txtUser.setText("teonv");
+        txtUser.setText("blackundo");
         txtUser.setBorder(null);
         txtUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
