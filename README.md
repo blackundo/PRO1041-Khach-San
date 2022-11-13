@@ -32,8 +32,8 @@ Dự án này tồn tại là nhờ tất cả những người đóng góp.
 
 ## 📝 Giấy phép
 
-Copyright © 2022 [Team 2](link).<br />
+Copyright © 2022 [Team Undo Tech](link).<br />
 
 ---
 
-_This README was generated with ❤️ by [Nhóm 2](https://github.com/kefranabg/readme-md-generator)_
+_This README was generated with ❤️ by [Team Undo Tech](https://github.com/kefranabg/readme-md-generator)_
