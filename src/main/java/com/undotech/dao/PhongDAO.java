@@ -31,7 +31,6 @@ public class PhongDAO extends QLyKhachSanDAO<Phong, String>{
                     entity.getSoPhong(),
                     entity.getGiaPhong(),
                     entity.getKieuPhong(),
-                    entity.getTrangThaiPhong(),
                     entity.getMoTa(),
                     entity.getMaDatPhong()
                 );
@@ -43,7 +42,6 @@ public class PhongDAO extends QLyKhachSanDAO<Phong, String>{
                     entity.getSoPhong(),
                     entity.getGiaPhong(),
                     entity.getKieuPhong(),
-                    entity.getTrangThaiPhong(),
                     entity.getMoTa(),
                     entity.getMaDatPhong(),
                     entity.getMaPhong()
@@ -80,7 +78,6 @@ public class PhongDAO extends QLyKhachSanDAO<Phong, String>{
                 entity.setSoPhong(rs.getInt("SoPhong"));
                 entity.setGiaPhong(rs.getDouble("GiaPhong"));
                 entity.setKieuPhong(rs.getString("KieuPhong"));
-                entity.setTrangThaiPhong(rs.getString("TinhTrangPhong"));
                 entity.setMoTa(rs.getString("MoTa"));
                 entity.setMaDatPhong(rs.getInt("MaDatPhong"));
                 list.add(entity);

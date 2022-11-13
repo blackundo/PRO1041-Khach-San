@@ -24,7 +24,7 @@ public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
         XJdbc.executeUpdate(INSERT_SQL,
                 entity.getMaNV(),
                 entity.getTenNV(),
-                entity.getChucVu(),
+                entity.getVaiTro(),
                 entity.getSoDT(),
                 entity.getEmail(),
                 entity.getDiaChi(),
@@ -37,7 +37,7 @@ public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
     public void update(NhanVien entity) {
         XJdbc.executeUpdate(UPDATE_SQL, 
                 entity.getTenNV(),
-                entity.getChucVu(),
+                entity.getVaiTro(),
                 entity.getSoDT(),
                 entity.getEmail(),
                 entity.getDiaChi(),
@@ -75,7 +75,7 @@ public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
                 NhanVien entity = new NhanVien();
                 entity.setMaNV(rs.getString("MaNhanVien"));
                 entity.setTenNV(rs.getString("TenNhanVien"));
-                entity.setChucVu(rs.getString("ChucVu"));
+                entity.setVaiTro(rs.getString("ChucVu"));
                 entity.setSoDT(rs.getString("SoDT"));
                 entity.setEmail(rs.getString("Email"));
                 entity.setDiaChi(rs.getString("DiaChi"));
