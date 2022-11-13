@@ -24,7 +24,7 @@ public class Menu extends JPanel {
     }
 
     private void init() {
-        setBackground(new Color(255, 255, 255));
+        setBackground(Color.WHITE);
         setLayout(new BorderLayout());
         JScrollPane scroll = createScroll();
         panelMenu = createPanelMenu();

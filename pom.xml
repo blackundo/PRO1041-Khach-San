@@ -61,5 +61,12 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/gradient-icon-font.jar</systemPath>
         </dependency>-->
+<!--        <dependency>
+            <groupId>com.raven.table</groupId>
+            <artifactId>table-custom</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/table-custom.jar</systemPath>
+        </dependency>-->
     </dependencies>
 </project>
