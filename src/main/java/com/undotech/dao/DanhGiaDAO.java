@@ -17,11 +17,11 @@ import java.util.List;
  */
 public class DanhGiaDAO extends QLyKhachSanDAO<DanhGia, Integer> {
     
-    String INSERT_SQL = "INSERT INTO DanhGia(LoaiDanhGia) VALUES(?)";
-    String UPDATE_SQL = "UPDATE DanhGia SET LoaiDanhGia=? WHERE MaDanhGia=?";
-    String DELETE_SQL = "DELETE FROM DanhGia WHERE MaDanhGia=?";
-    String SELECT_ALL_SQL = "SELECT * FROM DanhGia";
-    String SELECT_BY_ID_SQL = "SELECT * FROM DanhGia WHERE MaDanhGia=?";
+    String INSERT_SQL = "INSERT INTO rating(type) VALUES(?)";
+    String UPDATE_SQL = "UPDATE rating SET type=? WHERE id=?";
+    String DELETE_SQL = "DELETE FROM rating WHERE id=?";
+    String SELECT_ALL_SQL = "SELECT * FROM rating";
+    String SELECT_BY_ID_SQL = "SELECT * FROM rating WHERE id=?";
 
     @Override
     public void insert(DanhGia entity) {
@@ -64,8 +64,8 @@ public class DanhGiaDAO extends QLyKhachSanDAO<DanhGia, Integer> {
             ResultSet rs = XJdbc.executeQuery(sql, args);
             while (rs.next()) {
                 DanhGia entity = new DanhGia();
-                entity.setMaDanhGia(rs.getInt("MaDanhGia"));
-                entity.setLoaiDanhGia(rs.getString("LoaiDanhGia"));
+                entity.setMaDanhGia(rs.getInt("id"));
+                entity.setLoaiDanhGia(rs.getString("type"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();

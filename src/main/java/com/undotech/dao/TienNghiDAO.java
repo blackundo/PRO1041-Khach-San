@@ -4,7 +4,6 @@
  */
 package com.undotech.dao;
 
-import com.undotech.entity.ThanhToan;
 import com.undotech.entity.TienNghi;
 import com.undotech.utils.XJdbc;
 import java.sql.ResultSet;
@@ -18,16 +17,15 @@ import java.util.List;
  */
 public class TienNghiDAO extends QLyKhachSanDAO<TienNghi, Integer>{
     
-    String INSERT_SQL = "INSERT INTO TienNghi(MaTienNghi, TenTiennghi, Gia, MoTa, MaPhong) VALUES(?,?,?,?,?)";
-    String UPDATE_SQL = "UPDATE TienNghi SET TenTienNghi=?, Gia=?, MoTa=?, MaPhong=? WHERE MaTienNghi=?";
-    String DELETE_SQL = "DELETE FROM TienNghi WHERE MaTienNghi=?";
-    String SELECT_ALL_SQL = "SELECT * FROM TienNghi";
-    String SELECT_BY_ID_SQL = "SELECT * FROM TienNghi WHERE MaTienNghi=?";
+    String INSERT_SQL = "INSERT INTO convenient(name, price, description, room_id) VALUES(?,?,?,?)";
+    String UPDATE_SQL = "UPDATE convenient SET name=?, price=?, description=?, room_id=? WHERE id=?";
+    String DELETE_SQL = "DELETE FROM convenient WHERE id=?";
+    String SELECT_ALL_SQL = "SELECT * FROM convenient";
+    String SELECT_BY_ID_SQL = "SELECT * FROM convenient WHERE id=?";
 
     @Override
     public void insert(TienNghi entity) {
         XJdbc.executeUpdate(INSERT_SQL, 
-                    entity.getMaTienNghi(),
                     entity.getTenTienNghi(),
                     entity.getGia(),
                     entity.getMoTa(),
@@ -72,11 +70,11 @@ public class TienNghiDAO extends QLyKhachSanDAO<TienNghi, Integer>{
             ResultSet rs = XJdbc.executeQuery(sql, args);
             while (rs.next()) {
                 TienNghi entity = new TienNghi();
-                entity.setMaTienNghi(rs.getInt("MaTienNghi"));
-                entity.setTenTienNghi(rs.getString("TenTienNghi"));
-                entity.setGia(rs.getDouble("Gia"));
-                entity.setMoTa(rs.getString("Mota"));
-                entity.setMaPhong(rs.getString("MaPhong"));
+                entity.setMaTienNghi(rs.getInt("id"));
+                entity.setTenTienNghi(rs.getString("name"));
+                entity.setGia(rs.getDouble("price"));
+                entity.setMoTa(rs.getString("description"));
+                entity.setMaPhong(rs.getString("room_id"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();

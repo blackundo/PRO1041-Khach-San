@@ -4,7 +4,6 @@
  */
 package com.undotech.dao;
 
-import com.undotech.entity.Phong;
 import com.undotech.entity.ThanhToan;
 import com.undotech.utils.XJdbc;
 import java.sql.ResultSet;
@@ -18,19 +17,19 @@ import java.util.List;
  */
 public class ThanhToanDAO extends QLyKhachSanDAO<ThanhToan, Integer>{
     
-    String INSERT_SQL = "INSERT INTO ThanhToan(MaThanhToan, LoaiThanhToan, TongTienThanhToan, MaDanhGia) VALUES(?,?,?,?)";
-    String UPDATE_SQL = "UPDATE ThanhToan SET LoaiThanhToan=?, TongTienThanhToan=?, MaDanhGia=? WHERE MaThanhToan=?";
-    String DELETE_SQL = "DELETE FROM ThanhToan WHERE MaThanhToan=?";
-    String SELECT_ALL_SQL = "SELECT * FROM ThanhToan";
-    String SELECT_BY_ID_SQL = "SELECT * FROM ThanhToan WHERE MaThanhToan=?";
+    String INSERT_SQL = "INSERT INTO payment(payment_type, total_price, rating_id, booking_id) VALUES(?,?,?,?)";
+    String UPDATE_SQL = "UPDATE payment SET payment_type=?, total_price=?, rating_id=?, booking_id=? WHERE id=?";
+    String DELETE_SQL = "DELETE FROM payment WHERE id=?";
+    String SELECT_ALL_SQL = "SELECT * FROM payment";
+    String SELECT_BY_ID_SQL = "SELECT * FROM payment WHERE id=?";
 
     @Override
     public void insert(ThanhToan entity) {
         XJdbc.executeUpdate(INSERT_SQL, 
-                    entity.getMaThanhToan(),
                     entity.getLoaiThanhToan(),
                     entity.getTongTienThanhToan(),
-                    entity.getMaDanhGia()
+                    entity.getMaDanhGia(),
+                    entity.getMaDatPhong()
                 );
     }
 
@@ -40,6 +39,7 @@ public class ThanhToanDAO extends QLyKhachSanDAO<ThanhToan, Integer>{
                     entity.getLoaiThanhToan(),
                     entity.getTongTienThanhToan(),
                     entity.getMaDanhGia(),
+                    entity.getMaDatPhong(),
                     entity.getMaThanhToan()
                 );
     }
@@ -70,10 +70,11 @@ public class ThanhToanDAO extends QLyKhachSanDAO<ThanhToan, Integer>{
             ResultSet rs = XJdbc.executeQuery(sql, args);
             while (rs.next()) {
                 ThanhToan entity = new ThanhToan();
-                entity.setMaThanhToan(rs.getInt("MaThanhToan"));
-                entity.setLoaiThanhToan(rs.getString("LoaiThanhToan"));
-                entity.setTongTienThanhToan(rs.getDouble("TongTienThanhToan"));
-                entity.setMaDanhGia(rs.getInt("MaDanhGia"));
+                entity.setMaThanhToan(rs.getInt("id"));
+                entity.setLoaiThanhToan(rs.getString("payment_type"));
+                entity.setTongTienThanhToan(rs.getDouble("total_price"));
+                entity.setMaDanhGia(rs.getInt("rating_id"));
+                entity.setMaDatPhong(rs.getInt("booking_id"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();

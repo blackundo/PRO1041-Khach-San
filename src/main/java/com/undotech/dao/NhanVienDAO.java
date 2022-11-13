@@ -13,11 +13,11 @@ import java.util.List;
  */
 public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
     
-    String INSERT_SQL = "INSERT INTO NhanVien(MaNhanVien, TenNhanVien, ChucVu, SoDT, Email, DiaChi, TaiKhoan, MatKhau) VALUES(?,?,?,?,?,?,?,?)";
-    String UPDATE_SQL = "UPDATE NhanVien SET TenNhanVien=?, ChucVu=?, SoDT=?, Email=?, DiaChi=?, TaiKhoan=?, MatKhau=? WHERE MaNhanVien=?";
-    String DELETE_SQL = "DELETE FROM NhanVien WHERE MaNhanVien=?";
-    String SELECT_BY_ID_SQL = "SELECT * FROM NhanVien WHERE TaiKhoan=?";
-    String SELECT_ALL_SQL = "SELECT * FROM NHANVIEN";
+    String INSERT_SQL = "INSERT INTO staff(id, full_name, role, phone, email, address, username, pass, img) VALUES(?,?,?,?,?,?,?,?,?)";
+    String UPDATE_SQL = "UPDATE staff SET full_name=?, role=?, phone=?, email=?, address=?, username=?, pass=?, img=? WHERE id=?";
+    String DELETE_SQL = "DELETE FROM staff WHERE id=?";
+    String SELECT_BY_ID_SQL = "SELECT * FROM staff WHERE id=?";
+    String SELECT_ALL_SQL = "SELECT * FROM staff";
 
     @Override
     public void insert(NhanVien entity) {
@@ -29,7 +29,8 @@ public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
                 entity.getEmail(),
                 entity.getDiaChi(),
                 entity.getTaiKhoan(),
-                entity.getMatKhau()
+                entity.getMatKhau(),
+                entity.getHinhAnh()
         );
     }
 
@@ -43,6 +44,7 @@ public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
                 entity.getDiaChi(),
                 entity.getTaiKhoan(),
                 entity.getMatKhau(),
+                entity.getHinhAnh(),
                 entity.getMaNV()
                 );
     }
@@ -73,14 +75,15 @@ public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
             ResultSet rs = XJdbc.executeQuery(sql, args);
             while (rs.next()) {
                 NhanVien entity = new NhanVien();
-                entity.setMaNV(rs.getString("MaNhanVien"));
-                entity.setTenNV(rs.getString("TenNhanVien"));
-                entity.setVaiTro(rs.getString("ChucVu"));
-                entity.setSoDT(rs.getString("SoDT"));
-                entity.setEmail(rs.getString("Email"));
-                entity.setDiaChi(rs.getString("DiaChi"));
-                entity.setTaiKhoan(rs.getString("TaiKhoan"));
-                entity.setMatKhau(rs.getString("MatKhau"));
+                entity.setMaNV(rs.getString("id"));
+                entity.setTenNV(rs.getString("full_name"));
+                entity.setVaiTro(rs.getString("role"));
+                entity.setSoDT(rs.getString("phone"));
+                entity.setEmail(rs.getString("email"));
+                entity.setDiaChi(rs.getString("address"));
+                entity.setTaiKhoan(rs.getString("username"));
+                entity.setMatKhau(rs.getString("pass"));
+                entity.setHinhAnh(rs.getString("img"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();

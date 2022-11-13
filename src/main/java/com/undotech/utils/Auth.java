@@ -21,7 +21,7 @@ public class Auth {
     public static String role(){
         String role = null;
         if (Auth.isLogin()) {
-            role = user.getChucVu();
+            role = user.getVaiTro();
         }
         return role;
     }

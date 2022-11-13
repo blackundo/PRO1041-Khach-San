@@ -17,11 +17,11 @@ import java.util.List;
  */
 public class DatPhongDAO extends QLyKhachSanDAO<DatPhong, Integer>{
     
-    String INSERT_SQL = "INSERT INTO DatPhong(NgayDatPhong, Checkin_date, Checkout_date, TongSoPhongDat, MaTT, MaDV, MaKH, MaNV) VALUES(?,?,?,?,?,?,?,?)";
-    String UPDATE_SQL = "UPDATE DatPhong SET NgayDatPhong=?, Checkin_date=?, Checkout_date=?, TongSoPhongDat=?, MaTT=?, MaDV=?, MaKH=?, MaNV=? WHERE MaDatPhong=?";
-    String DELETE_SQL = "DELETE FROM DatPhong WHERE MaDatPhong=?";
-    String SELECT_ALL_SQL = "SELECT * FROM DatPhong";
-    String SELECT_BY_ID_SQL = "SELECT * FROM DatPhong WHERE MaDatPhong=?";
+    String INSERT_SQL = "INSERT INTO booking(bk_date, checkin_date, checkout_date, total_room, customer_id, staff_id, room_id) VALUES(?,?,?,?,?,?,?)";
+    String UPDATE_SQL = "UPDATE booking SET bk_date=?, checkin_date=?, checkout_date=?, total_room=?, customer_id=?, staff_id=?, room_id=? WHERE id=?";
+    String DELETE_SQL = "DELETE FROM booking WHERE id=?";
+    String SELECT_ALL_SQL = "SELECT * FROM booking";
+    String SELECT_BY_ID_SQL = "SELECT * FROM booking WHERE id=?";
 
     @Override
     public void insert(DatPhong entity) {
@@ -30,10 +30,9 @@ public class DatPhongDAO extends QLyKhachSanDAO<DatPhong, Integer>{
                     entity.getCheckIn(),
                     entity.getCheckOut(),
                     entity.getTongSoPhongDat(),
-                    entity.getMaTT(),
-                    entity.getMaDV(),
                     entity.getMaKH(),
-                    entity.getMaNV()
+                    entity.getMaNV(),
+                    entity.getMaPhong()
                 );
     }
 
@@ -44,10 +43,9 @@ public class DatPhongDAO extends QLyKhachSanDAO<DatPhong, Integer>{
                     entity.getCheckIn(),
                     entity.getCheckOut(),
                     entity.getTongSoPhongDat(),
-                    entity.getMaTT(),
-                    entity.getMaDV(),
                     entity.getMaKH(),
                     entity.getMaNV(),
+                    entity.getMaPhong(),
                     entity.getMaDatPhong()
                 );
     }
@@ -78,15 +76,14 @@ public class DatPhongDAO extends QLyKhachSanDAO<DatPhong, Integer>{
             ResultSet rs = XJdbc.executeQuery(sql, args);
             while (rs.next()) {
                 DatPhong entity = new DatPhong();
-                entity.setMaDatPhong(rs.getInt("MaDatPhong"));
-                entity.setNgatDatPhong(rs.getDate("NgayDatPhong"));
-                entity.setCheckIn(rs.getDate("Checkin_date"));
-                entity.setCheckOut(rs.getDate("Checkout_date"));
-                entity.setTongSoPhongDat(rs.getInt("TongSoPhongDat"));
-                entity.setMaTT(rs.getInt("MaTT"));
-                entity.setMaDV(rs.getInt("MaDV"));
-                entity.setMaKH(rs.getInt("MaKH"));
-                entity.setMaNV(rs.getString("MaNV"));
+                entity.setMaDatPhong(rs.getInt("id"));
+                entity.setNgatDatPhong(rs.getDate("bk_date"));
+                entity.setCheckIn(rs.getDate("checkin_date"));
+                entity.setCheckOut(rs.getDate("checkout_date"));
+                entity.setTongSoPhongDat(rs.getInt("total_room"));
+                entity.setMaKH(rs.getInt("customer_id"));
+                entity.setMaNV(rs.getString("staff_id"));
+                entity.setMaPhong(rs.getString("room_id"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();

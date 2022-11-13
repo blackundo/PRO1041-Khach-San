@@ -17,11 +17,11 @@ import java.util.List;
  */
 public class ChietKhauDAO extends QLyKhachSanDAO<ChietKhau, Integer>{
     
-    String INSERT_SQL = "INSERT INTO ChietKhau(PhanTramChietKhau, NgayBatDau, NgayKetThuc, MaPhong) VALUES(?,?,?,?)";
-    String UPDATE_SQL = "UPDATE ChietKhau SET PhanTramChietKhau=?, NgayBatDau=?, NgayKetThuc=? WHERE MaChietKhau=?";
-    String DELETE_SQL = "DELETE FROM ChietKhau WHERE MaChietKhau=?";
-    String SELECT_ALL_SQL = "SELECT * FROM ChietKhau";
-    String SELECT_BY_ID_SQL = "SELECT * FROM ChietKhau WHERE MaChietKhau=?";
+    String INSERT_SQL = "INSERT INTO discount(rate, start_time, end_time, room_id) VALUES(?,?,?,?)";
+    String UPDATE_SQL = "UPDATE discount SET rate=?, start_time=?, end_time=? WHERE id=?";
+    String DELETE_SQL = "DELETE FROM discount WHERE id=?";
+    String SELECT_ALL_SQL = "SELECT * FROM discount";
+    String SELECT_BY_ID_SQL = "SELECT * FROM discount WHERE id=?";
 
     @Override
     public void insert(ChietKhau entity) {
@@ -68,11 +68,11 @@ public class ChietKhauDAO extends QLyKhachSanDAO<ChietKhau, Integer>{
             ResultSet rs = XJdbc.executeQuery(sql, args);
             while (rs.next()) {
                 ChietKhau entity = new ChietKhau();
-                entity.setMaChietKhau(rs.getInt("MaChietKhau"));
-                entity.setPhanTramCK(rs.getDouble("PhamTramChietKhau"));
-                entity.setNgayBatDau(rs.getDate("NgayBatDau"));
-                entity.setNgayKetThuc(rs.getDate("NgayKetThuc"));
-                entity.setMaPhong(rs.getString("MaPhong"));
+                entity.setMaChietKhau(rs.getInt("id"));
+                entity.setPhanTramCK(rs.getDouble("rate"));
+                entity.setNgayBatDau(rs.getDate("start_time"));
+                entity.setNgayKetThuc(rs.getDate("end_time"));
+                entity.setMaPhong(rs.getString("room_id"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();

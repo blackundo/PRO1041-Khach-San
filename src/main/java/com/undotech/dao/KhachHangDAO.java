@@ -17,16 +17,15 @@ import java.util.List;
  */
 public class KhachHangDAO extends QLyKhachSanDAO<KhachHang, Integer>{
     
-    String INSERT_SQL = "INSERT INTO KhachHang(MaKhachHang, TenKhachHang, SoDT, Email, CMND, DiaChi) VALUES(?,?,?,?,?,?)";
-    String UPDATE_SQL = "UPDATE KhachHang SET TenKhachHang=?, SoDT=?, Email=?, CMND=?, DiaChi=? WHERE MaKhachHang=?";
-    String DELETE_SQL = "DELETE FROM KhachHang WHERE MaKhachHang=?";
-    String SELECT_ALL_SQL = "SELECT * FROM KhachHang";
-    String SELECT_BY_ID_SQL = "SELECT * FROM KhachHang WHERE MaKhachHang=?";
+    String INSERT_SQL = "INSERT INTO customer(full_name, phone, email, CMND, address) VALUES(?,?,?,?,?)";
+    String UPDATE_SQL = "UPDATE customer SET TenKhachHang=?, SoDT=?, Email=?, CMND=?, DiaChi=? WHERE id=?";
+    String DELETE_SQL = "DELETE FROM customer WHERE id=?";
+    String SELECT_ALL_SQL = "SELECT * FROM customer";
+    String SELECT_BY_ID_SQL = "SELECT * FROM customer WHERE id=?";
 
     @Override
     public void insert(KhachHang entity) {
         XJdbc.executeUpdate(INSERT_SQL, 
-                    entity.getMaKH(),
                     entity.getTenKH(),
                     entity.getSDT(),
                     entity.getEmail(),
@@ -73,12 +72,12 @@ public class KhachHangDAO extends QLyKhachSanDAO<KhachHang, Integer>{
             ResultSet rs = XJdbc.executeQuery(sql, args);
             while (rs.next()) {
                 KhachHang entity = new KhachHang();
-                entity.setMaKH(rs.getInt("MaKhachHang"));
-                entity.setTenKH(rs.getString("TenKhachHang"));
-                entity.setSDT(rs.getString("SoDT"));
-                entity.setEmail(rs.getString("Email"));
+                entity.setMaKH(rs.getInt("id"));
+                entity.setTenKH(rs.getString("full_name"));
+                entity.setSDT(rs.getString("phone"));
+                entity.setEmail(rs.getString("email"));
                 entity.setCMND(rs.getString("CMND"));
-                entity.setDiaChi(rs.getString("DiaChi"));
+                entity.setDiaChi(rs.getString("address"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();
