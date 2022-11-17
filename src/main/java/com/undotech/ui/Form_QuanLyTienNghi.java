@@ -3,7 +3,7 @@ package com.undotech.ui;
 
 import com.undotech.dao.TienNghiDAO;
 import com.undotech.entity.TienNghi;
-import com.undotech.utils.Auth;
+import com.undotech.notification.Notification;
 import com.undotech.utils.MsgBox;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -27,8 +27,7 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         try {
-            String keyword = txtSearch.getText();
-            List<TienNghi> list = tnDAO.selectByKeyword(keyword);
+            List<TienNghi> list = tnDAO.selectAll();
             for (TienNghi tn : list) {
                 Object[] rows = {
                     tn.getMaTienNghi(), 
@@ -68,9 +67,13 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         try {
             tnDAO.insert(tn);
             fillTable();
-            MsgBox.alert(this, "Thêm thành công");
+//            MsgBox.alert(this, "Thêm thành công");
+            new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Thêm thành công ^^").showNotification();
+
         } catch (Exception e) {
-            MsgBox.alert(this, "Thêm thất bại");
+//            MsgBox.alert(this, "Thêm thất bại");
+            new Notification(MainJFrame.getMain(), Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Thêm thất bại ><").showNotification();
+
             System.err.println(e);
         }
     }
@@ -81,9 +84,13 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         try {
             tnDAO.update(tn);
             fillTable();
-            MsgBox.alert(this, "Cập nhật thành công");
+//            MsgBox.alert(this, "Cập nhật thành công");
+            new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Cập nhật thành công ^^").showNotification();
+
         } catch (Exception e) {
-            MsgBox.alert(this, "Cập nhật thất bại");
+//            MsgBox.alert(this, "Cập nhật thất bại");
+            new Notification(MainJFrame.getMain(), Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Cập nhật thất bại ><").showNotification();
+
             System.err.println(e);
         }
     }
@@ -99,9 +106,13 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
                     tnDAO.delete(matn);
                     this.fillTable();
                     this.clearForm();
-                    MsgBox.alert(this, "Xoá thành công!");
+//                    MsgBox.alert(this, "Xoá thành công!");
+                    new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Xoá thành công ^^").showNotification();
+
                 } catch (Exception e) {
-                    MsgBox.alert(this, "Xoá thất bại!");
+//                    MsgBox.alert(this, "Xoá thất bại!");
+                    new Notification(MainJFrame.getMain(), Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Xoá thất bại ><").showNotification();
+
                     System.err.println(e);
                 }
             }
@@ -136,6 +147,7 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         txtSearch = new com.undotech.utils.TextField();
+        jToggleButton1 = new javax.swing.JToggleButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -193,6 +205,13 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
 
         txtSearch.setLabelText("Tìm kiếm dịch vụ");
 
+        jToggleButton1.setText("jToggleButton1");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -203,7 +222,9 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
                         .addGap(14, 14, 14)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(213, 213, 213)
+                        .addContainerGap()
+                        .addComponent(jToggleButton1)
+                        .addGap(91, 91, 91)
                         .addComponent(jLabel8)))
                 .addContainerGap(14, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
@@ -214,8 +235,10 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jLabel8)
+                .addGap(10, 10, 10)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jToggleButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
@@ -423,6 +446,10 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tableMouseClicked
 
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        fillTable();
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -441,6 +468,7 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JTable table;
     private javax.swing.JTextArea txtDesc;
     private com.undotech.utils.TextField txtID;

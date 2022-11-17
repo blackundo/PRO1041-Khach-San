@@ -3,10 +3,11 @@ package javaswingdev.swing.table.cell;
 import javaswingdev.swing.table.model.TableRowData;
 import javaswingdev.swing.table.TableCustom;
 import java.awt.Component;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public abstract class TableCustomCell extends Cell {
-
+    
     private int row;
     private int column;
 
@@ -26,11 +27,17 @@ public abstract class TableCustomCell extends Cell {
     public abstract void setData(Object data);
 
     public abstract Object getData();
+    
 
     public Component createComponentCellRender(TableCustom table, TableRowData data, int row, int column) {
         DefaultTableCellRenderer c = new DefaultTableCellRenderer();
         if (data.toTableRow().length > column) {
-            c.setText(data.toTableRow()[column].toString());
+            try {
+                c.setText(data.toTableRow()[column].toString());
+            } catch (Exception e) {
+//                System.out.println(e.getMessage());
+            }
+//            JOptionPane.showMessageDialog(null,column);
         }
         return c;
     }

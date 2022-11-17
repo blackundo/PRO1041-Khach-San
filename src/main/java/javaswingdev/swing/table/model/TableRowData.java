@@ -13,4 +13,5 @@ public abstract class TableRowData {
     private boolean editing;
 
     public abstract Object[] toTableRow();
+    public abstract  Object[] toTableRow1();
 }

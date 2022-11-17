@@ -23,16 +23,6 @@ public class TienNghiDAO extends QLyKhachSanDAO<TienNghi, Integer>{
     String SELECT_ALL_SQL = "SELECT * FROM convenient";
     String SELECT_BY_ID_SQL = "SELECT * FROM convenient WHERE id=?";
     
-//    String vipp = "INSERT INTO convenient(name, price, description, room_id) VALUES('tien nghi',2222,'xcv','P003')";
-//    public void test(){
-//        XJdbc.executeUpdate(vipp);
-//    }
-    
-    //Vo vua them
-    public List<TienNghi> selectByKeyword(String keyword) {
-        String SQL = "SELECT * FORM convenient WHERE name LIKE ?";
-        return this.selectBySql(SQL, "&" + keyword + "%");
-    }
 
     @Override
     public void insert(TienNghi entity) {

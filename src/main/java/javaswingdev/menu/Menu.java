@@ -1,5 +1,7 @@
 package javaswingdev.menu;
 
+import com.undotech.utils.Auth;
+import com.undotech.utils.XImage;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javaswingdev.GoogleMaterialDesignIcon;
 import javaswingdev.swing.scroll.ScrollBar;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -35,9 +38,17 @@ public class Menu extends JPanel {
         addTitle("CHÍNH");
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.DASHBOARD, "Thống kê"));
         addTitle("Nhân sự");
-        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.MAIL_OUTLINE, "Nhân viên", "Thông tin", "Sửa", "Thêm"));
-        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.MESSAGE, "Quản lý phòng"));
-        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.PERM_CONTACT_CALENDAR, "Quản lý dịch vụ"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.GROUP, "Nhân viên", "Thông tin", "Sửa", "Thêm"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.HOTEL, "Quản lý phòng"));
+        addTitle("Quản Lý");
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.ROOM_SERVICE, "Dịch vụ"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.ROOM, "Đặt phòng"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.ADD_CIRCLE, "Tiện nghi"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.VERIFIED_USER, "TT Khách hàng"));
+        addTitle("Vip");
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.ACCESS_TIME, "DLy Pytago"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.AV_TIMER, "Éc si méc"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.BATTERY_CHARGING_FULL, "DLBTNL"));
 //        addTitle("COMPONENT");
 //        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.WHATSHOT, "UI Kit", "Accordion", "Alerts", "Badges", "Breadcrumbs", "Buttons", "Button group"));
 //        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.DIRECTIONS_BIKE, "Advanced UI", "Cropper", "Owl Carousel", "Sweet Alert"));
@@ -93,6 +104,10 @@ public class Menu extends JPanel {
     public void addMenuItem(ModelMenuItem menu) {
         panelMenu.add(createMenuItem(menu), "h 35!");
     }
+    
+    public void addMenuLast(ModelMenuItem menu){
+        panelMenu.add(createMenuItem(menu),"h 70!");
+    }
 
     public void addTitle(String title) {
         JLabel label = new JLabel(title);
@@ -102,6 +117,9 @@ public class Menu extends JPanel {
         panelMenu.add(label);
     }
 
+    public void addSpacePush(){
+         panelMenu.add(new JLabel(), "push");
+    }
     public void addSpace(int size) {
         panelMenu.add(new JLabel(), "h " + size + "!");
     }

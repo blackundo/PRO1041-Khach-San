@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -188,9 +189,14 @@ public class TableCustom extends JTable {
                 DefaultTableCellRenderer com = new DefaultTableCellRenderer();
                 com.setOpaque(false);
                 TableRowData model = getModelData(row);
+                
+                //dòng này lỗi j chịu comments lại đỡ
                 if (model.toTableRow().length > column) {
                     com.setText(model.toTableRow()[column].toString());
+                    //JOptionPane.showMessageDialog(null,column);
+
                 }
+
                 tableCell = cell.createComponentCellEditor(TableCustom.this, model, o, row, column);
                 return getEditor(tableCell, model, jtable.getSelectionBackground(), row, column);
             }

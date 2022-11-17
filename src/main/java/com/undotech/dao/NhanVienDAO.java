@@ -13,17 +13,19 @@ import java.util.List;
  */
 public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
     
-    String INSERT_SQL = "INSERT INTO staff(id, full_name, role, phone, email, address, username, pass, img) VALUES(?,?,?,?,?,?,?,?,?)";
+    String INSERT_SQL = "INSERT INTO staff VALUES(default,?,?,?,?,?,?,?,?)";
     String UPDATE_SQL = "UPDATE staff SET full_name=?, role=?, phone=?, email=?, address=?, username=?, pass=?, img=? WHERE id=?";
     String DELETE_SQL = "DELETE FROM staff WHERE id=?";
     String SELECT_BY_ID_SQL = "SELECT * FROM staff WHERE id=?";
     String SELECT_BY_USERNAME_SQL = "SELECT * FROM staff WHERE username=?";
     String SELECT_ALL_SQL = "SELECT * FROM staff";
+    
+    
+    String SQL_FORM = "SELECT * FROM staff";
 
     @Override
     public void insert(NhanVien entity) {
         XJdbc.executeUpdate(INSERT_SQL,
-                entity.getMaNV(),
                 entity.getTenNV(),
                 entity.getVaiTro(),
                 entity.getSoDT(),
@@ -95,6 +97,31 @@ public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
                 entity.setMatKhau(rs.getString("pass"));
                 entity.setHinhAnh(rs.getString("img"));
                 list.add(entity);
+            }
+            rs.getStatement().getConnection().close();
+            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public List<NhanVien> selectBySqlform() {
+        List<NhanVien> list = new ArrayList<>();
+        try {
+            ResultSet rs = XJdbc.executeQuery(SQL_FORM);
+            while (rs.next()) {
+                NhanVien entity = new NhanVien();
+                entity.setMaNV(rs.getString("id"));
+                entity.setTenNV(rs.getString("full_name"));
+                entity.setVaiTro(rs.getString("role"));
+                entity.setSoDT(rs.getString("phone"));
+                entity.setEmail(rs.getString("email"));
+                entity.setDiaChi(rs.getString("address"));
+                entity.setTaiKhoan(rs.getString("username"));
+                entity.setMatKhau(rs.getString("pass"));
+                entity.setHinhAnh(rs.getString("img"));
+                list.add(entity);
+                //list.add(new ModelStaff(new ModelName(entity.getTenNV(), entity.getHinhAnh()),entity.getVaiTro(),entity.getSoDT(),entity.getEmail(),entity.getDiaChi()));
             }
             rs.getStatement().getConnection().close();
             return list;

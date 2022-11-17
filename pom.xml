@@ -53,6 +53,11 @@
             <version>2.6</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
+        </dependency>
 
 <!--        <dependency>
             <groupId>gradient-icon</groupId>
@@ -68,5 +73,7 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/table-custom.jar</systemPath>
         </dependency>-->
+        
+        
     </dependencies>
 </project>

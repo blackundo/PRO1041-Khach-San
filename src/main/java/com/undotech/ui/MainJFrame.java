@@ -8,8 +8,11 @@ package com.undotech.ui;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Component;
 import com.undotech.ui.*;
+import com.undotech.utils.Auth;
+import com.undotech.utils.XImage;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Frame;
 import javaswingdev.menu.EventMenuSelected;
 
 /**
@@ -40,12 +43,28 @@ public class MainJFrame extends javax.swing.JFrame {
                     showForm(new Form_QuanLyNhanVien());
                 } else if (index == 2 && indexSubMenu == 0){
                     showForm(new Form_DachSachPhong());
+                } else if (index == 3 && indexSubMenu == 0){
+                    showForm(new Form_QuanLyDichVu());
+                } else if (index == 4 && indexSubMenu == 0){
+                    showForm(new Form_DatPhong());
+                } else if (index == 5 && indexSubMenu == 0){
+                    showForm(new Form_QuanLyTienNghi());
+                } else if (index == 6 && indexSubMenu == 0){
+                    showForm(new Form_XemThongTinKH());
                 } else {
                     showForm(new Form_Empty(index + " " + indexSubMenu));
                 }
             }
         });
         menu.setSelectedIndex(0, 0);
+        
+        try {
+            imageAvatar1.setImage(XImage.read(Auth.user.getHinhAnh()));
+        } catch (Exception e) {
+            
+        }
+        txtName.setText(Auth.user.getTenNV());
+        txtRole.setText(Auth.user.getVaiTro());
     }
     
     public void showForm(Component com) {
@@ -72,6 +91,10 @@ public class MainJFrame extends javax.swing.JFrame {
         panelMenu = new javax.swing.JPanel();
         titleBar = new javaswingdev.swing.titlebar.TitleBar();
         menu = new javaswingdev.menu.Menu();
+        jPanel1 = new javax.swing.JPanel();
+        imageAvatar1 = new javaswingdev.swing.ImageAvatar();
+        txtName = new javax.swing.JLabel();
+        txtRole = new javax.swing.JLabel();
         body = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -80,21 +103,61 @@ public class MainJFrame extends javax.swing.JFrame {
         background.setBackground(new java.awt.Color(245, 245, 245));
         background.setPreferredSize(new java.awt.Dimension(1330, 705));
 
-        panelMenu.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel1MouseClicked(evt);
+            }
+        });
+
+        imageAvatar1.setBorderSize(2);
+        imageAvatar1.setBorderSpace(1);
+
+        txtName.setText("Ten");
+
+        txtRole.setForeground(new java.awt.Color(102, 102, 102));
+        txtRole.setText("ChucVu");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtName)
+                    .addComponent(txtRole))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(12, Short.MAX_VALUE)
+                .addComponent(txtName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtRole)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout panelMenuLayout = new javax.swing.GroupLayout(panelMenu);
         panelMenu.setLayout(panelMenuLayout);
         panelMenuLayout.setHorizontalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(titleBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+            .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelMenuLayout.setVerticalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMenuLayout.createSequentialGroup()
                 .addComponent(titleBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE))
+                .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         body.setOpaque(false);
@@ -111,10 +174,8 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(panelMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(backgroundLayout.createSequentialGroup()
-                .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
         );
 
         body.getAccessibleContext().setAccessibleDescription("");
@@ -129,11 +190,18 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 753, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+        //profile
+        
+        showForm(new Form_Profile());
+        menu.clearSelected();
+    }//GEN-LAST:event_jPanel1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -177,8 +245,12 @@ public class MainJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JPanel body;
+    private javaswingdev.swing.ImageAvatar imageAvatar1;
+    private javax.swing.JPanel jPanel1;
     private javaswingdev.menu.Menu menu;
     private javax.swing.JPanel panelMenu;
     private javaswingdev.swing.titlebar.TitleBar titleBar;
+    private javax.swing.JLabel txtName;
+    private javax.swing.JLabel txtRole;
     // End of variables declaration//GEN-END:variables
 }
