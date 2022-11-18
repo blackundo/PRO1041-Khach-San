@@ -147,7 +147,6 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         txtSearch = new com.undotech.utils.TextField();
-        jToggleButton1 = new javax.swing.JToggleButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -195,7 +194,15 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
             new String [] {
                 "Mã TN", "Tên TN", "Giá", "Mô tả", "Mã phòng"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableMouseClicked(evt);
@@ -204,13 +211,6 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         jScrollPane2.setViewportView(table);
 
         txtSearch.setLabelText("Tìm kiếm dịch vụ");
-
-        jToggleButton1.setText("jToggleButton1");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -222,9 +222,7 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
                         .addGap(14, 14, 14)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jToggleButton1)
-                        .addGap(91, 91, 91)
+                        .addGap(208, 208, 208)
                         .addComponent(jLabel8)))
                 .addContainerGap(14, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
@@ -235,10 +233,8 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jToggleButton1))
+                .addGap(13, 13, 13)
+                .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
@@ -268,7 +264,6 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         jLabel6.setText("Ghi chú :");
 
         txtDesc.setColumns(20);
-        txtDesc.setForeground(new java.awt.Color(204, 204, 204));
         txtDesc.setRows(5);
         jScrollPane1.setViewportView(txtDesc);
 
@@ -446,10 +441,6 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tableMouseClicked
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        fillTable();
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -468,7 +459,6 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JTable table;
     private javax.swing.JTextArea txtDesc;
     private com.undotech.utils.TextField txtID;

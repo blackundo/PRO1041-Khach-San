@@ -22,6 +22,7 @@ public class PhieuDichVuDAO extends QLyKhachSanDAO<PhieuDichVu, Integer>{
     String DELETE_SQL = "DELETE FROM room_service WHERE id=?";
     String SELECT_ALL_SQL = "SELECT * FROM room_service";
     String SELECT_BY_ID_SQL = "SELECT * FROM room_service WHERE id=?";
+    String SELECT_BY_SER_ID_SQL = "SELECT * FROM room_service WHERE service_id=?";
 
     @Override
     public void insert(PhieuDichVu entity) {
@@ -47,11 +48,21 @@ public class PhieuDichVuDAO extends QLyKhachSanDAO<PhieuDichVu, Integer>{
         XJdbc.executeQuery(DELETE_SQL, key);
     }
 
+   
+    
     @Override
     public List<PhieuDichVu> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
     }
 
+     public List<PhieuDichVu> selectBySerID(Integer key){
+         List<PhieuDichVu> list = this.selectBySql(SELECT_BY_SER_ID_SQL, key);
+        if(list.isEmpty()){
+            return null;
+        }
+        return (List<PhieuDichVu>) list.get(0);
+     }
+    
     @Override
     public PhieuDichVu selectById(Integer key) {
         List<PhieuDichVu> list = this.selectBySql(SELECT_BY_ID_SQL, key);
