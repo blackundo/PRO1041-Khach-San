@@ -6,6 +6,7 @@ package com.undotech.ui;
 
 import com.undotech.dao.NhanVienDAO;
 import com.undotech.entity.NhanVien;
+import com.undotech.notification.Notification;
 import com.undotech.utils.Auth;
 import com.undotech.utils.MsgBox;
 import com.undotech.utils.XImage;
@@ -64,7 +65,9 @@ public class Form_Profile extends javax.swing.JPanel {
         NhanVien data = new NhanVien(id, name, role, phone, email, address, user, pass, img);
         
         new NhanVienDAO().update(data);
-        MsgBox.alert(null, "thêm thành công!!!");
+//        MsgBox.alert(null, "thêm thành công!!!");
+        new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Thêm thành công ^^").showNotification();
+
     }
     
     private void change_img(java.awt.event.MouseEvent evt){
