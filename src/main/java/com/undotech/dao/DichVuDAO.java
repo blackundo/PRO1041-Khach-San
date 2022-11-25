@@ -22,6 +22,7 @@ public class DichVuDAO extends QLyKhachSanDAO<DichVu, Integer>{
     String DELETE_SQL = "DELETE FROM service WHERE id=?";
     String SELECT_ALL_SQL = "SELECT * FROM service";
     String SELECT_BY_ID_SQL = "SELECT * FROM service WHERE id=?";
+    String SELECT_BY_NAME_SQL = "SELECT * FROM service WHERE name=?";
 
     @Override
     public void insert(DichVu entity) {
@@ -55,6 +56,14 @@ public class DichVuDAO extends QLyKhachSanDAO<DichVu, Integer>{
     @Override
     public DichVu selectById(Integer key) {
         List<DichVu> list = this.selectBySql(SELECT_BY_ID_SQL, key);
+        if(list.isEmpty()){
+            return null;
+        }
+        return list.get(0);
+    }
+    
+    public DichVu selectByName(String key) {
+        List<DichVu> list = this.selectBySql(SELECT_BY_NAME_SQL, key);
         if(list.isEmpty()){
             return null;
         }

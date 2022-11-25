@@ -4,10 +4,12 @@ package com.undotech.ui;
 import com.undotech.dao.DichVuDAO;
 import com.undotech.dao.PhieuDichVuDAO;
 import com.undotech.dao.PhongDAO;
+import com.undotech.dao.ProcDAO;
 import com.undotech.entity.DichVu;
 import com.undotech.entity.PhieuDichVu;
 import com.undotech.entity.Phong;
 import com.undotech.utils.MsgBox;
+import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
@@ -21,26 +23,33 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
     DichVuDAO dvDAO = new DichVuDAO();
     PhieuDichVuDAO pdvDAO = new PhieuDichVuDAO();
     int row = -1;
-    int flag = 1;
-    
+    int flag = 0;
+    boolean isChoice = false;
+    int TvaC = 0;
+
+    /**
+     * Creates new form
+     */
     public Form_QuanLyDichVu() {
         initComponents();
         this.fillTable();
         this.fillComboBoxMaPhong();
         this.fillComboBoxTenDichVu();
+        this.fillComboBoxDateTime();
+        this.fillComboBoxGiaDichVu();
     }
-    
+
     void fillComboBoxMaPhong() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboMaPhong.getModel();
         model.removeAllElements();
-        List<Phong> list = new PhongDAO().selectAll();
-        for (Phong p : list) {
-            model.addElement(p.getMaPhong());
+        List<PhieuDichVu> list = pdvDAO.selectAll();
+        for (PhieuDichVu pdv : list) {
+            model.addElement(pdv.getMaPhong());
         }
     }
-    
+
     void fillComboBoxTenDichVu() {
-        DefaultComboBoxModel model = (DefaultComboBoxModel) cboTenDV.getModel();
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboTenDichVu.getModel();
         model.removeAllElements();
         List<DichVu> list = dvDAO.selectAll();
         for (DichVu dv : list) {
@@ -48,51 +57,73 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
         }
     }
 
+    void fillComboBoxGiaDichVu() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboPrice.getModel();
+        model.removeAllElements();
+        List<DichVu> list = dvDAO.selectAll();
+        for (DichVu dv : list) {
+            model.addElement(dv.getGiaDV() + "");
+        }
+    }
+
+    void fillComboBoxDateTime() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboDateTime.getModel();
+        model.removeAllElements();
+        List<PhieuDichVu> list = pdvDAO.selectAll();
+        for (PhieuDichVu pdv : list) {
+            model.addElement(pdv.getTgDatPhong());
+        }
+    }
+
+    void cboTDVfillCboPrice() {
+        String selectTDV = cboTenDichVu.getSelectedItem() + "";
+        DichVu dv = dvDAO.selectByName(selectTDV);
+        cboPrice.setSelectedItem(dv.getGiaDV() + "");
+    }
+
     void fillTable() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         try {
-            List<DichVu> list = dvDAO.selectAll();
-//            List<PhieuDichVu> listDV = pdvDAO.selectAll();
+//            List<DichVu> list = dvDAO.selectAll();
+            List<PhieuDichVu> listDV = pdvDAO.selectAll();
 
-            for (DichVu dv : list) {
-                
-//                System.out.println(dv.toString());
-                    PhieuDichVu pdv = new PhieuDichVuDAO().selectById(dv.getMaDV());
-                    String map;
-                    if(dv.getMaDV() <0) {
-                        map = pdv.getMaPhong();
-                    } else {
-                        map = "null";
-                    }
-                    Object[] rows = {
+            for (PhieuDichVu pdv : listDV) {
+                DichVu dv = new DichVuDAO().selectById(pdv.getMaDichVu());
+//                    Phong p = new PhongDAO().selectById(pdv.getMaPhong());
+                String map;
+//                    if(dv.getMaDV() > 0) {
+//                        map = pdv.getMaPhong();
+//                    } else {
+//                        map = "null";
+//                    }
+                Object[] rows = {
                     dv.getMaDV(),
                     dv.getTenDV(),
                     dv.getGiaDV(),
                     dv.getMoTaDV(),
-                    map
-                    };
+                    pdv.getMaPhong()
+                };
                 model.addRow(rows);
-                
             }
         } catch (Exception e) {
         }
     }
 
     void setForm(DichVu dv) {
-//        PhieuDichVu pdv = new PhieuDichVu();
-        PhieuDichVu pdv = new PhieuDichVuDAO().selectById(dv.getMaDV());
-        txtID.setText(String.valueOf(dv.getMaDV()));
-        txtName.setText(dv.getTenDV());
-        txtPrice.setText(String.valueOf(dv.getGiaDV()));
-        txtDesc.setText(dv.getMoTaDV());
-        txtID_Rooms.setText(String.valueOf(pdv.getMaPhong()));
+//        PhieuDichVu pdv = new PhieuDichVu(); 
+        DichVu dvv = new DichVuDAO().selectByName(dv.getTenDV());
+        txtID.setText(String.valueOf(dvv.getMaDV()));
+        txtName.setText(dvv.getTenDV());
+        txtPrice.setText(String.valueOf(dvv.getGiaDV()));
+        txtDesc.setText(dvv.getMoTaDV());
+//        txtID_Rooms.setText(String.valueOf(pdv.getMaPhong())); // Chọn 1 dịch vụ không đổ Mã Phòng ra (null)
     }
 
     DichVu getForm() {
         DichVu dv = new DichVu();
         PhieuDichVu phieuDV = new PhieuDichVu();
-        if(flag == 1) {
+        if (flag == 0) {
             dv.setMaDV(Integer.parseInt(txtID.getText()));
         }
         dv.setTenDV(txtName.getText());
@@ -103,32 +134,37 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
     }
 
     void insert() {
-        flag = 0;
+        flag = 1;
         DichVu dv = getForm();
+//        System.out.println("firr");
         try {
             dvDAO.insert(dv);
-            fillTable();
+            fillComboBoxTenDichVu();
             MsgBox.alert(this, "Thêm thành công");
 //            new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Thêm thành công ^^").showNotification();
         } catch (Exception e) {
             MsgBox.alert(this, "Thêm thất bại");
 //              new Notification(MainJFrame.getMain(), Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Thêm thất bại ><").showNotification();
-              System.err.println(e);
+            System.err.println(e);
         }
     }
 
     void update() {
-        flag = 1;
+        flag = 0;
         DichVu dv = getForm();
         try {
             dvDAO.update(dv);
             fillTable();
+            fillComboBoxDateTime();
+            fillComboBoxMaPhong();
+//            fillComboBoxTenDichVu();
+            fillComboBoxGiaDichVu();
             MsgBox.alert(this, "Cập nhật thành công");
 //            new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Cập nhật thành công ^^").showNotification();
         } catch (Exception e) {
             MsgBox.alert(this, "Cập nhật thất bại");
 //            new Notification(MainJFrame.getMain(), Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Cập nhật thất bại ><").showNotification();
-//              System.err.println(e);
+            System.err.println(e);
         }
     }
 
@@ -136,18 +172,21 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
 //        if (!Auth.role()) {
 //            MsgBox.alert(this, "Bạn không có quyền xoá!");
 //        } else {
-            int maDV = (Integer.parseInt(txtID.getText())) ;
-            if (MsgBox.confirm(this, "Bạn có muốn xoá không?")) {
-                try {
-                    dvDAO.delete(maDV);
-                    this.fillTable();
-                    this.clearForm();
-                    MsgBox.alert(this, "Xoá thành công!");
-                } catch (Exception e) {
-                    MsgBox.alert(this, "Xoá thất bại!");
-                    System.err.println(e);
-                }
+        int maDV = (Integer.parseInt(txtID.getText()));
+        if (MsgBox.confirm(this, "Bạn có muốn xoá không?")) {
+            try {
+                dvDAO.delete(maDV);
+//                this.fillTable();
+                this.fillComboBoxMaPhong();
+//                this.fillComboBoxTenDichVu();//
+                this.fillComboBoxDateTime();
+                this.clearForm();
+                MsgBox.alert(this, "Xoá thành công!");
+            } catch (Exception e) {
+                MsgBox.alert(this, "Xoá thất bại!");
+                System.err.println(e);
             }
+        }
 //        }
     }
 
@@ -156,7 +195,49 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
         DichVu dv = dvDAO.selectById(maDV);
         this.setForm(dv);
     }
-    
+
+    void selectTable() {
+        int maDV = (Integer) table.getValueAt(this.row, 0);
+        List<Object[]> tb = new ProcDAO().getTableVIP();
+        String maPhong = new ProcDAO().getTableVIPByID(maDV);//
+
+        DichVu dv = dvDAO.selectById(maDV);
+        PhieuDichVu pdv = pdvDAO.selectById(maDV);
+        cboMaPhong.setSelectedItem(maPhong);
+        cboTenDichVu.setSelectedItem(dv.getTenDV());
+        cboPrice.setSelectedItem(dv.getGiaDV() + "");
+        cboDateTime.setSelectedItem(pdv.getTgDatPhong());
+
+//        for(Object[] i : tb){
+//            if(i[0].toString()==maDV){
+//                System.out.println(i[0]);
+//            } 
+//            System.out.println(i[0].toString());
+////            cboMaPhong.setSelectedItem(i[1]);
+//        }
+//        List<PhieuDichVu> list = pdvDAO.selectAll();
+//        for (PhieuDichVu pdv : list) {
+//            DichVu dv = dvDAO.selectById(maDV);
+//            
+//            cboMaPhong.setSelectedItem(pdv.getMaPhong());
+//            cboTenDichVu.setSelectedItem(dv.getTenDV());
+////            setComboBox(Integer.parseInt(item.getMaPhong()));
+//        }
+    }
+
+    void insert_room_service() {
+        String maPhong = cboMaPhong.getSelectedItem().toString();
+        String tenDV = cboTenDichVu.getSelectedItem().toString();
+        Date ngayGio = new Date();
+        DichVu dv = dvDAO.selectByName(tenDV);
+
+        PhieuDichVu pdv = new PhieuDichVu(1, dv.getMaDV(), maPhong);
+        pdvDAO.insert(pdv);
+        fillTable();
+        fillComboBoxDateTime();
+
+    }
+
     void clearForm() {
         txtID.setText("");
         txtName.setText("");
@@ -201,12 +282,14 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         cboMaPhong = new javax.swing.JComboBox<>();
-        cboTenDV = new javax.swing.JComboBox<>();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txtDescServices = new javax.swing.JTextArea();
+        cboTenDichVu = new javax.swing.JComboBox<>();
         btnAddServices = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        cboDateTime = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        cboPrice = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -268,6 +351,7 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setText("Quản lý dịch vụ");
 
+        txtID.setEnabled(false);
         txtID.setLabelText("Mã dịch vụ");
 
         txtName.setLabelText("Tên dịch vụ");
@@ -351,7 +435,7 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã dịch vụ", "Tên dịch vụ", "Giá dịch vụ", "Mã phòng", "Thời gian gọi"
+                "Mã dịch vụ", "Tên dịch vụ", "Giá dịch vụ", "Mô tả", "Mã phòng"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -391,18 +475,38 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
 
         cboMaPhong.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        cboTenDV.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        txtDescServices.setColumns(20);
-        txtDescServices.setRows(5);
-        txtDescServices.setText("Mô tả...");
-        jScrollPane3.setViewportView(txtDescServices);
+        cboTenDichVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboTenDichVu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cboTenDichVuMouseClicked(evt);
+            }
+        });
+        cboTenDichVu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboTenDichVuActionPerformed(evt);
+            }
+        });
 
         btnAddServices.setText("Thêm");
+        btnAddServices.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddServicesActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Mã phòng :");
 
         jLabel3.setText("Tên dịch vụ :");
+
+        cboDateTime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboDateTime.setEnabled(false);
+
+        jLabel5.setText("Ngày (giờ) gọi :");
+
+        cboPrice.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboPrice.setEnabled(false);
+
+        jLabel4.setText("Giá dịch vụ :");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -415,33 +519,41 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(cboMaPhong, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cboTenDV, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21))))
+                    .addComponent(jLabel2)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(cboMaPhong, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cboTenDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cboDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel4)
+                        .addComponent(cboPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5)))
+                .addGap(47, 47, 47))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane3)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cboMaPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cboTenDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cboTenDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cboPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cboDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(btnAddServices)
                 .addGap(16, 16, 16))
@@ -552,10 +664,26 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
         if(evt.getClickCount() == 1) {
             this.row = table.getSelectedRow();
             if (this.row >= 0) {
-                this.edit();
+                this.selectTable();
             }
         }
     }//GEN-LAST:event_tableMouseClicked
+
+    private void btnAddServicesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddServicesActionPerformed
+        insert_room_service();
+    }//GEN-LAST:event_btnAddServicesActionPerformed
+
+    private void cboTenDichVuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboTenDichVuMouseClicked
+        isChoice = true;
+    }//GEN-LAST:event_cboTenDichVuMouseClicked
+
+    private void cboTenDichVuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTenDichVuActionPerformed
+        if (isChoice) {
+            cboTDVfillCboPrice();
+            DichVu dv = dvDAO.selectByName(cboTenDichVu.getSelectedItem() + "");
+            setForm(dv);
+        }
+    }//GEN-LAST:event_cboTenDichVuActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -565,11 +693,15 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> cboDateTime;
     private javax.swing.JComboBox<String> cboMaPhong;
-    private javax.swing.JComboBox<String> cboTenDV;
+    private javax.swing.JComboBox<String> cboPrice;
+    private javax.swing.JComboBox<String> cboTenDichVu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -583,10 +715,8 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable table;
     private javax.swing.JTextArea txtDesc;
-    private javax.swing.JTextArea txtDescServices;
     private com.undotech.utils.TextField txtID;
     private com.undotech.utils.TextField txtID_Rooms;
     private com.undotech.utils.TextField txtName;

@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class DatPhong {
     private int maDatPhong;
-    private Date ngatDatPhong = new Date();
+    private Date ngayDatPhong = new Date();
     private Date checkIn;
     private Date checkOut;
     private int tongSoPhongDat;
@@ -39,11 +39,11 @@ public class DatPhong {
     }
 
     public Date getNgatDatPhong() {
-        return ngatDatPhong;
+        return ngayDatPhong;
     }
 
     public void setNgatDatPhong(Date ngatDatPhong) {
-        this.ngatDatPhong = ngatDatPhong;
+        this.ngayDatPhong = ngatDatPhong;
     }
 
     public Date getCheckIn() {

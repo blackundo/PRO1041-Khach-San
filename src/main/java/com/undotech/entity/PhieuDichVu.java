@@ -25,6 +25,8 @@ public class PhieuDichVu {
         this.maPhong = maPhong;
     }
 
+    
+
     public int getMaPhieuDV() {
         return maPhieuDV;
     }

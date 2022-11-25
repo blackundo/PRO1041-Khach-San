@@ -23,11 +23,13 @@ public class PhieuDichVuDAO extends QLyKhachSanDAO<PhieuDichVu, Integer>{
     String SELECT_ALL_SQL = "SELECT * FROM room_service";
     String SELECT_BY_ID_SQL = "SELECT * FROM room_service WHERE id=?";
     String SELECT_BY_SER_ID_SQL = "SELECT * FROM room_service WHERE service_id=?";
+    
+    String SELECT_DV_PDV = "SELECT pdv.id,dv.name,dv.price,pdv.bk_date FROM room_service pdv INNER JOIN service dv ON pdv.service_id = dv.id";
 
     @Override
     public void insert(PhieuDichVu entity) {
         XJdbc.executeUpdate(INSERT_SQL, 
-                    entity.getMaPhieuDV(),
+                    entity.getMaDichVu(),
                     entity.getMaPhong(),
                     entity.getTgDatPhong()
                 );
@@ -55,7 +57,7 @@ public class PhieuDichVuDAO extends QLyKhachSanDAO<PhieuDichVu, Integer>{
         return this.selectBySql(SELECT_ALL_SQL);
     }
 
-     public List<PhieuDichVu> selectBySerID(Integer key){
+    public List<PhieuDichVu> selectBySerID(Integer key){
          List<PhieuDichVu> list = this.selectBySql(SELECT_BY_SER_ID_SQL, key);
         if(list.isEmpty()){
             return null;

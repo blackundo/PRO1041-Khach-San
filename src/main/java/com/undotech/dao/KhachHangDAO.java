@@ -18,7 +18,7 @@ import java.util.List;
 public class KhachHangDAO extends QLyKhachSanDAO<KhachHang, Integer>{
     
     String INSERT_SQL = "INSERT INTO customer(full_name, phone, email, CMND, address) VALUES(?,?,?,?,?)";
-    String UPDATE_SQL = "UPDATE customer SET TenKhachHang=?, SoDT=?, Email=?, CMND=?, DiaChi=? WHERE id=?";
+    String UPDATE_SQL = "UPDATE customer SET full_name=?, phone=?, email=?, CMND=?, address=? WHERE id=?";
     String DELETE_SQL = "DELETE FROM customer WHERE id=?";
     String SELECT_ALL_SQL = "SELECT * FROM customer";
     String SELECT_BY_ID_SQL = "SELECT * FROM customer WHERE id=?";
