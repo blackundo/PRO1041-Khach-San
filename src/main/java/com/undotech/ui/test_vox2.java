@@ -96,7 +96,7 @@ public class test_vox2 extends javax.swing.JFrame {
 //                        map = "null";
 //                    }
                 Object[] rows = {
-                    dv.getMaDV(),
+                    pdv.getMaPhieuDV(),
                     dv.getTenDV(),
                     dv.getGiaDV(),
                     dv.getMoTaDV(),
@@ -237,7 +237,10 @@ public class test_vox2 extends javax.swing.JFrame {
     }
 
     void cancel_room_service() {
-        
+        int row = table.getSelectedRow();
+        int maPDV = (Integer)table.getValueAt(this.row, 0);
+        pdvDAO.delete(maPDV);
+        fillTable();
     }
 
     void clearForm() {
@@ -435,7 +438,7 @@ public class test_vox2 extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã dịch vụ", "Tên dịch vụ", "Giá dịch vụ", "Mô tả", "Mã phòng"
+                "Mã PDV", "Tên dịch vụ", "Giá dịch vụ", "Mô tả", "Mã phòng"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -452,6 +455,11 @@ public class test_vox2 extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setMinWidth(50);
+            table.getColumnModel().getColumn(0).setPreferredWidth(50);
+            table.getColumnModel().getColumn(0).setMaxWidth(50);
+        }
 
         btnCancelDV.setText("Huỷ DV khỏi phòng");
         btnCancelDV.addActionListener(new java.awt.event.ActionListener() {
@@ -641,7 +649,7 @@ public class test_vox2 extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
