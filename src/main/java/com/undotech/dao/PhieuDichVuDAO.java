@@ -47,7 +47,7 @@ public class PhieuDichVuDAO extends QLyKhachSanDAO<PhieuDichVu, Integer>{
 
     @Override
     public void delete(Integer key) {
-        XJdbc.executeQuery(DELETE_SQL, key);
+        XJdbc.executeUpdate(DELETE_SQL, key);
     }
 
    

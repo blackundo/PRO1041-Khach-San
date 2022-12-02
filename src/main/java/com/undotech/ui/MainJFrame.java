@@ -13,6 +13,10 @@ import com.undotech.utils.XImage;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javaswingdev.menu.EventMenuSelected;
 
 /**
@@ -21,7 +25,7 @@ import javaswingdev.menu.EventMenuSelected;
  */
 public class MainJFrame extends javax.swing.JFrame {
     
-    private static MainJFrame main;
+    public static MainJFrame main;
 
     public MainJFrame() {
         initComponents();
@@ -38,7 +42,19 @@ public class MainJFrame extends javax.swing.JFrame {
             @Override
             public void menuSelected(int index, int indexSubMenu) {
                 if (index == 0 && indexSubMenu == 0) {
-                    showForm(new Form_Dashboard());
+                    showForm(new Form_DachSachPhong());
+                } else if (index == 0 && indexSubMenu == 1){
+                    showForm(new Form_DachSachPhong());
+                } else if (index == 0 && indexSubMenu == 2){
+                    
+                    try {
+                        showForm(new Form_Dashboard());
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
                 } else if (index == 1 && indexSubMenu == 1){
                     showForm(new Form_QuanLyNhanVien());
                 } else if (index == 2 && indexSubMenu == 0){
@@ -67,7 +83,7 @@ public class MainJFrame extends javax.swing.JFrame {
         txtRole.setText(Auth.user.getVaiTro());
     }
     
-    public void showForm(Component com) {
+    public final void showForm(Component com) {
         body.removeAll();
         body.add(com);
         body.repaint();

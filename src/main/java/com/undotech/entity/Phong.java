@@ -27,6 +27,17 @@ public class Phong {
         this.maDatPhong = maDatPhong;
     }
 
+    public Phong(String maPhong, int maDatPhong) {
+        this.maPhong = maPhong;
+        this.maDatPhong = maDatPhong;
+    }
+
+    public Phong(String maPhong) {
+        this.maPhong = maPhong;
+    }
+    
+    
+
     public String getMaPhong() {
         return maPhong;
     }

@@ -1,6 +1,8 @@
 
 package com.undotech.entity;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -10,8 +12,8 @@ import java.util.Date;
 public class DatPhong {
     private int maDatPhong;
     private Date ngayDatPhong = new Date();
-    private Date checkIn;
-    private Date checkOut;
+    private Timestamp checkIn;
+    private Timestamp checkOut;
     private int tongSoPhongDat;
     private int maKH;
     private String maNV;
@@ -20,7 +22,7 @@ public class DatPhong {
     public DatPhong() {
     }
 
-    public DatPhong(int maDatPhong, Date checkIn, Date checkOut, int tongSoPhongDat, int maKH, String maNV, String maPhong) {
+    public DatPhong(int maDatPhong, Timestamp checkIn, Timestamp checkOut, int tongSoPhongDat, int maKH, String maNV, String maPhong) {
         this.maDatPhong = maDatPhong;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
@@ -46,19 +48,19 @@ public class DatPhong {
         this.ngayDatPhong = ngatDatPhong;
     }
 
-    public Date getCheckIn() {
+    public Timestamp getCheckIn() {
         return checkIn;
     }
 
-    public void setCheckIn(Date checkIn) {
+    public void setCheckIn(Timestamp checkIn) {
         this.checkIn = checkIn;
     }
 
-    public Date getCheckOut() {
+    public Timestamp getCheckOut() {
         return checkOut;
     }
 
-    public void setCheckOut(Date checkOut) {
+    public void setCheckOut(Timestamp checkOut) {
         this.checkOut = checkOut;
     }
 

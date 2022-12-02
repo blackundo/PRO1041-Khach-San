@@ -1,5 +1,7 @@
 package com.undotech.room;
 
+import com.undotech.dao.PhongDAO;
+import com.undotech.entity.Phong;
 import java.awt.AWTEvent;
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
@@ -13,6 +15,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -138,6 +141,15 @@ public class Room extends JComponent {
 //            if (getModel().isRoomUse()) {
 //                setBackground(Color.GREEN);
 //            }
+
+//            List<Phong> listRoom = new PhongDAO().selectAll();
+//            for (Phong p : listRoom) {
+////                System.out.println(p.getMaDatPhong());
+//                if(p.getMaDatPhong() != -1){
+//                    setBackground(Color.GREEN);
+//                } 
+//            }
+            
             if(!getModel().isClean() || getModel().isRepair() || !getModel().isRoomUse()){
                 if (!getModel().isRoomUse()) {
                     setBackground(Color.GREEN);

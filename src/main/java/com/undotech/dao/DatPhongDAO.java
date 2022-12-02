@@ -21,6 +21,7 @@ public class DatPhongDAO extends QLyKhachSanDAO<DatPhong, Integer>{
     String UPDATE_SQL = "UPDATE booking SET bk_date=?, checkin_date=?, checkout_date=?, total_room=?, customer_id=?, staff_id=?, room_id=? WHERE id=?";
     String DELETE_SQL = "DELETE FROM booking WHERE id=?";
     String SELECT_ALL_SQL = "SELECT * FROM booking";
+    String SELECT_TOP1_SQL = "SELECT TOP 1 * FROM booking ORDER BY ID DESC";
     String SELECT_BY_ID_SQL = "SELECT * FROM booking WHERE id=?";
 
     @Override
@@ -68,6 +69,14 @@ public class DatPhongDAO extends QLyKhachSanDAO<DatPhong, Integer>{
         }
         return list.get(0);
     }
+    
+    public DatPhong selectTop1() {
+        List<DatPhong> list = this.selectBySql(SELECT_TOP1_SQL);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
 
     @Override
     protected List<DatPhong> selectBySql(String sql, Object... args) {
@@ -78,8 +87,8 @@ public class DatPhongDAO extends QLyKhachSanDAO<DatPhong, Integer>{
                 DatPhong entity = new DatPhong();
                 entity.setMaDatPhong(rs.getInt("id"));
                 entity.setNgatDatPhong(rs.getDate("bk_date"));
-                entity.setCheckIn(rs.getDate("checkin_date"));
-                entity.setCheckOut(rs.getDate("checkout_date"));
+                entity.setCheckIn(rs.getTimestamp("checkin_date"));
+                entity.setCheckOut(rs.getTimestamp("checkout_date"));
                 entity.setTongSoPhongDat(rs.getInt("total_room"));
                 entity.setMaKH(rs.getInt("customer_id"));
                 entity.setMaNV(rs.getString("staff_id"));

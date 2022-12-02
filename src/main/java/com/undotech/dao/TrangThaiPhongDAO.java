@@ -67,7 +67,7 @@ public class TrangThaiPhongDAO extends QLyKhachSanDAO<TrangThaiPhong, String>{
             ResultSet rs = XJdbc.executeQuery(sql, args);
             while (rs.next()) {
                 TrangThaiPhong entity = new TrangThaiPhong();
-                entity.setMaPhong(rs.getString("id"));
+                entity.setMaPhong(rs.getString("room_id"));
                 entity.setDonDep(rs.getBoolean("is_clean"));
                 entity.setSuaChua(rs.getBoolean("is_repair"));
                 list.add(entity);

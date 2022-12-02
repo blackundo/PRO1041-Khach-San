@@ -19,6 +19,8 @@ public class PhongDAO extends QLyKhachSanDAO<Phong, String>{
     
     String INSERT_SQL = "INSERT INTO room(id, number, price, type, description, booking_id) VALUES(?,?,?,?,?,?)";
     String UPDATE_SQL = "UPDATE room SET number=?, price=?, type=?, description=?, booking_id=? WHERE id=?";
+    String UPDATEBKID_SQL = "UPDATE room SET booking_id=? WHERE id=?";
+    String UPDATEBKID_DEFAULT_SQL = "UPDATE room SET booking_id=null WHERE id=?";
     String DELETE_SQL = "DELETE FROM room WHERE id=?";
     String SELECT_ALL_SQL = "SELECT * FROM room";
     String SELECT_BY_ID_SQL = "SELECT * FROM room WHERE id=?";
@@ -37,12 +39,25 @@ public class PhongDAO extends QLyKhachSanDAO<Phong, String>{
 
     @Override
     public void update(Phong entity) {
-        XJdbc.executeUpdate(INSERT_SQL, 
+        XJdbc.executeUpdate(UPDATE_SQL, 
                     entity.getSoPhong(),
                     entity.getGiaPhong(),
                     entity.getKieuPhong(),
                     entity.getMoTa(),
                     entity.getMaDatPhong(),
+                    entity.getMaPhong()
+                );
+    }
+    
+    public void updateBKID(Phong entity) {
+        XJdbc.executeUpdate(UPDATEBKID_SQL, 
+                    entity.getMaDatPhong(),
+                    entity.getMaPhong()
+                );
+    }
+    
+    public void updateBKIDDefault(Phong entity) {
+        XJdbc.executeUpdate(UPDATEBKID_DEFAULT_SQL, 
                     entity.getMaPhong()
                 );
     }
@@ -78,7 +93,11 @@ public class PhongDAO extends QLyKhachSanDAO<Phong, String>{
                 entity.setGiaPhong(rs.getDouble("price"));
                 entity.setKieuPhong(rs.getString("type"));
                 entity.setMoTa(rs.getString("description"));
-                entity.setMaDatPhong(rs.getInt("booking_id"));
+                if (rs.getObject("booking_id") == null) {
+                    entity.setMaDatPhong(-1);
+                }else{
+                    entity.setMaDatPhong(rs.getInt("booking_id"));
+                }
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();

@@ -1,15 +1,27 @@
 package com.undotech.room;
 
+import com.undotech.dao.PhongDAO;
+import com.undotech.dao.TrangThaiPhongDAO;
+import com.undotech.entity.Phong;
+import com.undotech.entity.TrangThaiPhong;
 import com.undotech.notification.Notification;
+import com.undotech.ui.DatPhongDialog;
+import com.undotech.ui.Form_DachSachPhong;
 import com.undotech.ui.MainJFrame;
+import static com.undotech.ui.MainJFrame.main;
 import java.awt.Dimension;
+import javax.swing.JOptionPane;
 
 public class RoomLayer extends javax.swing.JComponent {
 
+    private ModelRoom model = null;
+    PhongDAO pdao = new PhongDAO();
+    TrangThaiPhongDAO statusdao = new TrangThaiPhongDAO();
+    
     public RoomLayer() {
         initComponents();
     }
-
+    
     public void setModel(ModelRoom model) {
         String desc = model.getDescription();
         if (desc.length()>150) {
@@ -18,18 +30,117 @@ public class RoomLayer extends javax.swing.JComponent {
         txt.setText(desc);
         lbName.setText(model.getName());
         lbPrice.setText(model.getPrice());
+        this.model = model;
+        init();
     }
+
+    public ModelRoom getModel() {
+        return model;
+    }
+    
+    void init(){
+        if (!getModel().isRoomUse() || !getModel().isClean() || getModel().isRepair()) {
+            button1.setVisible(false);
+        }
+    }
+    
+    void showPopupRoom(java.awt.event.MouseEvent evt){
+        if(evt.isPopupTrigger()){
+            //phòng đã sử dụng
+            if (!getModel().isRoomUse()) {
+                popupMenuRoomUsed.show(this, evt.getX(), evt.getY());
+            }
+            //phòng đang dọn
+            if(!getModel().isClean() && getModel().isRoomUse()){
+                popupMenuRoomClean.show(this, evt.getX(), evt.getY());
+            }
+            //phòng đang sửa
+            if(getModel().isRepair() && getModel().isRoomUse()){
+                popupMenuRoomRepair.show(this, evt.getX(), evt.getY());
+            }
+            if(getModel().isRoomUse() && getModel().isRepair() && !getModel().isClean()){
+                popupMenuRoomEmpty.show(this, evt.getX(), getY());
+            }
+        }
+    }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupMenuRoomUsed = new javax.swing.JPopupMenu();
+        itemDV = new javax.swing.JMenuItem();
+        itemCheckOut = new javax.swing.JMenuItem();
+        popupMenuRoomClean = new javax.swing.JPopupMenu();
+        cleaned = new javax.swing.JMenuItem();
+        popupMenuRoomRepair = new javax.swing.JPopupMenu();
+        repaired = new javax.swing.JMenuItem();
+        popupMenuRoomEmpty = new javax.swing.JPopupMenu();
+        roomDirty = new javax.swing.JMenuItem();
+        roomBroken = new javax.swing.JMenuItem();
         txt = new com.undotech.room.TextPaneCenter();
         button1 = new com.undotech.room.Button();
         lbName = new javax.swing.JLabel();
         lbPrice = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+
+        itemDV.setText("Thêm dịch vụ");
+        popupMenuRoomUsed.add(itemDV);
+
+        itemCheckOut.setText("Trả phòng");
+        itemCheckOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCheckOutActionPerformed(evt);
+            }
+        });
+        popupMenuRoomUsed.add(itemCheckOut);
+
+        cleaned.setText("Đã dọn xong");
+        cleaned.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cleanedActionPerformed(evt);
+            }
+        });
+        popupMenuRoomClean.add(cleaned);
+
+        repaired.setText("Đã sửa phòng");
+        repaired.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                repairedActionPerformed(evt);
+            }
+        });
+        popupMenuRoomRepair.add(repaired);
+
+        roomDirty.setText("Phòng dơ");
+        roomDirty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roomDirtyActionPerformed(evt);
+            }
+        });
+        popupMenuRoomEmpty.add(roomDirty);
+
+        roomBroken.setText("Phòng cần sửa chữa");
+        roomBroken.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roomBrokenActionPerformed(evt);
+            }
+        });
+        popupMenuRoomEmpty.add(roomBroken);
+
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+        });
 
         txt.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
+        txt.setInheritsPopupMenu(true);
+        txt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtMousePressed(evt);
+            }
+        });
 
         button1.setText("ĐẶT");
         button1.addActionListener(new java.awt.event.ActionListener() {
@@ -47,20 +158,35 @@ public class RoomLayer extends javax.swing.JComponent {
         lbPrice.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbPrice.setText("$0.00");
 
+        jPanel1.setOpaque(false);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 36, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                    .addComponent(lbPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(90, 90, 90))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(lbName, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addComponent(txt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                            .addComponent(lbPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbName, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -72,20 +198,74 @@ public class RoomLayer extends javax.swing.JComponent {
                 .addGap(21, 21, 21)
                 .addComponent(lbPrice)
                 .addGap(18, 18, 18)
-                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Đặt thành công ^^").showNotification();
-
+        System.out.println(getModel().getName());
+        new DatPhongDialog(null, true, getModel()).setVisible(true);
+        
     }//GEN-LAST:event_button1ActionPerformed
+
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        //click chuot vao panel
+        showPopupRoom(evt);
+    }//GEN-LAST:event_formMousePressed
+
+    private void txtMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtMousePressed
+        showPopupRoom(evt);
+    }//GEN-LAST:event_txtMousePressed
+
+    private void itemCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCheckOutActionPerformed
+        //thanh toan
+        pdao.updateBKIDDefault(new Phong(getModel().getId()));
+        main.showForm(new Form_DachSachPhong());
+    }//GEN-LAST:event_itemCheckOutActionPerformed
+
+    private void cleanedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cleanedActionPerformed
+        // TODO add your handling code here:
+        statusdao.update(new TrangThaiPhong(getModel().getId(),true, getModel().isRepair()));
+        main.showForm(new Form_DachSachPhong());
+    }//GEN-LAST:event_cleanedActionPerformed
+
+    private void repairedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repairedActionPerformed
+        // TODO add your handling code here:
+        statusdao.update(new TrangThaiPhong(getModel().getId(),getModel().isClean(), false));
+        main.showForm(new Form_DachSachPhong());
+    }//GEN-LAST:event_repairedActionPerformed
+
+    private void roomDirtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomDirtyActionPerformed
+        // TODO add your handling code here:
+        statusdao.update(new TrangThaiPhong(getModel().getId(),false, getModel().isRepair()));
+        main.showForm(new Form_DachSachPhong());
+    }//GEN-LAST:event_roomDirtyActionPerformed
+
+    private void roomBrokenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomBrokenActionPerformed
+        // TODO add your handling code here:
+        statusdao.update(new TrangThaiPhong(getModel().getId(),getModel().isClean(), true));
+        main.showForm(new Form_DachSachPhong());
+    }//GEN-LAST:event_roomBrokenActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.undotech.room.Button button1;
+    private javax.swing.JMenuItem cleaned;
+    private javax.swing.JMenuItem itemCheckOut;
+    private javax.swing.JMenuItem itemDV;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbName;
     private javax.swing.JLabel lbPrice;
+    private javax.swing.JPopupMenu popupMenuRoomClean;
+    private javax.swing.JPopupMenu popupMenuRoomEmpty;
+    private javax.swing.JPopupMenu popupMenuRoomRepair;
+    private javax.swing.JPopupMenu popupMenuRoomUsed;
+    private javax.swing.JMenuItem repaired;
+    private javax.swing.JMenuItem roomBroken;
+    private javax.swing.JMenuItem roomDirty;
     private com.undotech.room.TextPaneCenter txt;
     // End of variables declaration//GEN-END:variables
 }

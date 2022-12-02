@@ -1,40 +1,108 @@
 package com.undotech.ui;
 
 
+import com.undotech.dao.KhachHangDAO;
+import com.undotech.entity.DatPhong;
+import com.undotech.entity.KhachHang;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import javaswingdev.card.ModelCard;
+import javax.swing.table.DefaultTableModel;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class Form_Dashboard extends javax.swing.JPanel {
+    
+    ArrayList<DatPhong> list;
+    KhachHangDAO khdao = new KhachHangDAO();
 
-    public Form_Dashboard() {
+    public Form_Dashboard() throws IOException, ParseException {
         initComponents();
         init();
+        list = new ArrayList<>();
     }
 
-    private void init() {
+    private void init() throws IOException, ParseException {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
         table.fixTable(jScrollPane1);
-        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
-        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
-        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
-        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
-        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
-        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
-        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
-        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
-        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
-        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
-        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
-        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
-        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
-        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
-        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
-        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
-        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
-        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
+//        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
+//        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
+//        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
+//        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
+//        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
+//        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
+//        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
+//        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
+//        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
+//        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
+//        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
+//        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
+//        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
+//        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
+//        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
+//        table.addRow(new Object[]{"1", "Trần Văn Híu", "0905161000", "201870555", "102"});
+//        table.addRow(new Object[]{"2", "Trần Phước Khánh Huy", "0905161000", "201870555", "204"});
+//        table.addRow(new Object[]{"3", "Đặng Văn Võ", "0905161000", "123123213", "230"});
 
         //  init card data
         card1.setData(new ModelCard(null, null, null, "23/100", "Số phòng trống"));
         card2.setData(new ModelCard(null, null, null, "52.320.000đ", "Doanh thu/tháng"));
         card3.setData(new ModelCard(null, null, null, "8/20", "Nhân viên"));
+        
+        
+        String data = getListJson();
+        JSONArray items = new JSONArray(data);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        
+        for(int i = 0; i < items.length(); ++i){
+            DatPhong dp = null;
+            JSONObject rec = items.getJSONObject(i);
+            
+            
+            int id = rec.getInt("id");
+            String bk_date = rec.getString("bk_date");
+            String checkin = rec.getString("checkin_date");
+            String checkout = rec.getString("checkout_date");
+            int total = rec.getInt("total_room");
+            int customer_id = rec.getInt("customer_id");
+            String staff_id = rec.getString("staff_id");
+            String room_id = rec.getString("room_id");
+            
+            KhachHang kh = khdao.selectById(customer_id);
+            String tenkh = kh.getTenKH();
+            
+//            dp = new DatPhong(id, checkin, sdf.parse(checkout), total, customer_id, staff_id,room_id);
+//            list.add(dp);
+
+            Object[] rows = {
+                id,tenkh,bk_date,checkin,checkout,customer_id,room_id
+            };
+            model.addRow(rows);
+            
+        }
+        
+    }
+    
+    private String getListJson() throws MalformedURLException, IOException{
+        URL url = new URL("http://localhost:8081/booking/");
+        URLConnection conn = url.openConnection();
+//        HttpURLConnection;
+//        HttpsURLConnection;
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String input = in.readLine();
+        String output = input.replace("(", " ").replace(")", " ");
+        in.close();
+        
+        return output.trim();
     }
 
     @SuppressWarnings("unchecked")
@@ -68,11 +136,11 @@ public class Form_Dashboard extends javax.swing.JPanel {
 
             },
             new String [] {
-                "#", "Tên khách hàng", "SĐT", "CMND", "Số phòng"
+                "#", "Tên khách hàng", "Ngày đặt phòng", "Ngày nhận phòng", "Ngày trả phòng", "Mã khách hàng", "Mã phòng"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
