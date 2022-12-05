@@ -23,7 +23,11 @@ public class TienNghiDAO extends QLyKhachSanDAO<TienNghi, Integer>{
     String SELECT_ALL_SQL = "SELECT * FROM convenient";
     String SELECT_BY_ID_SQL = "SELECT * FROM convenient WHERE id=?";
     
-
+    public List<TienNghi> selectByKeyword(String keyword) {
+        String SQL = "SELECT * FROM convenient WHERE name LIKE ?";
+        return this.selectBySql(SQL, "%" + keyword + "%");
+    }
+    
     @Override
     public void insert(TienNghi entity) {
         XJdbc.executeUpdate(INSERT_SQL, 

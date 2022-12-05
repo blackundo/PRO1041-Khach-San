@@ -22,6 +22,11 @@ public class KhachHangDAO extends QLyKhachSanDAO<KhachHang, Integer>{
     String DELETE_SQL = "DELETE FROM customer WHERE id=?";
     String SELECT_ALL_SQL = "SELECT * FROM customer";
     String SELECT_BY_ID_SQL = "SELECT * FROM customer WHERE id=?";
+    
+    public List<KhachHang> selectByKeyword(String keyword) {
+        String SQL = "SELECT * FROM customer WHERE full_name LIKE ?";
+        return this.selectBySql(SQL, "%" + keyword + "%");
+    }
 
     @Override
     public void insert(KhachHang entity) {

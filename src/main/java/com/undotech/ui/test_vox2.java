@@ -6,6 +6,7 @@ import com.undotech.dao.ProcDAO;
 import com.undotech.entity.DichVu;
 import com.undotech.entity.PhieuDichVu;
 import com.undotech.notification.Notification;
+import com.undotech.utils.Auth;
 import com.undotech.utils.MsgBox;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +36,7 @@ public class test_vox2 extends javax.swing.JFrame {
         this.fillComboBoxTenDichVu();
         this.fillComboBoxDateTime();
         this.fillComboBoxGiaDichVu();
+
     }
 
     void fillComboBoxMaPhong() {
@@ -136,9 +138,13 @@ public class test_vox2 extends javax.swing.JFrame {
         DichVu dv = getForm();
 //        System.out.println("firr");
         try {
-            dvDAO.insert(dv);
-            fillComboBoxTenDichVu();
-            MsgBox.alert(this, "Thêm thành công");
+            if (Auth.role() == null) {
+                MsgBox.alert(this, "aaa");
+            } else {
+                dvDAO.insert(dv);
+//            fillComboBoxTenDichVu();
+                MsgBox.alert(this, "Thêm thành công");
+            }
 //            new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Thêm thành công ^^").showNotification();
         } catch (Exception e) {
             MsgBox.alert(this, "Thêm thất bại");
@@ -238,7 +244,7 @@ public class test_vox2 extends javax.swing.JFrame {
 
     void cancel_room_service() {
         int row = table.getSelectedRow();
-        int maPDV = (Integer)table.getValueAt(this.row, 0);
+        int maPDV = (Integer) table.getValueAt(this.row, 0);
         pdvDAO.delete(maPDV);
         fillTable();
     }
@@ -564,7 +570,7 @@ public class test_vox2 extends javax.swing.JFrame {
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel4))
