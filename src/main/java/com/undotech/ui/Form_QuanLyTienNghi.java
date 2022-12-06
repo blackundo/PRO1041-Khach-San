@@ -1,9 +1,7 @@
-
 package com.undotech.ui;
 
 import com.undotech.dao.TienNghiDAO;
 import com.undotech.entity.TienNghi;
-import com.undotech.notification.Notification;
 import com.undotech.utils.MsgBox;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -17,30 +15,35 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
     TienNghiDAO tnDAO = new TienNghiDAO();
     int row = -1;
     int flag = 1;
-    
+
     public Form_QuanLyTienNghi() {
         initComponents();
         this.fillTable();
     }
-    
+
     void fillTable() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         try {
-            List<TienNghi> list = tnDAO.selectAll();
+            String keyword = txtSearch.getText();
+            List<TienNghi> list = tnDAO.selectByKeyword(keyword);
             for (TienNghi tn : list) {
                 Object[] rows = {
-                    tn.getMaTienNghi(), 
-                    tn.getTenTienNghi(), 
-                    tn.getGia(), 
-                    tn.getMoTa(), 
+                    tn.getMaTienNghi(),
+                    tn.getTenTienNghi(),
+                    tn.getGia(),
+                    tn.getMoTa(),
                     tn.getMaPhong()};
                 model.addRow(rows);
             }
         } catch (Exception e) {
         }
     }
-    
+
+    void search() {
+        this.fillTable();
+    }
+
     void setForm(TienNghi tn) {
         txtID.setText(String.valueOf(tn.getMaTienNghi()));
         txtName.setText(tn.getTenTienNghi());
@@ -51,7 +54,7 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
 
     TienNghi getForm() {
         TienNghi tn = new TienNghi();
-        if(flag == 1) {
+        if (flag == 1) {
             tn.setMaTienNghi(Integer.parseInt(txtID.getText()));
         }
         tn.setTenTienNghi(txtName.getText());
@@ -65,16 +68,12 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         flag = 0;
         TienNghi tn = getForm();
         try {
+            double d = Double.parseDouble(txtPrice.getText());
             tnDAO.insert(tn);
             fillTable();
-//            MsgBox.alert(this, "Thêm thành công");
-            new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Thêm thành công ^^").showNotification();
-
-        } catch (Exception e) {
-//            MsgBox.alert(this, "Thêm thất bại");
-            new Notification(MainJFrame.getMain(), Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Thêm thất bại ><").showNotification();
-
-            System.err.println(e);
+            MsgBox.alert(this, "Thêm thành công");
+        } catch (NumberFormatException e) {
+            System.out.println(e);
         }
     }
 
@@ -84,38 +83,30 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         try {
             tnDAO.update(tn);
             fillTable();
-//            MsgBox.alert(this, "Cập nhật thành công");
-            new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Cập nhật thành công ^^").showNotification();
-
+            MsgBox.alert(this, "Cập nhật thành công");
         } catch (Exception e) {
-//            MsgBox.alert(this, "Cập nhật thất bại");
-            new Notification(MainJFrame.getMain(), Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Cập nhật thất bại ><").showNotification();
-
+            MsgBox.alert(this, "Cập nhật thất bại");
             System.err.println(e);
         }
     }
 
     void delete() {
-//        if (!Auth.role()) {
+//        if (Auth.role() == null) {
 //            MsgBox.alert(this, "Bạn không có quyền xoá!");
 //        } else {
-            flag = 1;
-            int matn = (Integer.parseInt(txtID.getText())) ;
-            if (MsgBox.confirm(this, "Bạn có muốn xoá không?")) {
-                try {
-                    tnDAO.delete(matn);
-                    this.fillTable();
-                    this.clearForm();
-//                    MsgBox.alert(this, "Xoá thành công!");
-                    new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Xoá thành công ^^").showNotification();
-
-                } catch (Exception e) {
-//                    MsgBox.alert(this, "Xoá thất bại!");
-                    new Notification(MainJFrame.getMain(), Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Xoá thất bại ><").showNotification();
-
-                    System.err.println(e);
-                }
+        flag = 1;
+        int matn = (Integer.parseInt(txtID.getText()));
+        if (MsgBox.confirm(this, "Bạn có muốn xoá không?")) {
+            try {
+                tnDAO.delete(matn);
+                this.fillTable();
+                this.clearForm();
+                MsgBox.alert(this, "Xoá thành công!");
+            } catch (Exception e) {
+                MsgBox.alert(this, "Xoá thất bại!");
+                System.err.println(e);
             }
+        }
 //        }
     }
 
@@ -124,7 +115,7 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         TienNghi tn = tnDAO.selectById(matn);
         this.setForm(tn);
     }
-    
+
     void clearForm() {
         txtID.setText("");
         txtName.setText("");
@@ -133,7 +124,7 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         txtID_Rooms.setText("");
         this.row = -1;
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -211,6 +202,11 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         jScrollPane2.setViewportView(table);
 
         txtSearch.setLabelText("Tìm kiếm dịch vụ");
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -433,13 +429,17 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
-        if(evt.getClickCount() == 1) {
+        if (evt.getClickCount() == 1) {
             this.row = table.getSelectedRow();
             if (this.row >= 0) {
                 this.edit();
             }
         }
     }//GEN-LAST:event_tableMouseClicked
+
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        search();
+    }//GEN-LAST:event_txtSearchKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

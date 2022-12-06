@@ -1,4 +1,3 @@
-
 package com.undotech.entity;
 
 import javaswingdev.swing.table.model.TableRowData;
@@ -7,7 +6,8 @@ import javaswingdev.swing.table.model.TableRowData;
  *
  * @author Vox
  */
-public class NhanVien extends TableRowData{
+public class NhanVien extends TableRowData {
+
     private String maNV;
     private String tenNV;
     private String vaiTro;
@@ -104,28 +104,20 @@ public class NhanVien extends TableRowData{
     public void setHinhAnh(String hinhAnh) {
         this.hinhAnh = hinhAnh;
     }
-    
-    
 
     @Override
     public Object[] toTableRow() {
-        return new Object[]{maNV,tenNV,vaiTro,soDT,email,diaChi};
+        return new Object[]{maNV, tenNV, vaiTro, soDT, email, diaChi};
     }
 
     @Override
     public Object[] toTableRow1() {
-        return new Object[]{tenNV,vaiTro,soDT,email,diaChi};
+        return new Object[]{tenNV, vaiTro, soDT, email, diaChi};
     }
-    
 
     @Override
     public String toString() {
         return tenNV;
     }
-    
-    
-    
-    
-    
-    
+
 }

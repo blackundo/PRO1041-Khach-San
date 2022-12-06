@@ -1,4 +1,3 @@
-
 package com.undotech.ui;
 
 import com.undotech.dao.DichVuDAO;
@@ -19,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Vox
  */
 public class Form_QuanLyDichVu extends javax.swing.JPanel {
-    
+
     DichVuDAO dvDAO = new DichVuDAO();
     PhieuDichVuDAO pdvDAO = new PhieuDichVuDAO();
     int row = -1;
@@ -139,7 +138,7 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
 //        System.out.println("firr");
         try {
             dvDAO.insert(dv);
-            fillComboBoxTenDichVu();
+//            fillComboBoxTenDichVu();
             MsgBox.alert(this, "Thêm thành công");
 //            new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Thêm thành công ^^").showNotification();
         } catch (Exception e) {
@@ -226,16 +225,28 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
     }
 
     void insert_room_service() {
-        String maPhong = cboMaPhong.getSelectedItem().toString();
-        String tenDV = cboTenDichVu.getSelectedItem().toString();
-        Date ngayGio = new Date();
-        DichVu dv = dvDAO.selectByName(tenDV);
+        try {
+            String maPhong = cboMaPhong.getSelectedItem().toString();
+            String tenDV = cboTenDichVu.getSelectedItem().toString();
+            Date ngayGio = new Date();
+            DichVu dv = dvDAO.selectByName(tenDV);
 
-        PhieuDichVu pdv = new PhieuDichVu(1, dv.getMaDV(), maPhong);
-        pdvDAO.insert(pdv);
+            PhieuDichVu pdv = new PhieuDichVu(1, dv.getMaDV(), maPhong);
+            pdvDAO.insert(pdv);
+            fillTable();
+            fillComboBoxDateTime();
+            MsgBox.alert(this, "Thêm thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Thêm thất bại");
+            System.out.println(e);
+        }
+    }
+
+    void cancel_room_service() {
+        int row = table.getSelectedRow();
+        int maPDV = (Integer) table.getValueAt(this.row, 0);
+        pdvDAO.delete(maPDV);
         fillTable();
-        fillComboBoxDateTime();
-
     }
 
     void clearForm() {
@@ -454,6 +465,11 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
         jScrollPane2.setViewportView(table);
 
         btnCancelDV.setText("Huỷ dich vụ");
+        btnCancelDV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelDVActionPerformed(evt);
+            }
+        });
 
         jPanel6.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -661,7 +677,7 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
-        if(evt.getClickCount() == 1) {
+        if (evt.getClickCount() == 1) {
             this.row = table.getSelectedRow();
             if (this.row >= 0) {
                 this.selectTable();
@@ -684,6 +700,10 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
             setForm(dv);
         }
     }//GEN-LAST:event_cboTenDichVuActionPerformed
+
+    private void btnCancelDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelDVActionPerformed
+//        cancel_room_service();
+    }//GEN-LAST:event_btnCancelDVActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -3,17 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package com.undotech.ui;
-
 import com.undotech.dao.KhachHangDAO;
 import com.undotech.entity.KhachHang;
-import java.awt.Frame;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Vox
- */
 public class Form_XemThongTinKH extends javax.swing.JPanel {
     
     KhachHangDAO khDAO = new KhachHangDAO();
@@ -27,7 +21,8 @@ public class Form_XemThongTinKH extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) this.table.getModel();
         model.setRowCount(0);
         try {
-            List<KhachHang> listKH = khDAO.selectAll();
+            String keyword = txtSearch.getText();
+            List<KhachHang> listKH = khDAO.selectByKeyword(keyword);
             for (KhachHang kh : listKH) {
                 Object[] rows = {
                     kh.getMaKH(),
@@ -43,6 +38,11 @@ public class Form_XemThongTinKH extends javax.swing.JPanel {
         }
     }
     
+    void search() {
+        this.fillTable();
+//        this.row = -1;
+    }
+    
     void click_table_display_form() {
         int row = table.getSelectedRow();
         int maKH = (int) table.getValueAt(row, 0);
@@ -56,7 +56,7 @@ public class Form_XemThongTinKH extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        textField1 = new com.undotech.utils.TextField();
+        txtSearch = new com.undotech.utils.TextField();
         load = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -102,8 +102,13 @@ public class Form_XemThongTinKH extends javax.swing.JPanel {
             table.getColumnModel().getColumn(5).setHeaderValue("Địa chỉ");
         }
 
-        textField1.setLabelText("Tìm kiếm khách hàng");
-        textField1.setLineColor(new java.awt.Color(204, 0, 51));
+        txtSearch.setLabelText("Tìm kiếm khách hàng");
+        txtSearch.setLineColor(new java.awt.Color(204, 0, 51));
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
 
         load.setText("Load table");
         load.addActionListener(new java.awt.event.ActionListener() {
@@ -125,14 +130,14 @@ public class Form_XemThongTinKH extends javax.swing.JPanel {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 907, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(300, 300, 300)
-                            .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(7, 7, 7)
-                .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -194,6 +199,10 @@ public class Form_XemThongTinKH extends javax.swing.JPanel {
         fillTable();
     }//GEN-LAST:event_loadActionPerformed
 
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        search();
+    }//GEN-LAST:event_txtSearchKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -202,7 +211,7 @@ public class Form_XemThongTinKH extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton load;
     private javax.swing.JTable table;
-    private com.undotech.utils.TextField textField1;
+    private com.undotech.utils.TextField txtSearch;
     // End of variables declaration//GEN-END:variables
     
 
