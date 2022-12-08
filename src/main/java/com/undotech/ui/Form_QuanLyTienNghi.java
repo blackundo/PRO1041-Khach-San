@@ -65,8 +65,9 @@ TienNghi getForm() {
 
         try {
             price = Double.parseDouble(txtPrice.getText());
+            tn.setGia(price);
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Giá trị nhập vào phải là 1 số");
+//            JOptionPane.showMessageDialog(this, "hihihehe");
         }
 
         tn.setMoTa(txtDesc.getText());
@@ -81,9 +82,14 @@ TienNghi getForm() {
             if (Auth.role().equals("Nhân sự") && Auth.role().equals("Lễ tân") && Auth.role().equals("Kế toán")) {
                 MsgBox.alert(this, "Bạn không có quyền thêm");
             } else {
-                tnDAO.insert(tn);
-                fillTable();
-                MsgBox.alert(this, "Thêm thành công");
+                if(tn.getGia() == 0) {
+                MsgBox.alert(this, "Giá trị nhập vào phải là 1 số");
+                }else{
+                    tnDAO.insert(tn);
+                    fillTable();
+                    MsgBox.alert(this, "Thêm thành công");
+                
+                }
             }
         } catch (NumberFormatException e) {
             System.out.println(e);

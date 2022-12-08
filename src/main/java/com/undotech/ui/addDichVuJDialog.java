@@ -57,6 +57,10 @@ public class addDichVuJDialog extends javax.swing.JDialog {
     
 
     private void initDichVu(){
+        jScrollPane1.getVerticalScrollBar().setUnitIncrement(30);
+        jScrollPane1.getVerticalScrollBar().setUnitIncrement(30);
+
+        
         jLabel1.setText("Mã Phòng: " + maphong);
         int dvButtonWidth = 150;
         int dvButtonHeight = 150;
@@ -124,21 +128,23 @@ public class addDichVuJDialog extends javax.swing.JDialog {
             btnThemDV.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(itemDVButton.getBackground()==Color.red){
-                        PhieuDichVu pdv = new PhieuDichVu(idDV,maphong);//số phòng đang test chưa viết
-                        pdvdao.insert(pdv);
-                        fillDichVu();
-                        initDichVu();
-                    }
+//                    if(itemDVButton.getBackground()==Color.red){
+//                        PhieuDichVu pdv = new PhieuDichVu(idDV,maphong);//số phòng đang test chưa viết
+//                        pdvdao.insert(pdv);
+//                        fillDichVu();
+//                        initDichVu();
+//                    }
                 }
             });
             btnXoaDV.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if(itemDVButton.getBackground()==Color.red){
-                        pdvdao.deleteBySerID(Integer.parseInt(itemDVButton.getToolTipText()));
-                        fillDichVu();
-                        initDichVu();
+//                        pdvdao.deleteBySerID(Integer.parseInt(itemDVButton.getToolTipText()));
+//                        fillDichVu();
+//                        initDichVu();
+
+
 //                        
 //                        pnlDV2.remove(itemDVButton);
 //                        pnlDV.add(itemDVButton);
@@ -277,6 +283,11 @@ public class addDichVuJDialog extends javax.swing.JDialog {
         btnThemDV.setBackground(new java.awt.Color(255, 102, 0));
         btnThemDV.setForeground(new java.awt.Color(255, 255, 255));
         btnThemDV.setText(">>>");
+        btnThemDV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemDVActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout colorBtn3Layout = new javax.swing.GroupLayout(colorBtn3);
         colorBtn3.setLayout(colorBtn3Layout);
@@ -400,6 +411,20 @@ public class addDichVuJDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnXoaDVActionPerformed
 
+    private void btnThemDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemDVActionPerformed
+        // TODO add your handling code here:
+        Component[] com = pnlDV.getComponents();
+        for(int i = 0; i<pnlDV.getComponentCount(); i++){
+            if(com[i].getBackground()==Color.red){
+                        JButton btn = (JButton) com[i];
+                        PhieuDichVu pdv = new PhieuDichVu(Integer.parseInt(btn.getToolTipText()),maphong);//số phòng đang test chưa viết
+                        pdvdao.insert(pdv);
+                        fillDichVu();
+                        initDichVu();
+                    }
+        }
+    }//GEN-LAST:event_btnThemDVActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -443,15 +468,9 @@ public class addDichVuJDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javaswingdev.swing.Button btnSave;
-    private javaswingdev.swing.Button btnSave1;
-    private javaswingdev.swing.Button btnSave2;
     private javaswingdev.swing.Button btnThemDV;
     private javaswingdev.swing.Button btnXoaDV;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JPanel colorBtn;
-    private javax.swing.JPanel colorBtn1;
-    private javax.swing.JPanel colorBtn2;
     private javax.swing.JPanel colorBtn3;
     private javax.swing.JPanel colorBtn4;
     private javax.swing.JLabel jLabel1;
