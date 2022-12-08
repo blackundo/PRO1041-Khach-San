@@ -69,6 +69,7 @@ public class LoginJDialog extends javax.swing.JDialog {
         jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel11.setPreferredSize(new java.awt.Dimension(677, 353));
 
@@ -166,7 +167,7 @@ public class LoginJDialog extends javax.swing.JDialog {
 
         jButton2.setBackground(new java.awt.Color(186, 79, 84));
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Huỷ");
+        jButton2.setText("Thoát");
         jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

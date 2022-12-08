@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javaswingdev.menu.EventMenuSelected;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -105,6 +106,8 @@ public class MainJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupLogout = new javax.swing.JPopupMenu();
+        menuLogout = new javax.swing.JMenuItem();
         background = new javax.swing.JPanel();
         panelMenu = new javax.swing.JPanel();
         titleBar = new javaswingdev.swing.titlebar.TitleBar();
@@ -114,6 +117,14 @@ public class MainJFrame extends javax.swing.JFrame {
         txtName = new javax.swing.JLabel();
         txtRole = new javax.swing.JLabel();
         body = new javax.swing.JPanel();
+
+        menuLogout.setText("Đăng Xuất");
+        menuLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuLogoutActionPerformed(evt);
+            }
+        });
+        popupLogout.add(menuLogout);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -216,10 +227,22 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
         //profile
-        
-        showForm(new Form_Profile());
-        menu.clearSelected();
+        if (SwingUtilities.isLeftMouseButton(evt)) {
+            showForm(new Form_Profile());
+            menu.clearSelected();
+        }
+        if (SwingUtilities.isRightMouseButton(evt)){
+            //showpop
+            popupLogout.show(this, evt.getX(), evt.getY()+665);
+        }
     }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void menuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
+       Auth.clear();
+        this.dispose();
+        new LoginJDialog(this, rootPaneCheckingEnabled).setVisible(true);
+        new WelcomeJDialog(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_menuLogoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -266,7 +289,9 @@ public class MainJFrame extends javax.swing.JFrame {
     private javaswingdev.swing.ImageAvatar imageAvatar1;
     private javax.swing.JPanel jPanel1;
     private javaswingdev.menu.Menu menu;
+    private javax.swing.JMenuItem menuLogout;
     private javax.swing.JPanel panelMenu;
+    private javax.swing.JPopupMenu popupLogout;
     private javaswingdev.swing.titlebar.TitleBar titleBar;
     private javax.swing.JLabel txtName;
     private javax.swing.JLabel txtRole;
