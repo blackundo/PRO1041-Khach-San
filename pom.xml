@@ -76,6 +76,15 @@
             <artifactId>json</artifactId>
             <version>20220924</version>
         </dependency>
+        
+
+        
+<!--        <dependency>
+            <groupId>com.jaspersoft</groupId>
+            <artifactId>ireport</artifactId>
+            <version>3.7.5</version>
+        </dependency>-->
+
 
 <!--        <dependency>
             <groupId>gradient-icon</groupId>

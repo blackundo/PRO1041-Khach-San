@@ -41,7 +41,7 @@ public class ProcDAO {
     }
     
     
-     public String getTableVIPByID(Integer dvid) {
+    public String getTableVIPByID(Integer dvid) {
         String sql = "{CALL sp_service_used_id(?)}";
         String[] cols = {"room_id","id", "name", "price", "bk_date"};
         ResultSet rs = XJdbc.executeQuery(sql, dvid);
@@ -54,5 +54,11 @@ public class ProcDAO {
          }
         
         return vals;
+    }
+    
+    public List<Object[]> getTableVIPByROOMID(String roomid) {
+        String sql = "{CALL sp_service_used_roomid(?)}";
+        String[] cols = {"room_id","id", "name", "price", "description", "bk_date"};
+        return this.getListOfArray(sql, cols, roomid);
     }
 }

@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import static java.awt.GridBagConstraints.RELATIVE;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.util.List;
@@ -27,16 +28,19 @@ import net.miginfocom.swing.MigLayout;
  * @author blackundo
  */
 public class Form_DachSachPhong extends javax.swing.JPanel {
-
+    
+    public static Form_DachSachPhong form;
     PhongDAO pdao = new PhongDAO();
     TrangThaiPhongDAO ttdao = new TrangThaiPhongDAO();
     
     public Form_DachSachPhong() {
         initComponents();
-        init();
+        form = this;
+        fillPhong();
     }
     
-    public void init(){
+    public void fillPhong(){
+        jPanel1.removeAll();
         jScrollPane2.getVerticalScrollBar().setUnitIncrement(30);
         
         //responsive
@@ -51,6 +55,7 @@ public class Form_DachSachPhong extends javax.swing.JPanel {
         
             boolean isRoomUse;
             List<Phong> dsp = pdao.selectAll();
+            
 
             for (Phong r : dsp) {
 
@@ -69,7 +74,7 @@ public class Form_DachSachPhong extends javax.swing.JPanel {
                 
                 
                 jPanel1.add(comp);
-
+                jPanel1.updateUI();
             }
             
             
@@ -195,7 +200,7 @@ public class Form_DachSachPhong extends javax.swing.JPanel {
                         .addGap(20, 20, 20))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(437, 981, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

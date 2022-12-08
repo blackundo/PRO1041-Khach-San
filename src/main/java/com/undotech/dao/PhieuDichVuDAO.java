@@ -20,9 +20,11 @@ public class PhieuDichVuDAO extends QLyKhachSanDAO<PhieuDichVu, Integer>{
     String INSERT_SQL = "INSERT INTO room_service(service_id, room_id, bk_date) VALUES(?,?,?)";
     String UPDATE_SQL = "UPDATE room_service SET service_id=?, room_id=?, bk_date=? WHERE id=?";
     String DELETE_SQL = "DELETE FROM room_service WHERE id=?";
+    String DELETE_BY_SER_ID_SQL = "DELETE FROM room_service WHERE service_id=?";
     String SELECT_ALL_SQL = "SELECT * FROM room_service";
     String SELECT_BY_ID_SQL = "SELECT * FROM room_service WHERE id=?";
     String SELECT_BY_SER_ID_SQL = "SELECT * FROM room_service WHERE service_id=?";
+    String SELECT_BY_ROOM_ID_SQL = "SELECT * FROM room_service WHERE room_id=?";
     
     String SELECT_DV_PDV = "SELECT pdv.id,dv.name,dv.price,pdv.bk_date FROM room_service pdv INNER JOIN service dv ON pdv.service_id = dv.id";
 
@@ -50,7 +52,9 @@ public class PhieuDichVuDAO extends QLyKhachSanDAO<PhieuDichVu, Integer>{
         XJdbc.executeUpdate(DELETE_SQL, key);
     }
 
-   
+   public void deleteBySerID(Integer key) {
+        XJdbc.executeUpdate(DELETE_BY_SER_ID_SQL, key);
+    }
     
     @Override
     public List<PhieuDichVu> selectAll() {
@@ -63,6 +67,10 @@ public class PhieuDichVuDAO extends QLyKhachSanDAO<PhieuDichVu, Integer>{
             return null;
         }
         return (List<PhieuDichVu>) list.get(0);
+     }
+    
+    public List<PhieuDichVu> selectByRoomID(String key){
+        return this.selectBySql(SELECT_BY_ROOM_ID_SQL, key);
      }
     
     @Override

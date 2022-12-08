@@ -25,6 +25,11 @@ public class PhieuDichVu {
         this.maPhong = maPhong;
     }
 
+    public PhieuDichVu(int maDichVu, String maPhong) {
+        this.maDichVu = maDichVu;
+        this.maPhong = maPhong;
+    }
+
     
 
     public int getMaPhieuDV() {

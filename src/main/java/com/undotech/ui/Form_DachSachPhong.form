@@ -25,7 +25,7 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="roundPanel1" min="-2" pref="205" max="-2" attributes="0"/>
-                      <EmptySpace min="437" pref="981" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>

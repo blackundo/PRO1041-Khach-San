@@ -67,6 +67,8 @@ public class MainJFrame extends javax.swing.JFrame {
                     showForm(new Form_QuanLyTienNghi());
                 } else if (index == 6 && indexSubMenu == 0){
                     showForm(new Form_XemThongTinKH());
+                } else if (index == 7 && indexSubMenu == 0){
+                    showForm(new Form_ThongKe());
                 } else {
                     showForm(new Form_Empty(index + " " + indexSubMenu));
                 }

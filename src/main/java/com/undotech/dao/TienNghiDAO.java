@@ -21,6 +21,7 @@ public class TienNghiDAO extends QLyKhachSanDAO<TienNghi, Integer>{
     String UPDATE_SQL = "UPDATE convenient SET name=?, price=?, description=?, room_id=? WHERE id=?";
     String DELETE_SQL = "DELETE FROM convenient WHERE id=?";
     String SELECT_ALL_SQL = "SELECT * FROM convenient";
+    String SELECT_BY_ROOMID_SQL = "SELECT * FROM convenient WHERE room_id=?";
     String SELECT_BY_ID_SQL = "SELECT * FROM convenient WHERE id=?";
     
     public List<TienNghi> selectByKeyword(String keyword) {
@@ -57,6 +58,10 @@ public class TienNghiDAO extends QLyKhachSanDAO<TienNghi, Integer>{
     @Override
     public List<TienNghi> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
+    }
+    
+    public List<TienNghi> selectByRoomID(String key) {
+        return this.selectBySql(SELECT_BY_ROOMID_SQL,key);
     }
 
     @Override

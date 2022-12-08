@@ -21,6 +21,7 @@ public class DanhGiaDAO extends QLyKhachSanDAO<DanhGia, Integer> {
     String UPDATE_SQL = "UPDATE rating SET type=? WHERE id=?";
     String DELETE_SQL = "DELETE FROM rating WHERE id=?";
     String SELECT_ALL_SQL = "SELECT * FROM rating";
+    String SELECT_TOP1_SQL = "SELECT TOP 1 * FROM rating ORDER BY id DESC";
     String SELECT_BY_ID_SQL = "SELECT * FROM rating WHERE id=?";
 
     @Override
@@ -51,6 +52,14 @@ public class DanhGiaDAO extends QLyKhachSanDAO<DanhGia, Integer> {
     @Override
     public DanhGia selectById(Integer key) {
         List<DanhGia> list = this.selectBySql(SELECT_BY_ID_SQL, key);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+    
+    public DanhGia selectTop1() {
+        List<DanhGia> list = this.selectBySql(SELECT_TOP1_SQL);
         if (list.isEmpty()) {
             return null;
         }

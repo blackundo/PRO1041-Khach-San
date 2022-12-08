@@ -17,6 +17,11 @@ public class DanhGia {
         this.loaiDanhGia = loaiDanhGia;
     }
 
+    public DanhGia(String loaiDanhGia) {
+        this.loaiDanhGia = loaiDanhGia;
+    }
+    
+
     public int getMaDanhGia() {
         return maDanhGia;
     }

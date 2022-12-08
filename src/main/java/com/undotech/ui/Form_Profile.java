@@ -100,7 +100,7 @@ public class Form_Profile extends javax.swing.JPanel {
     
     
     
-    class RoundedPanel extends JPanel
+    public static class RoundedPanel extends JPanel
     {
         private Color backgroundColor;
         private int cornerRadius = 15;

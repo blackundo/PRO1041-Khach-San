@@ -9,6 +9,8 @@ import com.undotech.ui.DatPhongDialog;
 import com.undotech.ui.Form_DachSachPhong;
 import com.undotech.ui.MainJFrame;
 import static com.undotech.ui.MainJFrame.main;
+import com.undotech.ui.ThanhToanJDialog;
+import com.undotech.ui.addDichVuJDialog;
 import java.awt.Dimension;
 import javax.swing.JOptionPane;
 
@@ -44,22 +46,21 @@ public class RoomLayer extends javax.swing.JComponent {
         }
     }
     
-    void showPopupRoom(java.awt.event.MouseEvent evt){
+    void showPopupRoom(java.awt.event.MouseEvent evt,int flag){
         if(evt.isPopupTrigger()){
             //phòng đã sử dụng
             if (!getModel().isRoomUse()) {
-                popupMenuRoomUsed.show(this, evt.getX(), evt.getY());
+                popupMenuRoomUsed.show(this, (flag==1) ? evt.getX()+80 : evt.getX(), (flag==1) ? evt.getY()+100 : evt.getY());
+            }else{
+                popupMenuRoomEmpty.show(this, (flag==1) ? evt.getX()+80 : evt.getX(), (flag==1) ? evt.getY()+100 : evt.getY());
             }
             //phòng đang dọn
             if(!getModel().isClean() && getModel().isRoomUse()){
-                popupMenuRoomClean.show(this, evt.getX(), evt.getY());
+                popupMenuRoomClean.show(this, (flag==1) ? evt.getX()+80 : evt.getX(), (flag==1) ? evt.getY()+100 : evt.getY());
             }
             //phòng đang sửa
             if(getModel().isRepair() && getModel().isRoomUse()){
-                popupMenuRoomRepair.show(this, evt.getX(), evt.getY());
-            }
-            if(getModel().isRoomUse() && getModel().isRepair() && !getModel().isClean()){
-                popupMenuRoomEmpty.show(this, evt.getX(), getY());
+                popupMenuRoomRepair.show(this, (flag==1) ? evt.getX()+80 : evt.getX(), (flag==1) ? evt.getY()+100 : evt.getY());
             }
         }
     }
@@ -86,6 +87,11 @@ public class RoomLayer extends javax.swing.JComponent {
         jPanel1 = new javax.swing.JPanel();
 
         itemDV.setText("Thêm dịch vụ");
+        itemDV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemDVActionPerformed(evt);
+            }
+        });
         popupMenuRoomUsed.add(itemDV);
 
         itemCheckOut.setText("Trả phòng");
@@ -214,42 +220,54 @@ public class RoomLayer extends javax.swing.JComponent {
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         //click chuot vao panel
-        showPopupRoom(evt);
+        
+        showPopupRoom(evt,0);
     }//GEN-LAST:event_formMousePressed
 
     private void txtMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtMousePressed
-        showPopupRoom(evt);
+        showPopupRoom(evt,1);
     }//GEN-LAST:event_txtMousePressed
 
     private void itemCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCheckOutActionPerformed
         //thanh toan
-        pdao.updateBKIDDefault(new Phong(getModel().getId()));
-        main.showForm(new Form_DachSachPhong());
+//        pdao.updateBKIDDefault(new Phong(getModel().getId()));
+        new ThanhToanJDialog(null,true,getModel()).setVisible(true);
+//        main.showForm(new Form_DachSachPhong());
+Form_DachSachPhong.form.fillPhong();
     }//GEN-LAST:event_itemCheckOutActionPerformed
 
     private void cleanedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cleanedActionPerformed
         // TODO add your handling code here:
         statusdao.update(new TrangThaiPhong(getModel().getId(),true, getModel().isRepair()));
-        main.showForm(new Form_DachSachPhong());
+//        main.showForm(new Form_DachSachPhong());
+Form_DachSachPhong.form.fillPhong();
     }//GEN-LAST:event_cleanedActionPerformed
 
     private void repairedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repairedActionPerformed
         // TODO add your handling code here:
         statusdao.update(new TrangThaiPhong(getModel().getId(),getModel().isClean(), false));
-        main.showForm(new Form_DachSachPhong());
+//        main.showForm(new Form_DachSachPhong());
+Form_DachSachPhong.form.fillPhong();
     }//GEN-LAST:event_repairedActionPerformed
 
     private void roomDirtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomDirtyActionPerformed
         // TODO add your handling code here:
         statusdao.update(new TrangThaiPhong(getModel().getId(),false, getModel().isRepair()));
-        main.showForm(new Form_DachSachPhong());
+//        main.showForm(new Form_DachSachPhong());
+Form_DachSachPhong.form.fillPhong();
     }//GEN-LAST:event_roomDirtyActionPerformed
 
     private void roomBrokenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomBrokenActionPerformed
         // TODO add your handling code here:
         statusdao.update(new TrangThaiPhong(getModel().getId(),getModel().isClean(), true));
-        main.showForm(new Form_DachSachPhong());
+//        main.showForm(new Form_DachSachPhong());
+        Form_DachSachPhong.form.fillPhong();
     }//GEN-LAST:event_roomBrokenActionPerformed
+
+    private void itemDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemDVActionPerformed
+        // Thêm dịch vụ
+        new addDichVuJDialog(getModel().getId(),null,true).setVisible(true);
+    }//GEN-LAST:event_itemDVActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.undotech.room.Button button1;

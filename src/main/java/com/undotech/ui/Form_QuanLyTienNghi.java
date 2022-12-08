@@ -2,8 +2,10 @@ package com.undotech.ui;
 
 import com.undotech.dao.TienNghiDAO;
 import com.undotech.entity.TienNghi;
+import com.undotech.utils.Auth;
 import com.undotech.utils.MsgBox;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -52,13 +54,21 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         txtID_Rooms.setText(tn.getMaPhong());
     }
 
-    TienNghi getForm() {
+TienNghi getForm() {
+        double price = 0;
         TienNghi tn = new TienNghi();
         if (flag == 1) {
             tn.setMaTienNghi(Integer.parseInt(txtID.getText()));
         }
         tn.setTenTienNghi(txtName.getText());
-        tn.setGia(Double.parseDouble(txtPrice.getText()));
+//        tn.setGia(Double.parseDouble(txtPrice.getText()));
+
+        try {
+            price = Double.parseDouble(txtPrice.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Giá trị nhập vào phải là 1 số");
+        }
+
         tn.setMoTa(txtDesc.getText());
         tn.setMaPhong(txtID_Rooms.getText());
         return tn;
@@ -68,10 +78,13 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         flag = 0;
         TienNghi tn = getForm();
         try {
-            double d = Double.parseDouble(txtPrice.getText());
-            tnDAO.insert(tn);
-            fillTable();
-            MsgBox.alert(this, "Thêm thành công");
+            if (Auth.role().equals("Nhân sự") && Auth.role().equals("Lễ tân") && Auth.role().equals("Kế toán")) {
+                MsgBox.alert(this, "Bạn không có quyền thêm");
+            } else {
+                tnDAO.insert(tn);
+                fillTable();
+                MsgBox.alert(this, "Thêm thành công");
+            }
         } catch (NumberFormatException e) {
             System.out.println(e);
         }

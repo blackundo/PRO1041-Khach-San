@@ -25,6 +25,15 @@ public class ChietKhau {
         this.maPhong = maPhong;
     }
 
+    public ChietKhau(double phanTramCK, Date ngayBatDau, Date ngayKetThuc, String maPhong) {
+        this.phanTramCK = phanTramCK;
+        this.ngayBatDau = ngayBatDau;
+        this.ngayKetThuc = ngayKetThuc;
+        this.maPhong = maPhong;
+    }
+    
+    
+
     public int getMaChietKhau() {
         return maChietKhau;
     }
