@@ -15,6 +15,7 @@ import com.undotech.entity.Phong;
 import com.undotech.room.ModelRoom;
 import static com.undotech.ui.MainJFrame.main;
 import com.undotech.utils.Auth;
+import com.undotech.utils.EmailValidator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -31,6 +32,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 /**
@@ -43,6 +45,11 @@ public class DatPhongDialog extends javax.swing.JDialog {
     PhongDAO pdao = new PhongDAO();
     KhachHangDAO khdao = new KhachHangDAO();
     private ModelRoom model = null;
+    int flagKH = 0;
+    private static final String EMAIL_PATTERN = 
+    "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    
     
     public DatPhongDialog(java.awt.Frame parent, boolean modal, ModelRoom model) {
         super(parent, modal);
@@ -53,12 +60,16 @@ public class DatPhongDialog extends javax.swing.JDialog {
         fillComboBoxName();
 //        getForm();
         lblNumberRoom.setText(model.getId());
-        
+        setForm();
         
         cboName.getEditor().getEditorComponent().addKeyListener(new KeyAdapter(){
             @Override
             public void keyReleased(KeyEvent e) {
                 System.out.println("đang viết");
+//                System.out.println(cboName.getEditor().getItem());
+                flagKH = 1;
+                setEnabledForm(true);
+                System.out.println(flagKH);
             }
             
         });
@@ -66,9 +77,16 @@ public class DatPhongDialog extends javax.swing.JDialog {
         cboName.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                KhachHang kh = (KhachHang) e.getItem();
+//                KhachHang kh = (KhachHang) e.getItem();
+//          chỉ lắng nghe khi chọn còn cái dưới load app fillcbo cũng nge event
+                if (!txtPhone.isEnabled() && e.getStateChange() == 1) {
+                    flagKH = 0;
+                    System.out.println(flagKH);
 //                System.out.println(kh.getCMND());
-            setForm();
+                    setForm();
+                }
+//                System.out.println("hàm change: "+e.getStateChange());
+                
             }
         });
         
@@ -87,7 +105,7 @@ public class DatPhongDialog extends javax.swing.JDialog {
         for (KhachHang kh : list) {
             model.addElement(kh);
         }
-//        cboName.setSelectedItem(null);
+//        cboName.setSelectedItem(null); //mở này nhớ xoá setform trên init chớ lỗi nha mày
     }
     
     void clearForm(){
@@ -95,15 +113,28 @@ public class DatPhongDialog extends javax.swing.JDialog {
         txtCMND.setText("");
         txtEmail.setText("");
         txtPhone.setText("");
-        cboName.setSelectedItem(null);
+        cboName.setSelectedItem(0);
+    }
+    
+    void setEnabledForm(boolean key){
+        txtPhone.setEnabled(key);
+        txtEmail.setEnabled(key);
+        txtCMND.setEnabled(key);
+        txtAddress.setEnabled(key);
     }
     
     void setForm(){
-        KhachHang kh = (KhachHang)cboName.getSelectedItem();
-        txtPhone.setText(kh.getSDT());
-        txtEmail.setText(kh.getEmail());
-        txtCMND.setText(kh.getCMND());
-        txtAddress.setText(kh.getDiaChi());
+        try {
+            KhachHang kh = (KhachHang)cboName.getSelectedItem();
+            txtPhone.setText(kh.getSDT());
+            txtEmail.setText(kh.getEmail());
+            txtCMND.setText(kh.getCMND());
+            txtAddress.setText(kh.getDiaChi());
+            setEnabledForm(false);
+        } catch (java.lang.ClassCastException e) {
+            System.out.println("không chuyển đc do chỉnh");
+        }
+        
     }
     
     
@@ -132,23 +163,49 @@ public class DatPhongDialog extends javax.swing.JDialog {
             System.out.println(checkIn);
             dp.setCheckIn(Timestamp.valueOf(checkIn));
             
-            dp.setCheckOut(Timestamp.valueOf(checkIn));
+            dp.setCheckOut(Timestamp.valueOf(checkOut));
 //            dp.setCheckOut(formatFinal.parse(checkOut));
         } catch (ParseException ex) {
 //            ex.printStackTrace();
         }
         
         dp.setTongSoPhongDat(1);
-        dp.setMaKH(((KhachHang)cboName.getSelectedItem()).getMaKH());
+        if (flagKH == 0) {
+            dp.setMaKH(((KhachHang)cboName.getSelectedItem()).getMaKH());
+        }else{
+            //validator
+//            int phone = 0,CMND = 0;
+//            String email = null;
+//            if(!txtPhone.getText().isEmpty() && !txtCMND.getText().isEmpty() && !txtEmail.getText().isEmpty()){
+////                chạy
+//                try {
+//                    phone = Integer.parseInt(txtPhone.getText());
+//                    CMND = Integer.parseInt(txtCMND.getText());
+//                    if (txtEmail.getText().matches(EMAIL_PATTERN)) {
+//                        email = txtEmail.getText();
+//                    }else{
+//                        JOptionPane.showMessageDialog(this,"Email sai");
+//                    }
+//                } catch (NumberFormatException e) {
+//                    JOptionPane.showMessageDialog(this,"SĐT và CMND phải là số");
+//                }
+//            
+//            } else {
+//                JOptionPane.showMessageDialog(this,"SĐT và CMND và Email Không được để trống");
+//            }
+            khdao.insert(new KhachHang(String.valueOf(cboName.getEditor().getItem()),txtPhone.getText(),txtEmail.getText(),
+                    txtCMND.getText(),txtAddress.getText()));
+            KhachHang kh = khdao.selectTop1();
+            dp.setMaKH(kh.getMaKH());
+        }
+        
+        
         dp.setMaNV(Auth.user.getMaNV());
         dp.setMaPhong(getModel().getId());
         
         
 //        String dateCheckIn = txtDateCheckIn.getText();
 //        String TimeCheckIn = timePickerCheckIn.getSelectedTime();
-        
-        
-        
         
         
 //        try {
@@ -174,11 +231,27 @@ public class DatPhongDialog extends javax.swing.JDialog {
     void insert(){
         DatPhong dp = getForm();
 //        String maPhong = getModel().getId();
-        dpdao.insert(dp);
-        DatPhong latest = dpdao.selectTop1();
-        pdao.updateBKID(new Phong(getModel().getId(), latest.getMaDatPhong()));
-        main.showForm(new Form_DachSachPhong());
-        this.dispose();
+
+        //vallide day
+        Timestamp ci = dp.getCheckIn();
+        Timestamp co = dp.getCheckOut();
+        System.out.println("check in " + ci);
+        System.out.println("check out " + co);
+        System.out.println("so sánh: "+ci.compareTo(co));
+        if (dp.getCheckIn().compareTo(dp.getCheckOut()) == -1) {
+            dpdao.insert(dp);
+            DatPhong latest = dpdao.selectTop1();
+            pdao.updateBKID(new Phong(getModel().getId(), latest.getMaDatPhong()));
+            main.showForm(new Form_DachSachPhong());
+            this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(this,"Ngày nhận phòng không được lớn hơn");
+        }
+//        dpdao.insert(dp);
+//        DatPhong latest = dpdao.selectTop1();
+//        pdao.updateBKID(new Phong(getModel().getId(), latest.getMaDatPhong()));
+//        main.showForm(new Form_DachSachPhong());
+//        this.dispose();
 //        System.out.println(dp.getCheckIn());
     }
     
@@ -214,9 +287,8 @@ public class DatPhongDialog extends javax.swing.JDialog {
         txtTimeCheckOut = new javax.swing.JTextField();
         jToggleButton3 = new javax.swing.JToggleButton();
         jToggleButton4 = new javax.swing.JToggleButton();
-        jToggleButton5 = new javax.swing.JToggleButton();
-        jToggleButton6 = new javax.swing.JToggleButton();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         dateChooserCheckIn.setForeground(new java.awt.Color(37, 88, 207));
         dateChooserCheckIn.setTextRefernce(txtDateCheckIn);
@@ -308,19 +380,17 @@ public class DatPhongDialog extends javax.swing.JDialog {
             }
         });
 
-        jToggleButton5.setText("Đặt Phòng");
-        jToggleButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton5ActionPerformed(evt);
-            }
-        });
-
-        jToggleButton6.setText("Thêm Khách Hàng");
-
         jButton1.setText("Clear");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Đặt Phòng");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -351,9 +421,7 @@ public class DatPhongDialog extends javax.swing.JDialog {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jToggleButton6)
-                                .addGap(228, 228, 228)))
+                                .addGap(260, 260, 260)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8)
@@ -369,7 +437,7 @@ public class DatPhongDialog extends javax.swing.JDialog {
                                     .addComponent(jToggleButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jToggleButton3)
                                     .addComponent(jToggleButton4)))
-                            .addComponent(jToggleButton5)))
+                            .addComponent(jButton2)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(427, 427, 427)
                         .addComponent(lblNumberRoom)))
@@ -420,9 +488,8 @@ public class DatPhongDialog extends javax.swing.JDialog {
                                     .addComponent(jToggleButton4))))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jToggleButton6)
                     .addComponent(jButton1)
-                    .addComponent(jToggleButton5))
+                    .addComponent(jButton2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -448,19 +515,22 @@ public class DatPhongDialog extends javax.swing.JDialog {
     private void cboNameItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboNameItemStateChanged
         // khi chọn cbox
         System.out.println("đang chọn");
+        if (flagKH == 1) {
+            setForm();
+        }
     }//GEN-LAST:event_cboNameItemStateChanged
 
     private void cboNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNameActionPerformed
 //        setForm();
     }//GEN-LAST:event_cboNameActionPerformed
 
-    private void jToggleButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton5ActionPerformed
-        insert();
-    }//GEN-LAST:event_jToggleButton5ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         clearForm();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        insert();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -518,6 +588,7 @@ public class DatPhongDialog extends javax.swing.JDialog {
     private javaswingdev.datechooser.DateChooser dateChooserCheckIn;
     private javaswingdev.datechooser.DateChooser dateChooserCheckOut;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -529,8 +600,6 @@ public class DatPhongDialog extends javax.swing.JDialog {
     private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JToggleButton jToggleButton3;
     private javax.swing.JToggleButton jToggleButton4;
-    private javax.swing.JToggleButton jToggleButton5;
-    private javax.swing.JToggleButton jToggleButton6;
     private javax.swing.JLabel lblNumberRoom;
     private com.undotech.utils.TextAreaScroll textAreaScroll1;
     private com.raven.swing.TimePicker timePickerCheckIn;

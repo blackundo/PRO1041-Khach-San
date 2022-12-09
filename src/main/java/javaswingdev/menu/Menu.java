@@ -37,7 +37,7 @@ public class Menu extends JPanel {
         add(scroll);
         addTitle("CHÍNH");
 //        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.DASHBOARD, "Thống kê"));
-        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.HOTEL, "Phòng","Quản Lý", "Thống kê"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.HOTEL, "Phòng","Quản Lý", "Thống kê(Chạy API)"));
         addTitle("Nhân sự");
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.GROUP, "Nhân viên", "Thông tin", "Sửa", "Thêm"));
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.HOTEL, "Quản lý phòng"));
@@ -46,10 +46,10 @@ public class Menu extends JPanel {
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.ROOM, "Đặt phòng"));
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.ADD_CIRCLE, "Tiện nghi"));
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.VERIFIED_USER, "TT Khách hàng"));
-        addTitle("Vip");
-        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.MONETIZATION_ON, "Thống kê"));
-        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.AV_TIMER, "Éc si méc"));
-        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.BATTERY_CHARGING_FULL, "DLBTNL"));
+//        addTitle("Vip");
+//        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.MONETIZATION_ON, "Thống kê"));
+//        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.AV_TIMER, "Éc si méc"));
+//        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.BATTERY_CHARGING_FULL, "DLBTNL"));
 //        addTitle("COMPONENT");
 //        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.WHATSHOT, "UI Kit", "Accordion", "Alerts", "Badges", "Breadcrumbs", "Buttons", "Button group"));
 //        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.DIRECTIONS_BIKE, "Advanced UI", "Cropper", "Owl Carousel", "Sweet Alert"));

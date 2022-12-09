@@ -21,6 +21,7 @@ public class KhachHangDAO extends QLyKhachSanDAO<KhachHang, Integer>{
     String UPDATE_SQL = "UPDATE customer SET full_name=?, phone=?, email=?, CMND=?, address=? WHERE id=?";
     String DELETE_SQL = "DELETE FROM customer WHERE id=?";
     String SELECT_ALL_SQL = "SELECT * FROM customer";
+    String SELECT_TOP1_SQL = "SELECT TOP 1 * FROM customer ORDER BY id DESC";
     String SELECT_BY_ID_SQL = "SELECT * FROM customer WHERE id=?";
     
     public List<KhachHang> selectByKeyword(String keyword) {
@@ -65,6 +66,14 @@ public class KhachHangDAO extends QLyKhachSanDAO<KhachHang, Integer>{
     public KhachHang selectById(Integer key) {
         List<KhachHang> list = this.selectBySql(SELECT_BY_ID_SQL, key);
         if(list.isEmpty()){
+            return null;
+        }
+        return list.get(0);
+    }
+    
+    public KhachHang selectTop1() {
+        List<KhachHang> list = this.selectBySql(SELECT_TOP1_SQL);
+        if (list.isEmpty()) {
             return null;
         }
         return list.get(0);

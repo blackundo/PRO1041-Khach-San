@@ -21,7 +21,7 @@ public class DatPhongDAO extends QLyKhachSanDAO<DatPhong, Integer>{
     String UPDATE_SQL = "UPDATE booking SET bk_date=?, checkin_date=?, checkout_date=?, total_room=?, customer_id=?, staff_id=?, room_id=? WHERE id=?";
     String DELETE_SQL = "DELETE FROM booking WHERE id=?";
     String SELECT_ALL_SQL = "SELECT * FROM booking";
-    String SELECT_BY_ROOMID_SQL = "SELECT * FROM booking WHERE room_id=?";
+    String SELECT_BY_ROOMID_SQL = "SELECT * FROM booking WHERE room_id=? ORDER BY id DESC";
     String SELECT_TOP1_SQL = "SELECT TOP 1 * FROM booking ORDER BY id DESC";
     String SELECT_BY_ID_SQL = "SELECT * FROM booking WHERE id=?";
 
