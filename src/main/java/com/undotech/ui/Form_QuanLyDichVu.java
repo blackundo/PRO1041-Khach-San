@@ -7,6 +7,7 @@ import com.undotech.dao.ProcDAO;
 import com.undotech.entity.DichVu;
 import com.undotech.entity.PhieuDichVu;
 import com.undotech.entity.Phong;
+import com.undotech.utils.Auth;
 import com.undotech.utils.MsgBox;
 import java.util.Date;
 import java.util.List;
@@ -120,13 +121,23 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
     }
 
     DichVu getForm() {
+        double price = 0;
         DichVu dv = new DichVu();
         PhieuDichVu phieuDV = new PhieuDichVu();
         if (flag == 0) {
-            dv.setMaDV(Integer.parseInt(txtID.getText()));
+            if(!txtID.getText().isEmpty()) {
+                dv.setMaDV(Integer.parseInt(txtID.getText()));
+            } else {
+                MsgBox.alert(this, "Không được để trống ");
+            }
         }
         dv.setTenDV(txtName.getText());
-        dv.setGiaDV(Double.parseDouble(txtPrice.getText()));
+        try {
+            price = Double.parseDouble(txtPrice.getText());
+            dv.setGiaDV(price);
+        } catch (Exception e) {
+
+        }
         dv.setMoTaDV(txtDesc.getText());
         phieuDV.setMaPhong(txtID_Rooms.getText());
         return dv;
@@ -135,16 +146,22 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
     void insert() {
         flag = 1;
         DichVu dv = getForm();
-//        System.out.println("firr");
         try {
-            dvDAO.insert(dv);
-//            fillComboBoxTenDichVu();
-            MsgBox.alert(this, "Thêm thành công");
-//            new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Thêm thành công ^^").showNotification();
-        } catch (Exception e) {
-            MsgBox.alert(this, "Thêm thất bại");
-//              new Notification(MainJFrame.getMain(), Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Thêm thất bại ><").showNotification();
-            System.err.println(e);
+            if (Auth.role().equals("Nhân sự") || Auth.role().equals("Lễ tân") || Auth.role().equals("Kế toán")) {
+                MsgBox.alert(this, "Bạn không có quyền thêm");
+            } else {
+                if (dv.getGiaDV() == 0) {
+                    MsgBox.alert(this, "Giá phải là 1 số!");
+                } else {
+                    dvDAO.insert(dv);
+                    MsgBox.alert(this, "Thêm thành công");
+                    //fillComboBoxTenDichVu();
+                }
+            }
+
+        } catch (RuntimeException e) {
+            MsgBox.alert(this, "Lỗi");
+//            System.err.println(e);
         }
     }
 
@@ -152,41 +169,42 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
         flag = 0;
         DichVu dv = getForm();
         try {
-            dvDAO.update(dv);
-            fillTable();
-            fillComboBoxDateTime();
-            fillComboBoxMaPhong();
+            if (Auth.role().equals("Nhân sự") || Auth.role().equals("Lễ tân") || Auth.role().equals("Kế toán")) {
+                MsgBox.alert(this, "Bạn không có quyền trong chức năng này!");
+            } else {
+                dvDAO.update(dv);
+                fillTable();
+                fillComboBoxDateTime();
+                fillComboBoxMaPhong();
 //            fillComboBoxTenDichVu();
-            fillComboBoxGiaDichVu();
-            MsgBox.alert(this, "Cập nhật thành công");
-//            new Notification(MainJFrame.getMain(), Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, "Cập nhật thành công ^^").showNotification();
-        } catch (Exception e) {
-            MsgBox.alert(this, "Cập nhật thất bại");
-//            new Notification(MainJFrame.getMain(), Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Cập nhật thất bại ><").showNotification();
+                fillComboBoxGiaDichVu();
+                MsgBox.alert(this, "Cập nhật thành công");
+            }
+        } catch (RuntimeException e) {
+            MsgBox.alert(this, "Lỗi");
             System.err.println(e);
         }
     }
 
     void delete() {
-//        if (!Auth.role()) {
-//            MsgBox.alert(this, "Bạn không có quyền xoá!");
-//        } else {
-        int maDV = (Integer.parseInt(txtID.getText()));
-        if (MsgBox.confirm(this, "Bạn có muốn xoá không?")) {
-            try {
-                dvDAO.delete(maDV);
-//                this.fillTable();
-                this.fillComboBoxMaPhong();
+        boolean isDelete = MsgBox.confirm(this, "Bạn có muốn xoá không?");
+        if (Auth.role().equals("Nhân sự") || Auth.role().equals("Lễ tân") || Auth.role().equals("Kế toán")) {
+            MsgBox.alert(this, "Bạn không có quyền xoá!");
+        } else if (isDelete && txtID.getText().isEmpty() != true) {
+            int maDV = (Integer.parseInt(txtID.getText()));
+            dvDAO.delete(maDV);
+            this.fillTable();
+            this.fillComboBoxMaPhong();
 //                this.fillComboBoxTenDichVu();//
-                this.fillComboBoxDateTime();
-                this.clearForm();
-                MsgBox.alert(this, "Xoá thành công!");
-            } catch (Exception e) {
-                MsgBox.alert(this, "Xoá thất bại!");
-                System.err.println(e);
+            this.fillComboBoxDateTime();
+            this.clearForm();
+            MsgBox.alert(this, "Xoá thành công!");
+        } else {
+            if (isDelete) {
+                MsgBox.alert(this, "Bạn chưa nhập mã DV");
             }
         }
-//        }
+
     }
 
     void edit() {
@@ -702,7 +720,7 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
     }//GEN-LAST:event_cboTenDichVuActionPerformed
 
     private void btnCancelDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelDVActionPerformed
-//        cancel_room_service();
+        cancel_room_service();
     }//GEN-LAST:event_btnCancelDVActionPerformed
 
 

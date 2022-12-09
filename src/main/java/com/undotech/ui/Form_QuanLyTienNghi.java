@@ -54,11 +54,15 @@ public class Form_QuanLyTienNghi extends javax.swing.JPanel {
         txtID_Rooms.setText(tn.getMaPhong());
     }
 
-TienNghi getForm() {
+    TienNghi getForm() {
         double price = 0;
         TienNghi tn = new TienNghi();
         if (flag == 1) {
-            tn.setMaTienNghi(Integer.parseInt(txtID.getText()));
+            if (!txtID.getText().isEmpty()) {
+                tn.setMaTienNghi(Integer.parseInt(txtID.getText()));
+            } else {
+                MsgBox.alert(this, "Không được để trống");
+            }
         }
         tn.setTenTienNghi(txtName.getText());
 //        tn.setGia(Double.parseDouble(txtPrice.getText()));
@@ -79,20 +83,19 @@ TienNghi getForm() {
         flag = 0;
         TienNghi tn = getForm();
         try {
-            if (Auth.role().equals("Nhân sự") && Auth.role().equals("Lễ tân") && Auth.role().equals("Kế toán")) {
+            if (Auth.role().equals("Nhân sự") || Auth.role().equals("Lễ tân") || Auth.role().equals("Kế toán")) {
                 MsgBox.alert(this, "Bạn không có quyền thêm");
             } else {
-                if(tn.getGia() == 0) {
-                MsgBox.alert(this, "Giá trị nhập vào phải là 1 số");
-                }else{
+                if (tn.getGia() == 0) {
+                    MsgBox.alert(this, "Giá trị nhập vào phải là 1 số");
+                } else {
                     tnDAO.insert(tn);
                     fillTable();
                     MsgBox.alert(this, "Thêm thành công");
-                
                 }
             }
-        } catch (NumberFormatException e) {
-            System.out.println(e);
+        } catch (RuntimeException e) {
+            MsgBox.alert(this, "Nhập không đúng mã phòng");
         }
     }
 
@@ -100,33 +103,35 @@ TienNghi getForm() {
         flag = 1;
         TienNghi tn = getForm();
         try {
-            tnDAO.update(tn);
-            fillTable();
-            MsgBox.alert(this, "Cập nhật thành công");
+            if (Auth.role().equals("Nhân sự") || Auth.role().equals("Lễ tân") || Auth.role().equals("Kế toán")) {
+                MsgBox.alert(this, "Bạn không có quyền trong chức năng này");
+            } else {
+                tnDAO.update(tn);
+                fillTable();
+                MsgBox.alert(this, "Cập nhật thành công");
+            }
         } catch (Exception e) {
-            MsgBox.alert(this, "Cập nhật thất bại");
+            MsgBox.alert(this, "Lỗi");
             System.err.println(e);
         }
     }
 
     void delete() {
-//        if (Auth.role() == null) {
-//            MsgBox.alert(this, "Bạn không có quyền xoá!");
-//        } else {
-        flag = 1;
-        int matn = (Integer.parseInt(txtID.getText()));
-        if (MsgBox.confirm(this, "Bạn có muốn xoá không?")) {
-            try {
-                tnDAO.delete(matn);
-                this.fillTable();
-                this.clearForm();
-                MsgBox.alert(this, "Xoá thành công!");
-            } catch (Exception e) {
-                MsgBox.alert(this, "Xoá thất bại!");
-                System.err.println(e);
+        boolean isDelele = MsgBox.confirm(this, "Bạn có muốn xoá không?");
+        if (Auth.role().equals("Nhân sự") || Auth.role().equals("Lễ tân") || Auth.role().equals("Kế toán")) {
+            MsgBox.alert(this, "Bạn không có quyền trong chức năng này");
+        } else if (isDelele && txtID.getText().isEmpty() != true) {
+            int maTN = (Integer.parseInt(txtID.getText()));
+            tnDAO.delete(maTN);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Xoá thành công!");
+        } else {
+            if (isDelele) {
+                MsgBox.alert(this, "Bạn chưa nhập mã TN");
             }
         }
-//        }
+
     }
 
     void edit() {

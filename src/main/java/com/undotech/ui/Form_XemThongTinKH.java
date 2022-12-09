@@ -49,6 +49,10 @@ public class Form_XemThongTinKH extends javax.swing.JPanel {
         new QLKhachHangDialog(null, true, maKH).setVisible(true);
     }
     
+    void load() {
+        fillTable();
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -196,7 +200,7 @@ public class Form_XemThongTinKH extends javax.swing.JPanel {
     }//GEN-LAST:event_tableMouseClicked
 
     private void loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadActionPerformed
-        fillTable();
+        load();
     }//GEN-LAST:event_loadActionPerformed
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased

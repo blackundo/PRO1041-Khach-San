@@ -19,8 +19,6 @@ public class NhanVienDAO extends QLyKhachSanDAO<NhanVien, String>{
     String SELECT_BY_ID_SQL = "SELECT * FROM staff WHERE id=?";
     String SELECT_BY_USERNAME_SQL = "SELECT * FROM staff WHERE username=?";
     String SELECT_ALL_SQL = "SELECT * FROM staff";
-    
-    
     String SQL_FORM = "SELECT * FROM staff";
 
     @Override

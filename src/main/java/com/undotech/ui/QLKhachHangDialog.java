@@ -6,6 +6,7 @@ package com.undotech.ui;
 
 import com.undotech.dao.KhachHangDAO;
 import com.undotech.entity.KhachHang;
+import com.undotech.utils.Auth;
 import com.undotech.utils.MsgBox;
 import java.awt.Frame;
 import javax.swing.JDialog;
@@ -18,14 +19,14 @@ import javax.swing.JPanel;
 public class QLKhachHangDialog extends javax.swing.JDialog {
 
     KhachHangDAO khDAO = new KhachHangDAO();
-    
+
     public QLKhachHangDialog(java.awt.Frame parent, boolean modal, int maKH) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(this);
         setForm(maKH);
     }
-    
+
     void setForm(int id) {
         KhachHang khNew = new KhachHangDAO().selectById(id);
         txtID.setText(String.valueOf(khNew.getMaKH()));
@@ -35,7 +36,7 @@ public class QLKhachHangDialog extends javax.swing.JDialog {
         txtCMND.setText(khNew.getCMND());
         txtAddress.setText(khNew.getDiaChi());
     }
-    
+
     KhachHang getForm() {
         KhachHang kh = new KhachHang();
         kh.setMaKH(Integer.parseInt(txtID.getText()));
@@ -46,16 +47,24 @@ public class QLKhachHangDialog extends javax.swing.JDialog {
         kh.setDiaChi(txtAddress.getText());
         return kh;
     }
-    
+
     void update() {
         KhachHang kh = getForm();
         try {
-            khDAO.update(kh);
-            dispose();
-            MsgBox.alert(this, "Cập nhật thành công!");
+            if (Auth.role().equals("Nhân sự") || Auth.role().equals("Lễ tân") || Auth.role().equals("Kế toán")) {
+                MsgBox.alert(this, "Bạn không có quyền cập nhật TT KH");
+            } else {
+                khDAO.update(kh);
+                dispose();
+                MsgBox.alert(this, "Cập nhật thành công!");
+            }
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+    
+    void exitForm() {
+        dispose();
     }
 
     /**
@@ -236,7 +245,7 @@ public class QLKhachHangDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        dispose();
+        exitForm();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
