@@ -22,7 +22,7 @@ public class ChietKhauDAO extends QLyKhachSanDAO<ChietKhau, Integer>{
     String DELETE_SQL = "DELETE FROM discount WHERE id=?";
     String SELECT_ALL_SQL = "SELECT * FROM discount";
     String SELECT_BY_ID_SQL = "SELECT * FROM discount WHERE id=?";
-
+    String SELECT_BY_ROOMID_SQL = "SELECT * FROM discount WHERE room_id=?";
     @Override
     public void insert(ChietKhau entity) {
         XJdbc.executeUpdate(INSERT_SQL,
@@ -55,6 +55,14 @@ public class ChietKhauDAO extends QLyKhachSanDAO<ChietKhau, Integer>{
     @Override
     public ChietKhau selectById(Integer key) {
         List<ChietKhau> list = this.selectBySql(SELECT_BY_ID_SQL, key);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+    
+    public ChietKhau selectByRoomId(String key) {
+        List<ChietKhau> list = this.selectBySql(SELECT_BY_ROOMID_SQL, key);
         if (list.isEmpty()) {
             return null;
         }

@@ -233,35 +233,35 @@ public class RoomLayer extends javax.swing.JComponent {
 //        pdao.updateBKIDDefault(new Phong(getModel().getId()));
         new ThanhToanJDialog(null,true,getModel()).setVisible(true);
 //        main.showForm(new Form_DachSachPhong());
-Form_DachSachPhong.form.fillPhong();
+Form_DachSachPhong.form.fillPhong(Form_DachSachPhong.listCurrent);
     }//GEN-LAST:event_itemCheckOutActionPerformed
 
     private void cleanedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cleanedActionPerformed
         // TODO add your handling code here:
         statusdao.update(new TrangThaiPhong(getModel().getId(),true, getModel().isRepair()));
 //        main.showForm(new Form_DachSachPhong());
-Form_DachSachPhong.form.fillPhong();
+Form_DachSachPhong.form.fillPhong(Form_DachSachPhong.listCurrent);
     }//GEN-LAST:event_cleanedActionPerformed
 
     private void repairedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repairedActionPerformed
         // TODO add your handling code here:
         statusdao.update(new TrangThaiPhong(getModel().getId(),getModel().isClean(), false));
 //        main.showForm(new Form_DachSachPhong());
-Form_DachSachPhong.form.fillPhong();
+Form_DachSachPhong.form.fillPhong(Form_DachSachPhong.listCurrent);
     }//GEN-LAST:event_repairedActionPerformed
 
     private void roomDirtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomDirtyActionPerformed
         // TODO add your handling code here:
         statusdao.update(new TrangThaiPhong(getModel().getId(),false, getModel().isRepair()));
 //        main.showForm(new Form_DachSachPhong());
-Form_DachSachPhong.form.fillPhong();
+Form_DachSachPhong.form.fillPhong(Form_DachSachPhong.listCurrent);
     }//GEN-LAST:event_roomDirtyActionPerformed
 
     private void roomBrokenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomBrokenActionPerformed
         // TODO add your handling code here:
         statusdao.update(new TrangThaiPhong(getModel().getId(),getModel().isClean(), true));
 //        main.showForm(new Form_DachSachPhong());
-        Form_DachSachPhong.form.fillPhong();
+Form_DachSachPhong.form.fillPhong(Form_DachSachPhong.listCurrent);
     }//GEN-LAST:event_roomBrokenActionPerformed
 
     private void itemDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemDVActionPerformed

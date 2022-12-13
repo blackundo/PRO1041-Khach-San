@@ -10,10 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Vox
- */
+
 public class ProcDAO {
         private List<Object[]> getListOfArray(String sql, String[] cols, Object... args) {
         try {
@@ -60,5 +57,12 @@ public class ProcDAO {
         String sql = "{CALL sp_service_used_roomid(?)}";
         String[] cols = {"room_id","id", "name", "price", "description", "bk_date"};
         return this.getListOfArray(sql, cols, roomid);
+    }
+    
+    
+    public List<Object[]> Thongke(String year) {
+        String sql = "{CALL sp_thongke(?)}";
+        String[] cols = {"thang","phòng", "dịch vụ", "thanh toán"};
+        return this.getListOfArray(sql, cols, year);
     }
 }

@@ -46,6 +46,7 @@ public class Menu extends JPanel {
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.ROOM, "Đặt phòng"));
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.ADD_CIRCLE, "Tiện nghi"));
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.VERIFIED_USER, "TT Khách hàng"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.MONETIZATION_ON, "Thống kê"));
 //        addTitle("Vip");
 //        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.MONETIZATION_ON, "Thống kê"));
 //        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.AV_TIMER, "Éc si méc"));

@@ -10,74 +10,72 @@ import com.undotech.entity.Phong;
 import com.undotech.entity.TrangThaiPhong;
 import com.undotech.room.ModelRoom;
 import com.undotech.room.Room;
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import static java.awt.GridBagConstraints.RELATIVE;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import net.miginfocom.swing.MigLayout;
-
-
 
 /**
  *
  * @author blackundo
  */
 public class Form_DachSachPhong extends javax.swing.JPanel {
-    
+
     public static Form_DachSachPhong form;
+    public static List<Phong> listCurrent;
     PhongDAO pdao = new PhongDAO();
     TrangThaiPhongDAO ttdao = new TrangThaiPhongDAO();
-    
+    ArrayList<Phong> arrPhong = new ArrayList<>();
+
     public Form_DachSachPhong() {
         initComponents();
         form = this;
-        fillPhong();
+        fillPhong(pdao.selectAll());
+        listCurrent = pdao.selectAll();
     }
-    
-    public void fillPhong(){
+
+    public void fillPhong(List<Phong> list) {
+        arrPhong.clear();
         jPanel1.removeAll();
         jScrollPane2.getVerticalScrollBar().setUnitIncrement(30);
-        
+
         //responsive
         int msize = MainJFrame.getMain().getSize().width;
         if (msize > 1600) {
-            jPanel1.setLayout(new MigLayout("wrap, insets 10, fill", "[]10[]10[]10[]10[]","[]10[]10[]10[]"));
-        }else if(msize > 1300){
-            jPanel1.setLayout(new MigLayout("wrap, insets 10, fill", "[]10[]10[]10[]","[]10[]10[]10[]"));
-        }else{
-            jPanel1.setLayout(new MigLayout("wrap, insets 10, fill", "[]10[]10[]","[]10[]10[]"));
+            jPanel1.setLayout(new MigLayout("wrap, insets 10, fill", "[]10[]10[]10[]10[]", "[]10[]10[]10[]"));
+        } else if (msize > 1300) {
+            jPanel1.setLayout(new MigLayout("wrap, insets 10, fill", "[]10[]10[]10[]", "[]10[]10[]10[]"));
+        } else {
+            jPanel1.setLayout(new MigLayout("wrap, insets 10, fill", "[]10[]10[]", "[]10[]10[]"));
+        }
+
+        boolean isRoomUse;
+        arrPhong = (ArrayList<Phong>) list;
+        if (arrPhong.isEmpty()) {
+            arrPhong = (ArrayList<Phong>) pdao.selectAll();;
         }
         
-            boolean isRoomUse;
-            List<Phong> dsp = pdao.selectAll();
-            
+//            List<Phong> dsp = pdao.selectAll();
 
-            for (Phong r : dsp) {
+        for (Phong r : arrPhong) {
 
-                if (r.getMaDatPhong() == -1) {
-                    isRoomUse = true;
-                }else{
-                    isRoomUse = false;
-                }
-                TrangThaiPhong tt = ttdao.selectById(r.getMaPhong());
-
-                Room comp = new com.undotech.room.Room();
-                comp.setModel(new ModelRoom(r.getMaPhong(),r.getKieuPhong(),
-                String.valueOf(r.getGiaPhong()+"VNĐ"),
-                String.valueOf(r.getMoTa()),tt.isDonDep(),tt.isSuaChua(),isRoomUse,
-                new ImageIcon(getClass().getResource("/com/undotech/icons/door.png"))));
-                
-                
-                jPanel1.add(comp);
-                jPanel1.updateUI();
+            if (r.getMaDatPhong() == -1) {
+                isRoomUse = true;
+            } else {
+                isRoomUse = false;
             }
-            
-            
+            TrangThaiPhong tt = ttdao.selectById(r.getMaPhong());
+
+            Room comp = new com.undotech.room.Room();
+            comp.setModel(new ModelRoom(r.getMaPhong(), r.getKieuPhong(),
+                    String.valueOf(r.getGiaPhong() + "VNĐ"),
+                    String.valueOf(r.getMoTa()), tt.isDonDep(), tt.isSuaChua(), isRoomUse,
+                    new ImageIcon(getClass().getResource("/com/undotech/icons/door.png"))));
+
+            jPanel1.add(comp);
+            jPanel1.updateUI();
+        }
+
     }
 
     /**
@@ -89,6 +87,7 @@ public class Form_DachSachPhong extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        statusGroup = new javax.swing.ButtonGroup();
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         roundPanel1 = new javaswingdev.swing.RoundPanel();
@@ -100,6 +99,13 @@ public class Form_DachSachPhong extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        roundPanel2 = new javaswingdev.swing.RoundPanel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        jRadioButton4 = new javax.swing.JRadioButton();
+        jRadioButton5 = new javax.swing.JRadioButton();
+        jLabel5 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -114,6 +120,8 @@ public class Form_DachSachPhong extends javax.swing.JPanel {
 
         jScrollPane2.setViewportView(jPanel1);
 
+        roundPanel1.setBackground(new java.awt.Color(255, 153, 0));
+        roundPanel1.setRound(50);
         roundPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
@@ -188,6 +196,100 @@ public class Form_DachSachPhong extends javax.swing.JPanel {
         jLabel4.setText("Phòng đang sửa chữa");
         roundPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, -1, -1));
 
+        roundPanel2.setBackground(new java.awt.Color(255, 0, 102));
+        roundPanel2.setForeground(new java.awt.Color(255, 255, 255));
+        roundPanel2.setName(""); // NOI18N
+        roundPanel2.setRound(50);
+
+        statusGroup.add(jRadioButton1);
+        jRadioButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jRadioButton1.setText("Trống");
+        jRadioButton1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButton1ItemStateChanged(evt);
+            }
+        });
+
+        statusGroup.add(jRadioButton2);
+        jRadioButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jRadioButton2.setText("Đã Đặt");
+        jRadioButton2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButton2ItemStateChanged(evt);
+            }
+        });
+
+        statusGroup.add(jRadioButton3);
+        jRadioButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jRadioButton3.setText("Đang dọn dẹp");
+        jRadioButton3.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButton3ItemStateChanged(evt);
+            }
+        });
+
+        statusGroup.add(jRadioButton4);
+        jRadioButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jRadioButton4.setText("Đang sửa chữa");
+        jRadioButton4.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButton4ItemStateChanged(evt);
+            }
+        });
+
+        statusGroup.add(jRadioButton5);
+        jRadioButton5.setForeground(new java.awt.Color(255, 255, 255));
+        jRadioButton5.setText("Mặc định");
+        jRadioButton5.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButton5ItemStateChanged(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Lọc Danh Sách");
+
+        javax.swing.GroupLayout roundPanel2Layout = new javax.swing.GroupLayout(roundPanel2);
+        roundPanel2.setLayout(roundPanel2Layout);
+        roundPanel2Layout.setHorizontalGroup(
+            roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roundPanel2Layout.createSequentialGroup()
+                .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(roundPanel2Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jRadioButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jRadioButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jRadioButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButton4))
+                    .addGroup(roundPanel2Layout.createSequentialGroup()
+                        .addGap(165, 165, 165)
+                        .addComponent(jRadioButton5))
+                    .addGroup(roundPanel2Layout.createSequentialGroup()
+                        .addGap(115, 115, 115)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(98, 98, 98)))
+                .addGap(26, 26, 26))
+        );
+        roundPanel2Layout.setVerticalGroup(
+            roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(jRadioButton5)
+                .addGap(18, 18, 18)
+                .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jRadioButton2)
+                    .addComponent(jRadioButton3)
+                    .addComponent(jRadioButton4))
+                .addGap(26, 26, 26))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -196,22 +298,50 @@ public class Form_DachSachPhong extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1166, Short.MAX_VALUE)
-                        .addGap(20, 20, 20))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(roundPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1166, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(roundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                    .addComponent(roundPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
                 .addGap(20, 20, 20))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jRadioButton1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton1ItemStateChanged
+
+        fillPhong(pdao.selectRoomNotUsed());
+        listCurrent = pdao.selectRoomNotUsed();
+    }//GEN-LAST:event_jRadioButton1ItemStateChanged
+
+    private void jRadioButton2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton2ItemStateChanged
+        fillPhong(pdao.selectRoomUSED());
+        listCurrent = pdao.selectRoomUSED();
+    }//GEN-LAST:event_jRadioButton2ItemStateChanged
+
+    private void jRadioButton3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton3ItemStateChanged
+        fillPhong(pdao.selectRoomClean());
+        listCurrent = pdao.selectRoomClean();
+    }//GEN-LAST:event_jRadioButton3ItemStateChanged
+
+    private void jRadioButton4ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton4ItemStateChanged
+        fillPhong(pdao.selectRoomRepair());
+        listCurrent = pdao.selectRoomRepair();
+    }//GEN-LAST:event_jRadioButton4ItemStateChanged
+
+    private void jRadioButton5ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton5ItemStateChanged
+        fillPhong(pdao.selectAll());
+        listCurrent = pdao.selectAll();
+    }//GEN-LAST:event_jRadioButton5ItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -219,12 +349,20 @@ public class Form_DachSachPhong extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JRadioButton jRadioButton4;
+    private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JScrollPane jScrollPane2;
     private javaswingdev.swing.RoundPanel roundPanel1;
+    private javaswingdev.swing.RoundPanel roundPanel2;
+    private javax.swing.ButtonGroup statusGroup;
     // End of variables declaration//GEN-END:variables
 }

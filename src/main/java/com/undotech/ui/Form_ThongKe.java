@@ -4,6 +4,7 @@
  */
 package com.undotech.ui;
 
+import com.undotech.dao.ProcDAO;
 import com.undotech.dao.ThongKeDAO;
 import com.undotech.entity.ModelData;
 import java.awt.Color;
@@ -17,6 +18,7 @@ import raven.chart.ModelChart;
 public class Form_ThongKe extends javax.swing.JPanel {
 
     ThongKeDAO tkdao = new ThongKeDAO();
+    ProcDAO spdao = new ProcDAO();
     
     public Form_ThongKe() {
         initComponents();
@@ -28,12 +30,12 @@ public class Form_ThongKe extends javax.swing.JPanel {
     }
     
     void setData(){
-        List<ModelData> list = tkdao.getdata();
-        int i = 2;
-        for (ModelData md : list) {
-            
-            chart.addData(new ModelChart(md.getMonth(),new double[]{md.getAmount(),45+i,50+i}));
-            i += 5;
+        List<Object[]> list = spdao.Thongke("%2022%");
+        for (Object[] obj : list) {
+            double t1 = Double.parseDouble(obj[1] + "");
+            double t2 = Double.parseDouble(obj[2] + "");
+            double t3 = Double.parseDouble(obj[3] + "");
+            chart.addData(new ModelChart(obj[0] + "", new double[]{t1, t2, t3}));
         }
         chart.start();
     }

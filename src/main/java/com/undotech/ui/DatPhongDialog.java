@@ -46,11 +46,10 @@ public class DatPhongDialog extends javax.swing.JDialog {
     KhachHangDAO khdao = new KhachHangDAO();
     private ModelRoom model = null;
     int flagKH = 0;
-    private static final String EMAIL_PATTERN = 
-    "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    
-    
+    private static final String EMAIL_PATTERN
+            = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
     public DatPhongDialog(java.awt.Frame parent, boolean modal, ModelRoom model) {
         super(parent, modal);
         initComponents();
@@ -59,10 +58,10 @@ public class DatPhongDialog extends javax.swing.JDialog {
         this.model = model;
         fillComboBoxName();
 //        getForm();
-        lblNumberRoom.setText(model.getId());
+        lblNumberRoom.setText("Phòng " + model.getId());
         setForm();
-        
-        cboName.getEditor().getEditorComponent().addKeyListener(new KeyAdapter(){
+
+        cboName.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 System.out.println("đang viết");
@@ -71,9 +70,9 @@ public class DatPhongDialog extends javax.swing.JDialog {
                 setEnabledForm(true);
                 System.out.println(flagKH);
             }
-            
+
         });
-        
+
         cboName.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -86,46 +85,45 @@ public class DatPhongDialog extends javax.swing.JDialog {
                     setForm();
                 }
 //                System.out.println("hàm change: "+e.getStateChange());
-                
+
             }
         });
-        
+
     }
 
     public ModelRoom getModel() {
         return model;
     }
-    
-    
-    void fillComboBoxName(){
+
+    void fillComboBoxName() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboName.getModel();
         model.removeAllElements();
-        
+
         List<KhachHang> list = khdao.selectAll();
         for (KhachHang kh : list) {
             model.addElement(kh);
         }
 //        cboName.setSelectedItem(null); //mở này nhớ xoá setform trên init chớ lỗi nha mày
     }
-    
-    void clearForm(){
+
+    void clearForm() {
         txtAddress.setText("");
         txtCMND.setText("");
         txtEmail.setText("");
         txtPhone.setText("");
         cboName.setSelectedItem(0);
     }
-    
-    void setEnabledForm(boolean key){
+
+    void setEnabledForm(boolean key) {
         txtPhone.setEnabled(key);
         txtEmail.setEnabled(key);
         txtCMND.setEnabled(key);
         txtAddress.setEnabled(key);
     }
-    
-    void setForm(){
+
+    void setForm() {
         try {
-            KhachHang kh = (KhachHang)cboName.getSelectedItem();
+            KhachHang kh = (KhachHang) cboName.getSelectedItem();
             txtPhone.setText(kh.getSDT());
             txtEmail.setText(kh.getEmail());
             txtCMND.setText(kh.getCMND());
@@ -134,45 +132,41 @@ public class DatPhongDialog extends javax.swing.JDialog {
         } catch (java.lang.ClassCastException e) {
             System.out.println("không chuyển đc do chỉnh");
         }
-        
-    }
-    
-    
 
-    DatPhong getForm(){
+    }
+
+    DatPhong getForm() {
         DatPhong dp = new DatPhong();
-        
+
         SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss");
         SimpleDateFormat formatStringToTime = new SimpleDateFormat("hh:mm aa");
-        
+
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat formatStringToDate = new SimpleDateFormat("dd-MM-yyyy");
-        
+
         SimpleDateFormat formatFinal = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
 //        SimpleDateFormat formatFinal = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        
-        
-        
+
         dp.setNgatDatPhong(new Date());
         try {
-            String checkIn = formatDate.format(formatStringToDate.parse(txtDateCheckIn.getText())) +" "
-                +formatTime.format(formatStringToTime.parse(txtTimeCheckIn.getText()));
-        
-            String checkOut = formatDate.format(formatStringToDate.parse(txtDateCheckOut.getText())) +" "
-                +formatTime.format(formatStringToTime.parse(txtTimeCheckOut.getText()));
+            String checkIn = formatDate.format(formatStringToDate.parse(txtDateCheckIn.getText())) + " "
+                    + formatTime.format(formatStringToTime.parse(txtTimeCheckIn.getText()));
+
+            String checkOut = formatDate.format(formatStringToDate.parse(txtDateCheckOut.getText())) + " "
+                    + formatTime.format(formatStringToTime.parse(txtTimeCheckOut.getText()));
             System.out.println(checkIn);
             dp.setCheckIn(Timestamp.valueOf(checkIn));
-            
+
             dp.setCheckOut(Timestamp.valueOf(checkOut));
 //            dp.setCheckOut(formatFinal.parse(checkOut));
         } catch (ParseException ex) {
 //            ex.printStackTrace();
         }
-        
+
         dp.setTongSoPhongDat(1);
         if (flagKH == 0) {
-            dp.setMaKH(((KhachHang)cboName.getSelectedItem()).getMaKH());
-        }else{
+            dp.setMaKH(((KhachHang) cboName.getSelectedItem()).getMaKH());
+        } else {
             //validator
 //            int phone = 0,CMND = 0;
 //            String email = null;
@@ -193,21 +187,17 @@ public class DatPhongDialog extends javax.swing.JDialog {
 //            } else {
 //                JOptionPane.showMessageDialog(this,"SĐT và CMND và Email Không được để trống");
 //            }
-            khdao.insert(new KhachHang(String.valueOf(cboName.getEditor().getItem()),txtPhone.getText(),txtEmail.getText(),
-                    txtCMND.getText(),txtAddress.getText()));
+            khdao.insert(new KhachHang(String.valueOf(cboName.getEditor().getItem()), txtPhone.getText(), txtEmail.getText(),
+                    txtCMND.getText(), txtAddress.getText()));
             KhachHang kh = khdao.selectTop1();
             dp.setMaKH(kh.getMaKH());
         }
-        
-        
+
         dp.setMaNV(Auth.user.getMaNV());
         dp.setMaPhong(getModel().getId());
-        
-        
+
 //        String dateCheckIn = txtDateCheckIn.getText();
 //        String TimeCheckIn = timePickerCheckIn.getSelectedTime();
-        
-        
 //        try {
 //            System.out.println(formatDate.format(formatStringToDate.parse(dateCheckIn)));
 //            timePickerCheckIn.addActionListener(new ActionListener() {
@@ -222,13 +212,12 @@ public class DatPhongDialog extends javax.swing.JDialog {
 //        } catch (ParseException ex) {
 //                    Logger.getLogger(DatPhongDialog.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        
-        
-        
         return dp;
-    };
+    }
+
+    ;
     
-    void insert(){
+    void insert() {
         DatPhong dp = getForm();
 //        String maPhong = getModel().getId();
 
@@ -237,15 +226,15 @@ public class DatPhongDialog extends javax.swing.JDialog {
         Timestamp co = dp.getCheckOut();
         System.out.println("check in " + ci);
         System.out.println("check out " + co);
-        System.out.println("so sánh: "+ci.compareTo(co));
+        System.out.println("so sánh: " + ci.compareTo(co));
         if (dp.getCheckIn().compareTo(dp.getCheckOut()) == -1) {
             dpdao.insert(dp);
             DatPhong latest = dpdao.selectTop1();
             pdao.updateBKID(new Phong(getModel().getId(), latest.getMaDatPhong()));
             main.showForm(new Form_DachSachPhong());
             this.dispose();
-        }else{
-            JOptionPane.showMessageDialog(this,"Ngày nhận phòng không được lớn hơn");
+        } else {
+            JOptionPane.showMessageDialog(this, "Ngày nhận phòng không được lớn hơn");
         }
 //        dpdao.insert(dp);
 //        DatPhong latest = dpdao.selectTop1();
@@ -254,9 +243,7 @@ public class DatPhongDialog extends javax.swing.JDialog {
 //        this.dispose();
 //        System.out.println(dp.getCheckIn());
     }
-    
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -277,18 +264,18 @@ public class DatPhongDialog extends javax.swing.JDialog {
         txtCMND = new com.undotech.utils.TextField();
         textAreaScroll1 = new com.undotech.utils.TextAreaScroll();
         txtAddress = new com.undotech.utils.TextArea();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        txtDateCheckIn = new javax.swing.JTextField();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        txtTimeCheckIn = new javax.swing.JTextField();
-        jToggleButton2 = new javax.swing.JToggleButton();
-        txtDateCheckOut = new javax.swing.JTextField();
-        txtTimeCheckOut = new javax.swing.JTextField();
-        jToggleButton3 = new javax.swing.JToggleButton();
-        jToggleButton4 = new javax.swing.JToggleButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        roundPanel1 = new javaswingdev.swing.RoundPanel();
+        jLabel8 = new javax.swing.JLabel();
+        txtDateCheckOut = new javax.swing.JTextField();
+        txtTimeCheckOut = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
+        roundPanel2 = new javaswingdev.swing.RoundPanel();
+        jLabel7 = new javax.swing.JLabel();
+        txtDateCheckIn = new javax.swing.JTextField();
+        txtTimeCheckIn = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
 
         dateChooserCheckIn.setForeground(new java.awt.Color(37, 88, 207));
         dateChooserCheckIn.setTextRefernce(txtDateCheckIn);
@@ -302,7 +289,8 @@ public class DatPhongDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        lblNumberRoom.setFont(new java.awt.Font("Helvetica", 1, 20)); // NOI18N
+        lblNumberRoom.setFont(new java.awt.Font("Helvetica", 1, 24)); // NOI18N
+        lblNumberRoom.setForeground(new java.awt.Color(255, 0, 102));
         lblNumberRoom.setText("Phòng 202");
 
         jLabel2.setFont(new java.awt.Font("Helvetica", 0, 18)); // NOI18N
@@ -347,39 +335,6 @@ public class DatPhongDialog extends javax.swing.JDialog {
         txtAddress.setName(""); // NOI18N
         textAreaScroll1.setViewportView(txtAddress);
 
-        jLabel7.setText("Ngày nhận phòng");
-
-        jLabel8.setText("Ngày trả phòng");
-
-        jToggleButton1.setText("...");
-        jToggleButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
-            }
-        });
-
-        jToggleButton2.setText("...");
-        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton2ActionPerformed(evt);
-            }
-        });
-
-        jToggleButton3.setText("...");
-        jToggleButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton3ActionPerformed(evt);
-            }
-        });
-
-        jToggleButton4.setText("...");
-        jToggleButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton4ActionPerformed(evt);
-            }
-        });
-
         jButton1.setText("Clear");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -394,98 +349,159 @@ public class DatPhongDialog extends javax.swing.JDialog {
             }
         });
 
+        roundPanel1.setRound(50);
+
+        jLabel8.setText("Ngày trả phòng");
+
+        jButton3.setText("...");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
+        roundPanel1.setLayout(roundPanel1Layout);
+        roundPanel1Layout.setHorizontalGroup(
+            roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roundPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(roundPanel1Layout.createSequentialGroup()
+                        .addComponent(txtDateCheckOut)
+                        .addGap(5, 5, 5)
+                        .addComponent(txtTimeCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(roundPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        roundPanel1Layout.setVerticalGroup(
+            roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roundPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8)
+                .addGap(18, 18, 18)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDateCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTimeCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+
+        roundPanel2.setToolTipText("");
+        roundPanel2.setRound(50);
+
+        jLabel7.setText("Ngày nhận phòng");
+
+        jButton4.setText("...");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout roundPanel2Layout = new javax.swing.GroupLayout(roundPanel2);
+        roundPanel2.setLayout(roundPanel2Layout);
+        roundPanel2Layout.setHorizontalGroup(
+            roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roundPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(roundPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(roundPanel2Layout.createSequentialGroup()
+                        .addComponent(txtDateCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
+                        .addComponent(txtTimeCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4)))
+                .addGap(2, 2, 2))
+        );
+        roundPanel2Layout.setVerticalGroup(
+            roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roundPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addGap(20, 20, 20)
+                .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDateCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTimeCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4))
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(427, 427, 427)
+                .addComponent(lblNumberRoom)
+                .addGap(69, 69, 69))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addGap(260, 260, 260)
+                .addComponent(jButton2)
+                .addGap(282, 282, 282))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
-                                .addGap(20, 20, 20)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtPhone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(textAreaScroll1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
-                                    .addComponent(txtCMND, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cboName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(126, 126, 126))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jButton1)
-                                .addGap(260, 260, 260)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtTimeCheckOut, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtDateCheckOut, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtTimeCheckIn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                                    .addComponent(txtDateCheckIn, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jToggleButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jToggleButton3)
-                                    .addComponent(jToggleButton4)))
-                            .addComponent(jButton2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(427, 427, 427)
-                        .addComponent(lblNumberRoom)))
-                .addGap(189, 189, 189))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtPhone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(textAreaScroll1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
+                    .addComponent(txtCMND, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cboName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(roundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(roundPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(98, 98, 98))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(lblNumberRoom)
-                .addGap(54, 54, 54)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cboName, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtDateCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton1))
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtTimeCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton2))
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCMND, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel8))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(lblNumberRoom)
+                        .addGap(54, 54, 54)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(cboName, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCMND, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
                         .addGap(38, 38, 38)
                         .addComponent(jLabel6))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textAreaScroll1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtDateCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jToggleButton3))
-                                .addGap(36, 36, 36)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtTimeCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jToggleButton4))))))
+                        .addGap(373, 373, 373)
+                        .addComponent(textAreaScroll1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(225, 225, 225)
+                        .addComponent(roundPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
+                        .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -495,22 +511,6 @@ public class DatPhongDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        dateChooserCheckIn.showPopup();
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
-
-    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
-        timePickerCheckIn.showPopup(this, (getWidth() - timePickerCheckIn.getPreferredSize().width) / 2, (getHeight() - timePickerCheckIn.getPreferredSize().height) / 2);
-    }//GEN-LAST:event_jToggleButton2ActionPerformed
-
-    private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
-        timePickerCheckOut.showPopup(this, (getWidth() - timePickerCheckOut.getPreferredSize().width) / 2, (getHeight() - timePickerCheckOut.getPreferredSize().height) / 2);
-    }//GEN-LAST:event_jToggleButton4ActionPerformed
-
-    private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
-        dateChooserCheckOut.showPopup();
-    }//GEN-LAST:event_jToggleButton3ActionPerformed
 
     private void cboNameItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboNameItemStateChanged
         // khi chọn cbox
@@ -531,6 +531,14 @@ public class DatPhongDialog extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         insert();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        timePickerCheckOut.showPopup(this, (getWidth() - timePickerCheckOut.getPreferredSize().width) / 2, (getHeight() - timePickerCheckOut.getPreferredSize().height) / 2);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        timePickerCheckIn.showPopup(this, (getWidth() - timePickerCheckIn.getPreferredSize().width) / 2, (getHeight() - timePickerCheckIn.getPreferredSize().height) / 2);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -560,10 +568,10 @@ public class DatPhongDialog extends javax.swing.JDialog {
         //</editor-fold>
 
         try {
-    UIManager.setLookAndFeel( new FlatLightLaf() );
-} catch( Exception ex ) {
-    System.err.println( "Failed to initialize LaF" );
-}
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize LaF");
+        }
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -589,6 +597,8 @@ public class DatPhongDialog extends javax.swing.JDialog {
     private javaswingdev.datechooser.DateChooser dateChooserCheckOut;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -596,11 +606,9 @@ public class DatPhongDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JToggleButton jToggleButton3;
-    private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JLabel lblNumberRoom;
+    private javaswingdev.swing.RoundPanel roundPanel1;
+    private javaswingdev.swing.RoundPanel roundPanel2;
     private com.undotech.utils.TextAreaScroll textAreaScroll1;
     private com.raven.swing.TimePicker timePickerCheckIn;
     private com.raven.swing.TimePicker timePickerCheckOut;

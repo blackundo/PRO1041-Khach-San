@@ -4,6 +4,7 @@
  */
 package com.undotech.ui;
 
+import com.undotech.dao.ChietKhauDAO;
 import com.undotech.dao.DanhGiaDAO;
 import com.undotech.dao.DatPhongDAO;
 import com.undotech.dao.DichVuDAO;
@@ -15,21 +16,27 @@ import com.undotech.dao.ProcDAO;
 import com.undotech.dao.ThanhToanDAO;
 import com.undotech.dao.TienNghiDAO;
 import com.undotech.dao.TrangThaiPhongDAO;
+import com.undotech.entity.ChietKhau;
 import com.undotech.entity.DanhGia;
 import com.undotech.entity.DatPhong;
 import com.undotech.entity.KhachHang;
 import com.undotech.entity.NhanVien;
+import com.undotech.entity.PhieuDichVu;
 import com.undotech.entity.Phong;
 import com.undotech.entity.ThanhToan;
 import com.undotech.entity.TienNghi;
 import com.undotech.entity.TrangThaiPhong;
 import com.undotech.room.ModelRoom;
+import com.undotech.utils.SendEmail;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import javaswingdev.card.ModelCard;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -48,12 +55,14 @@ public class ThanhToanJDialog extends javax.swing.JDialog {
     NhanVienDAO nvdao = new NhanVienDAO();
     TienNghiDAO tndao = new TienNghiDAO();
     DichVuDAO dvdao = new DichVuDAO();
+    ChietKhauDAO ckdao = new ChietKhauDAO();
     PhieuDichVuDAO pdvdao = new PhieuDichVuDAO();
     ProcDAO procdao = new ProcDAO();
     TrangThaiPhongDAO statusdao = new TrangThaiPhongDAO();
     Locale localeVN = new Locale("vi", "VN");
     NumberFormat currencyVN = NumberFormat.getCurrencyInstance(localeVN);
     double totalpay;
+    
     
     public ThanhToanJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -87,13 +96,17 @@ public class ThanhToanJDialog extends javax.swing.JDialog {
         DatPhong dp = dpdao.selectByRoomId(getModel().getId());
         KhachHang kh = khdao.selectById(dp.getMaKH());
         NhanVien nv = nvdao.selectById(dp.getMaNV());
+        
         txtTenKH.setText(kh.getTenKH());
         lblSoPhong.setText(soPhong);
         txtCheckin.setText(dp.getCheckIn()+"");
         txtCheckout.setText(dp.getCheckOut()+"");
         txtTenNV.setText(nv.getTenNV());
+//        txtGiamGia.setText(ckdao.selectByRoomId(soPhong).getPhanTramCK()+"");
         //tongtien
         Phong room = pdao.selectById(getModel().getId());
+//        double tinhPhong = (room.getGiaPhong() / 100) * ckdao.selectByRoomId(soPhong).getPhanTramCK();
+       
         txtGiaPhong.setText(currencyVN.format(room.getGiaPhong()));
         //Dịch vụ
         double tongGiaDV = 0;
@@ -139,7 +152,9 @@ public class ThanhToanJDialog extends javax.swing.JDialog {
     }
     
     private void insert(){
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         DatPhong dp = dpdao.selectByRoomId(getModel().getId());
+        KhachHang kh = khdao.selectById(dp.getMaKH());
         dgdao.insert(new DanhGia(handleRating()));
         DanhGia dg = dgdao.selectTop1();
         ThanhToan tt = new ThanhToan();
@@ -150,7 +165,15 @@ public class ThanhToanJDialog extends javax.swing.JDialog {
         ttdao.insert(tt);
         pdao.updateBKIDDefault(new Phong(getModel().getId())); //trả bk_id về null
         statusdao.update(new TrangThaiPhong(getModel().getId(),false,getModel().isRepair()));
+        SendEmail.hoaDon(kh.getEmail(), "Bạn đã thanh toán phòng: " + getModel().getId() + " Tổng số tiền thanh toán: " + totalpay + "Ngày thanh toán: " + new Date());
+        //clear dich vu
+        List<PhieuDichVu> listPDV = pdvdao.selectByRoomID(getModel().getId());
+        for (PhieuDichVu pdv : listPDV) {
+            pdvdao.delete(pdv.getMaPhieuDV());
+        }
+        this.setCursor(Cursor.getDefaultCursor());
         JOptionPane.showMessageDialog(null,"Thanh toán thành công");
+        Form_DachSachPhong.form.fillPhong(Form_DachSachPhong.listCurrent);
         this.dispose();
     }
 
@@ -336,9 +359,10 @@ public class ThanhToanJDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(101, 101, 101)
-                        .addComponent(starRating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(85, 85, 85)
+                        .addComponent(starRating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2)
@@ -353,8 +377,8 @@ public class ThanhToanJDialog extends javax.swing.JDialog {
                             .addComponent(txtCheckin)
                             .addComponent(txtCheckout)
                             .addComponent(txtTenNV)
-                            .addComponent(cboLoaiThanhToan, 0, 256, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cboLoaiThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
@@ -372,11 +396,12 @@ public class ThanhToanJDialog extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel1)
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel1)
-                        .addGap(56, 56, 56)
+                        .addGap(36, 36, 36)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -402,9 +427,7 @@ public class ThanhToanJDialog extends javax.swing.JDialog {
                             .addComponent(cboLoaiThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(starRating, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

@@ -24,6 +24,12 @@ public class PhongDAO extends QLyKhachSanDAO<Phong, String>{
     String DELETE_SQL = "DELETE FROM room WHERE id=?";
     String SELECT_ALL_SQL = "SELECT * FROM room";
     String SELECT_BY_ID_SQL = "SELECT * FROM room WHERE id=?";
+    
+    String SELECT_ROOM_CLEAN = "SELECT * from room a INNER JOIN status_room b ON a.id = b.room_id WHERE is_clean = 0";
+    String SELECT_ROOM_REPAIR = "SELECT * from room a INNER JOIN status_room b ON a.id = b.room_id WHERE is_repair = 1";
+    String SELECT_ROOM_USED = "SELECT * from room WHERE booking_id IS NOT NULL";
+    String SELECT_ROOM_NOT_USED = "SELECT * from room a INNER JOIN status_room b ON a.id = b.room_id WHERE is_repair = 0 AND is_clean = 1 AND booking_id IS NULL";
+
 
     @Override
     public void insert(Phong entity) {
@@ -60,6 +66,22 @@ public class PhongDAO extends QLyKhachSanDAO<Phong, String>{
         XJdbc.executeUpdate(UPDATEBKID_DEFAULT_SQL, 
                     entity.getMaPhong()
                 );
+    }
+    
+    public List<Phong> selectRoomClean() {
+        return this.selectBySql(SELECT_ROOM_CLEAN);
+    }
+    
+    public List<Phong> selectRoomRepair() {
+        return this.selectBySql(SELECT_ROOM_REPAIR);
+    }
+    
+    public List<Phong> selectRoomUSED() {
+        return this.selectBySql(SELECT_ROOM_USED);
+    }
+    
+    public List<Phong> selectRoomNotUsed() {
+        return this.selectBySql(SELECT_ROOM_NOT_USED);
     }
 
     @Override

@@ -4,6 +4,7 @@
  */
 package com.undotech.ui;
 
+import com.undotech.dao.DatPhongDAO;
 import com.undotech.dao.DichVuDAO;
 import com.undotech.dao.PhieuDichVuDAO;
 import com.undotech.dao.PhongDAO;
@@ -20,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultButtonModel;
@@ -36,6 +38,7 @@ public class addDichVuJDialog extends javax.swing.JDialog {
     DichVuDAO dvdao = new DichVuDAO();
     PhieuDichVuDAO pdvdao = new PhieuDichVuDAO();
     PhongDAO pdao = new PhongDAO();
+    DatPhongDAO dpdao = new DatPhongDAO();
     String maphong = null;
     
     
@@ -171,6 +174,7 @@ public class addDichVuJDialog extends javax.swing.JDialog {
         pnlDV2.removeAll();
         arrDV2 = (ArrayList)new ProcDAO().getTableVIPByROOMID(maphong);
         List<Object[]> tb = new ProcDAO().getTableVIPByROOMID(maphong);
+        
         
         
         int sapxep = arrDV2.size();

@@ -720,7 +720,7 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
     }//GEN-LAST:event_cboTenDichVuActionPerformed
 
     private void btnCancelDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelDVActionPerformed
-        cancel_room_service();
+//        cancel_room_service();
     }//GEN-LAST:event_btnCancelDVActionPerformed
 
 
