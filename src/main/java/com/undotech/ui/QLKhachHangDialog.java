@@ -98,8 +98,6 @@ public class QLKhachHangDialog extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel1.setText("QUẢN LÝ KHÁCH HÀNG");
 
-        jPanel5.setBackground(new java.awt.Color(198, 235, 217));
-
         btnUpdate.setText("Cập nhật");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

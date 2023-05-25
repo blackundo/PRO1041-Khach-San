@@ -170,6 +170,9 @@ END
 GO
 
 Drop proc sp_service_used_roomid
+Go
+
+
 
 CREATE PROC sp_service_used
 AS BEGIN

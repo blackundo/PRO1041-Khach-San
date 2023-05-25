@@ -340,8 +340,6 @@ public class Form_QuanLyDichVu extends javax.swing.JPanel {
                 .addGap(32, 32, 32))
         );
 
-        jPanel2.setBackground(new java.awt.Color(198, 235, 217));
-
         jLabel6.setText("Ghi chú :");
 
         txtDesc.setColumns(20);

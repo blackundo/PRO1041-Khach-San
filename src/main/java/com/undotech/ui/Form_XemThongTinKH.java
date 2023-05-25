@@ -65,8 +65,6 @@ public class Form_XemThongTinKH extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(198, 235, 217));
-
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

@@ -104,8 +104,6 @@ public class Form_ThanhToan extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(198, 235, 217));
-
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("THANH TOÁN PHÒNG");
@@ -473,11 +471,9 @@ public class Form_ThanhToan extends javax.swing.JDialog {
         jPanel8.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel36.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel36.setForeground(new java.awt.Color(0, 0, 0));
         jLabel36.setText("Loại thanh toán :");
 
         jLabel37.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel37.setForeground(new java.awt.Color(0, 0, 0));
         jLabel37.setText("Tổng tiền KH phải thanh toán :");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));

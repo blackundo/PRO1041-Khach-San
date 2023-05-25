@@ -16,8 +16,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class TableHeaderCustom extends DefaultTableCellRenderer{
     public TableHeaderCustom(){
         setPreferredSize(new Dimension(0, 35));
-        setBackground(new Color(200, 200, 200));
-        setForeground(new Color(60, 60, 60));
+//        setBackground(new Color(200, 200, 200));
+//        setForeground(new Color(60, 60, 60));
+        setBackground(new Color(58, 73, 227));
+        setForeground(new Color(255, 255, 255));
     }
 
     @Override

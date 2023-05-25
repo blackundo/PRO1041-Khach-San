@@ -160,7 +160,7 @@ public class DatPhongDialog extends javax.swing.JDialog {
             dp.setCheckOut(Timestamp.valueOf(checkOut));
 //            dp.setCheckOut(formatFinal.parse(checkOut));
         } catch (ParseException ex) {
-//            ex.printStackTrace();
+            ex.printStackTrace();
         }
 
         dp.setTongSoPhongDat(1);
@@ -224,23 +224,29 @@ public class DatPhongDialog extends javax.swing.JDialog {
         //vallide day
         Timestamp ci = dp.getCheckIn();
         Timestamp co = dp.getCheckOut();
-        System.out.println("check in " + ci);
-        System.out.println("check out " + co);
-        System.out.println("so sánh: " + ci.compareTo(co));
-        if (dp.getCheckIn().compareTo(dp.getCheckOut()) == -1) {
-            dpdao.insert(dp);
-            DatPhong latest = dpdao.selectTop1();
-            pdao.updateBKID(new Phong(getModel().getId(), latest.getMaDatPhong()));
-            main.showForm(new Form_DachSachPhong());
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Ngày nhận phòng không được lớn hơn");
-        }
-//        dpdao.insert(dp);
-//        DatPhong latest = dpdao.selectTop1();
-//        pdao.updateBKID(new Phong(getModel().getId(), latest.getMaDatPhong()));
-//        main.showForm(new Form_DachSachPhong());
-//        this.dispose();
+//        System.out.println("check in " + ci);
+//        System.out.println("check out " + co);
+//        System.out.println("so sánh: " + ci.compareTo(co));
+
+
+
+//        if (dp.getCheckIn().compareTo(dp.getCheckOut()) == -1) {
+//            dpdao.insert(dp);
+//            DatPhong latest = dpdao.selectTop1();
+//            pdao.updateBKID(new Phong(getModel().getId(), latest.getMaDatPhong()));
+//            main.showForm(new Form_DachSachPhong());
+//            this.dispose();
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Ngày nhận phòng không được lớn hơn");
+//        }
+        
+        
+        
+        dpdao.insert(dp);
+        DatPhong latest = dpdao.selectTop1();
+        pdao.updateBKID(new Phong(getModel().getId(), latest.getMaDatPhong()));
+        main.showForm(new Form_DachSachPhong());
+        this.dispose();
 //        System.out.println(dp.getCheckIn());
     }
 
