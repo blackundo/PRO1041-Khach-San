@@ -17,9 +17,7 @@ Chúng em mong nhận được sự góp ý, đánh giá của thầy(cô) và t
 
 ## 👋 NHÓM Undo Tech
 `Leader` : Trần Phước Khánh Huy <br />
-`Member` : Đặng Văn Võ <br />
-`Member` : Trần Văn Hiếu <br />
-`Member` : Phạm Hoàng Phúc
+`Member` : Đặng Văn Võ 
 
 ## Các ngôn ngữ và phần mềm được sử dụng
 `Ngôn ngữ` : Java <br />
